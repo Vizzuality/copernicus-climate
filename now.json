@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "alias": ["forest-forward.com"],
-  "name": "copernicus-forest",
+  "alias": [""],
+  "name": "copernicus-climate",
   "env": {
     "react_app_mapbox_token": "@react_app_mapbox_token"
   },
