@@ -1,0 +1,110 @@
+@import '~styles/settings';
+
+$timeline-size: 45px;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 460px;
+}
+
+.header {
+  background-color: $color-gray-1;
+  border-bottom: 1px solid $color-gray-3;
+  display: flex;
+  height: $timeline-size;
+  width: 100%;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  color: $color-white;
+  flex: 1;
+  font-size: $font-size-big;
+  padding-right: 10px;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  color: $color-gray-4;
+  cursor: pointer;
+  border-left: 1px solid $color-gray-3;
+  font-size: $font-size-small;
+  padding: 0 12px;
+  text-transform: uppercase;
+}
+
+.activeTab {
+  background-color: $color-gray-2;
+  color: $color-white;
+}
+
+.timeline {
+  background-color: $color-gray-1;
+  border-bottom: 1px solid $color-gray-3;
+  display: flex;
+  height: $timeline-size;
+  position: relative;
+  width: 100%;
+}
+
+.speedButton {
+  border-left: 1px solid $color-gray-3;
+  color: $color-white;
+  font-size: $font-size-small;
+  width: $timeline-size;
+}
+
+
+.legendItemTimeStep {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  :global .vizzuality__player-btn,
+  :global .vizzuality__timestep-slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  :global .vizzuality__player-btn {
+    width: $timeline-size;
+  }
+
+  :global .vizzuality__timestep-slider {
+    flex: 1;
+    border-left: 1px solid $color-gray-3;
+
+    :global .vizzuality-slider {
+      width: 100%;
+      margin-left: 105px;
+      margin-right: 38px;
+    }
+  }
+}
+
+.infoButton {
+  display: flex;
+  align-items: center;
+  padding: 0 10px 0 24px;
+  svg {
+    fill: $color-white;;
+  }
+}
+
+.year {
+  align-items: center;
+  font-size: $font-size-small;
+  display: flex;
+  color: $color-white;
+  height: 100%;
+  left: calc(#{$timeline-size} + 40px);
+  position: absolute;
+}

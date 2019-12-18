@@ -1,0 +1,11 @@
+@import '~styles/settings';
+@import '../styles.scss';
+
+.layerToggle {
+  // // position: absolute;
+  // left: 0;
+  // top: calc(50% + .5 * #{$navigation-button-size});
+  // border: 1px solid $color-gray-1;
+  border-left: 0;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.09);
+}

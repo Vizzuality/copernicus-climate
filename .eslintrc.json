@@ -1,0 +1,54 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "plugins": ["react", "react-hooks", "prettier"],
+  "extends": ["airbnb", "prettier"],
+  "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "no-console": 2,
+    "no-underscore-dangle": 0,
+    "class-methods-use-this": 0,
+    "no-plusplus": 0,
+    "default-case": 0,
+    "no-param-reassign": 0,
+    "jsx-a11y/click-events-have-key-events": 0,
+    "react/no-array-index-key": "off",  // TODO: remove this and fix the code
+    "react/destructuring-assignment": "off", // TODO: remove this and fix the code
+    "prefer-destructuring": 0, // TODO: remove this and fix the code
+    "react/button-has-type": "off",
+    "react/forbid-prop-types": "off",
+    "react/require-default-props": "off",
+    "react/jsx-closing-bracket-location": 0,
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/jsx-one-expression-per-line": 0,
+    "react/jsx-closing-tag-location": 0,
+    "react/jsx-curly-spacing": 0,
+    "react/jsx-equals-spacing": 0,
+    "react/jsx-first-prop-new-line": 0,
+    "react/jsx-indent": 0,
+    "react/jsx-indent-props": 0,
+    "react/jsx-max-props-per-line": 0,
+    "react/jsx-tag-spacing": 0,
+    "react/jsx-wrap-multilines": 0,
+    "import/prefer-default-export": 0, // DON'T REMOVE AGAIN PLZ *cries*
+    "import/no-unresolved": 0,
+    "react/sort-comp": 0, // DON'T REMOVE AGAIN PLZ *cries again*
+    "react/prop-types": "warn"
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 7,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
+      "jsx": true
+    },
+    "sourceType": "module",
+    "allowImportExportEverywhere": true
+  },
+  "globals": {
+  }
+}

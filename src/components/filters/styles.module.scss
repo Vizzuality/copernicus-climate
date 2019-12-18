@@ -1,0 +1,32 @@
+@import '~styles/settings';
+
+.container {
+  height: $c-header-height;
+  border-bottom: 1px solid $color-gray-1;
+  padding-right: $c-header-padding;
+  position: relative;
+  background-color: $color-desert-storm;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dropdown {
+  height: 100%;
+  border-right: 1px solid;
+}
+
+.dropdownLarge {
+  @extend .dropdown;
+  min-width: 370px;
+
+  button {
+    margin: auto;
+  }
+}
+
+.leftAlign {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
