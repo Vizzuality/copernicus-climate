@@ -8,7 +8,6 @@ import Map from 'components/map';
 import Filters from 'components/filters';
 import Timeline from 'components/map/controls/timeline';
 import RampLegend from 'components/ramp-legend';
-import bioclimaticLayer from 'layers/bioclimatic';
 import { LayerManager, Layer } from 'layer-manager/dist/components';
 import { PluginMapboxGl } from 'layer-manager';
 import { TEMPERATURE_RAMP_COLORS, PERCIPITATION_RAMP_COLORS } from 'constants.js';
@@ -25,11 +24,11 @@ function BioClimaticPage(props) {
     timelineData,
     viewport,
     setViewport,
-    country,
+    // country,
     yearIndex,
     setYearIndex,
-    fetching,
-    opacity
+    fetching
+    // opacity
   } = props;
   const { scenario } = filters;
 
@@ -41,27 +40,10 @@ function BioClimaticPage(props) {
   ]);
 
   const chosenBiovarItem = biovarsList.find(({ key }) => key === chosenBiovar);
-
-  const years = scenario && timelineData && timelineData[scenario] && timelineData[scenario].years;
-
   const biovarNumber = chosenBiovar && Number(chosenBiovar.replace('biovar', ''));
   const rampColors = biovarNumber >= 12 ? PERCIPITATION_RAMP_COLORS : TEMPERATURE_RAMP_COLORS; // change colors ramp, depending on the selected biovar
 
   const buckets = fetching ? [] : getBuckets(biovarsData[chosenBiovar]);
-  const bioclimaticLayers = useMemo(() => {
-    if (fetching) return [];
-    const layer = bioclimaticLayer(
-      country,
-      scenario,
-      chosenBiovar,
-      years[yearIndex],
-      opacity,
-      buckets,
-      rampColors
-    );
-    return [layer].map(l => ({ ...l, active: true }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [biovarsData, chosenBiovar, country, scenario, years, yearIndex, fetching, opacity]);
 
   const lowEndValue =
     buckets[0] && chosenBiovarItem ? `${buckets[0].toFixed(1)} ${chosenBiovarItem.unit}` : null;
@@ -78,7 +60,7 @@ function BioClimaticPage(props) {
           <Map viewport={viewport} setViewport={setViewport}>
             {map => (
               <LayerManager map={map} plugin={PluginMapboxGl}>
-                {bioclimaticLayers
+                {[]
                   .filter(l => l.active)
                   .map(layer => (
                     // TODO: fix all eslint-disables

@@ -2,8 +2,6 @@ import React, { useMemo, useEffect, useState } from 'react';
 import { useRouteMatch, useLocation, useHistory } from 'react-router-dom';
 import { useQueryParams, setQueryParams } from 'url.js';
 import { COUNTRIES_DEFAULT_VIEWPORTS, DEFAULT_LAYER_OPACITY } from 'constants.js';
-import { useScenariosPerCountry } from 'graphql/queries';
-import { Query } from 'urql';
 import { Label } from 'recharts';
 import sortBy from 'lodash/sortBy';
 
@@ -35,7 +33,7 @@ const Container = () => {
   }, [opacity]);
 
   // graphql
-  const { data } = useScenariosPerCountry(country);
+  const data = null;
 
   useEffect(() => setViewport(COUNTRIES_DEFAULT_VIEWPORTS[country]), [country]);
 
@@ -188,41 +186,19 @@ const Container = () => {
 
   if (chosenStartYear && chosenEndYear && country && chosenScenario) {
     return (
-      <Query
-        query={`{
-      biovars{
-        name,
-        key,
-        unit
-      },
-      countryBiovarDistributions(where: {
-        year_lte: ${chosenEndYear},
-        year_gte: ${chosenStartYear},
-        country: { iso: "${country}" },
-        scenario: { key: "${chosenScenario}" }
-      }) {
-        value: summary,
-        name: year,
-        biovar { key }
-      }
-    }`}
-      >
-        {({ fetching, data: queryData = {} }) => (
-          <Component
-            data={queryData}
-            filters={filters}
-            getConfig={getChartConfig}
-            timelineData={timelineData}
-            viewport={viewport}
-            setViewport={setViewport}
-            country={country}
-            yearIndex={yearIndex}
-            setYearIndex={setYearIndex}
-            fetching={fetching}
-            opacity={layerOpacity}
-          />
-        )}
-      </Query>
+      <Component
+        data={null}
+        filters={filters}
+        getConfig={getChartConfig}
+        timelineData={timelineData}
+        viewport={viewport}
+        setViewport={setViewport}
+        country={country}
+        yearIndex={yearIndex}
+        setYearIndex={setYearIndex}
+        // fetching={fetching}
+        opacity={layerOpacity}
+      />
     );
   }
   return null;
