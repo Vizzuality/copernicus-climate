@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "alias": ["forest-forward.com"],
+  "name": "copernicus-forest",
+  "env": {
+    "react_app_mapbox_token": "@react_app_mapbox_token"
+  },
+  "build": {
+    "env": {
+      "react_app_mapbox_token": "@react_app_mapbox_token"
+    }
+  }
+}
