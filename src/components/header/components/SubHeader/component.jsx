@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRouteMatch, useLocation, Link } from 'react-router-dom';
+import { useRouteMatch, useLocation, Link, useHistory } from 'react-router-dom';
 import cx from 'classnames';
 import Icon from 'components/icon';
 import { COUNTRIES } from 'constants.js';
@@ -7,17 +7,20 @@ import styles from './styles.module.scss';
 import ReactSelect from 'react-select';
 import { searchSelectStyles } from './styles';
 
+const optionsTime = [
+  { value: 'historical', label: 'Historical' },
+  { value: 'futurelongterm', label: 'Future Long-Term' },
+  { value: 'seasonal', label: 'Seasonal' }
+];
 
 const SubHeader = () => {
-
-  const { pathname } = useLocation();
-
-  // const optionsCountry = [
-  //   { value: 'Bizkaia', label: 'Bizkaia' },
-  //   { value: 'chocolate', label: 'Chocolate' },
-  //   { value: 'strawberry', label: 'Strawberry' },
-  //   { value: 'vanilla', label: 'Vanilla' }
-  // ];
+  const history = useHistory();
+  const match = useRouteMatch('/:iso/:time/:type?');
+  const { 
+    iso = COUNTRIES[0].iso, 
+    time = optionsTime[0].value, 
+    type = 'heatwaves',
+  } = (match && match.params) || {};
 
   const optionsCountry = COUNTRIES.map((c) => {
     return {
@@ -26,14 +29,12 @@ const SubHeader = () => {
     }
   });
 
-  const optionsTime = [
-    { value: 'historical', label: 'Historical' },
-    { value: 'futurelongterm', label: 'Future Long-Term' },
-    { value: 'seasonal', label: 'Seasonal' }
-  ];
-
-  const time = 'historical';
-  const type = 'heatwaves';
+  const handleChangeCountry = (option) => {
+    history.push(`/${option.value}/${time}/${type}`);
+  }
+  const handleChangeTime = (option) => {
+    history.push(`/${iso}/${option.value}/${type}`);
+  }
   
   return (
     <div className={styles.cSubheader}>
@@ -44,6 +45,7 @@ const SubHeader = () => {
             styles={searchSelectStyles}
             defaultValue={optionsCountry[0]}
             options={optionsCountry}
+            onChange={handleChangeCountry}
             isIcon
           />
         </div>
@@ -52,6 +54,7 @@ const SubHeader = () => {
             styles={searchSelectStyles}
             defaultValue={optionsTime[0]}
             options={optionsTime}
+            onChange={handleChangeTime}
           />
         </div>
       </div>

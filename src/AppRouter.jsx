@@ -28,12 +28,12 @@ function AppRouter() {
             <Header />
             <Switch>
               <Route path="/" exact component={HomePage} />
-              {/* <Redirect
+              <Redirect
                 from="/:iso"
                 exact
-                to="/:iso/:time?/:type?"
-                component={HomePage}
-              /> */}
+                to="/:iso/hi"
+              />
+              <Route path="/:iso/:time?/:type?" exact component={HomePage} />
             </Switch>
             <Footer />
           </Suspense>
