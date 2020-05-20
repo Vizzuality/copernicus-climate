@@ -18,6 +18,7 @@ export const COUNTRIES = [
   }
 ];
 
+
 export const COUNTRIES_DEFAULT_VIEWPORTS = {
   CAN: { zoom: 2, latitude: 56.1351095, longitude: -106.3460756 },
   SWE: { zoom: 4, latitude: 62.295911, longitude: 17.861953 },

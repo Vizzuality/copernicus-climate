@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import Modal from 'components/modal';
@@ -28,6 +28,12 @@ function AppRouter() {
             <Header />
             <Switch>
               <Route path="/" exact component={HomePage} />
+              {/* <Redirect
+                from="/:iso"
+                exact
+                to="/:iso/:time?/:type?"
+                component={HomePage}
+              /> */}
             </Switch>
             <Footer />
           </Suspense>

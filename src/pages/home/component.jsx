@@ -1,39 +1,37 @@
-import React from 'react';
-import styles from './styles.module.scss';
-// import Map from 'components/map';
-import { MAPBOX_STYLE_DEFAULT } from 'constants.js';
+import React, { useState } from "react";
+import styles from "./styles.module.scss";
+import Map from "components/map";
+import Zoom from "components/map/controls/zoom";
+import Target from "components/map/controls/target";
+import { MAPBOX_STYLE_DEFAULT } from "constants.js";
 
-import ReactMapGL from 'react-map-gl';
-
+const DEFAULT_VIEWPORT = {
+  width: 400,
+  height: 400,
+  latitude: 37.7577,
+  longitude: -122.4376,
+  zoom: 8,
+};
 
 const HomePage = () => {
-
-  const viewport = {
-    width: 400,
-    height: 400,
-    latitude: 37.7577,
-    longitude: -122.4376,
-    zoom: 8
-  }
+  const [viewport, setViewport] = useState(DEFAULT_VIEWPORT);
 
   return (
     <div className={styles.container}>
-      <div className={styles.content}>
-content
-      </div>
+      <div className={styles.content}>content</div>
       <div className={styles.map}>
-        <ReactMapGL 
-          width={'100%'}
-          height={'100%'}
-          viewport={viewport}
-          mapStyle={MAPBOX_STYLE_DEFAULT} 
-          mapboxApiAccessToken={'pk.eyJ1IjoiY29wZXJuaWN1cy1mb3Jlc3RzIiwiYSI6ImNrMWdxcmtyMDA2YTMzaWp5ajExd3Zwd24ifQ.mc5TAKT9UXkbav2OMvkmrg'}
-        />          
-        
+        <Map scrollZoom={false} viewport={viewport} setViewport={setViewport} />
+        <div className={styles.navigationBar}>
+          <div className={styles.targetBox}>
+            <Target viewport={viewport} setViewport={setViewport} />
+          </div>
+          <div className={styles.zoomBox}>
+            <Zoom viewport={viewport} setViewport={setViewport} />
+          </div>
+        </div>
       </div>
     </div>
   );
-}
-
+};
 
 export default HomePage;

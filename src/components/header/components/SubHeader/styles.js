@@ -33,9 +33,27 @@ export const searchSelectStyles = {
   menu: (provided, state) => ({
     ...provided,
     width: '100%',
-    borderBottom: '1px dotted pink',
+    border: '2px solid #941333',
+    borderTop: 'none',
     color: state.selectProps.menuColor,
-    padding: 20,
+    borderRadius: 0,
+    padding: 0,
+    marginTop: '2px',
+  }),
+  menuList: (provided) => ({
+    ...provided,
+    padding: 0,
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    textTransform: 'capitalize',
+    backgroundColor: state.isSelected ? '#E6E6E6' : 'white',
+    color: '#000000',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease-in-out',
+    ':hover': {
+      backgroundColor: '#E6E6E6',
+    },
   }),
   input: (provided) => ({
     ...provided,
@@ -58,6 +76,11 @@ export const searchSelectStyles = {
   singleValue: (provided, state) => {
     const opacity = state.isDisabled ? 0.5 : 1;
     const transition = 'opacity 300ms';
-    return { ...provided, opacity, transition };
+    return {
+      ...provided,
+      opacity,
+      transition,
+      textTransform: 'capitalize',
+    };
   }
 }
