@@ -1,0 +1,52 @@
+@import '~styles/settings';
+@import '../../styles.scss';
+
+.toggleLayerModal {
+  height: $layer-toggle-modal-height;
+  width: 270px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px  16px 0 24px;
+
+  .title {
+    color: $color-gray-1;
+    font-size: $font-size-small;
+    user-select: none;
+  }
+}
+
+.content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+
+  > div:last-child {
+    display: none;
+  }
+}
+
+.spacer {
+  height: 1px;
+  background-color: $color-gray-4;
+  margin: 12px 0;
+}
+
+:global {
+  .layerTooltip {
+    color: $color-gray-1;
+    background-color: $color-white !important;
+    border: 1px solid $color-black;
+    border-radius: 0;
+    margin-left: 0 !important;
+    padding: 0;
+    opacity: 1 !important;
+  
+    &:before, &:after {
+      display: none;
+    }
+  }
+}

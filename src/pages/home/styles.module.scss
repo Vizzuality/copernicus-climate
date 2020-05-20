@@ -1,0 +1,16 @@
+@import '~styles/settings';
+
+
+.container {
+  display: flex;
+  align-items: stretch;
+}
+
+.content {
+  width: 50%;
+  min-height: 700px;
+}
+
+.map {
+  width: 50%;
+}

@@ -1,0 +1,22 @@
+@import '~styles/settings';
+
+.c-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+
+  &.-small {
+    width: 14px;
+    height: 14px;
+  }
+
+  &.-medium {
+    width: 24px;
+    height: 24px;
+  }
+
+  &.-large {
+    width: 32px;
+    height: 32px;
+  }
+}

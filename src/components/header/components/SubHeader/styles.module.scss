@@ -1,0 +1,155 @@
+@import '~styles/settings';
+
+.cSubheader {
+  border-bottom: 2px solid $color-border;
+  background-color: white;
+  position: relative;
+  z-index: 5;
+}
+
+.container {
+  margin: 0 auto 0 auto;
+  position: relative;
+  height: 70px;
+  display: flex;
+  align-items: stretch;
+
+  @media (min-width: 1200px) {
+    max-width: 85vw;
+  }    
+}
+
+.title {
+  height: 29px;
+  width: 531px;
+  color: #000000;
+  font-size: 18px;
+  letter-spacing: 0;
+  line-height: 24px;
+  font-weight: 400;
+  text-transform: uppercase;
+  padding-left: 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  width: 50%;
+  border-right: 2px solid $color-border;
+}
+
+.filterSection {
+  width: 25%;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  border-right: 2px solid $color-border;
+
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.subMenu {
+  width: 75%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  > li.menuItem {
+    padding-left: 25px;
+    padding-right: 25px;
+    width: auto;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    position: relative;
+  
+    text-transform: uppercase;
+    font-weight: normal;
+    color: $color-black;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: 27px;
+
+    > a {
+      color: $color-black;
+    }
+  
+    &.active {
+      color: $color-dark-red;
+      font-weight: bold;
+
+      > a {
+        color: $color-dark-red;
+        font-weight: bold;
+      }
+    }
+
+    > svg {
+      opacity: 0.5;
+      margin-left: 14px;
+      display: flex;
+      align-items: center;
+      width: 12px;
+      height: 8px;
+      transition: all 0.3s ease-in-out;
+    }
+
+     ul {
+      display: none;
+      position: absolute;
+      z-index: 10;
+      width: 100%;
+      top: 70px;
+      left: 0;
+      box-sizing: border-box;
+      border: 2px solid $color-dark-red;
+      background-color: $color-white;
+
+      li {
+        height: 22px;
+        width: 100%;
+        background-color: $color-white;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-transform: capitalize;
+        
+        &:hover, &.active {
+          background-color: $color-gray-5;
+          font-weight: normal;
+        }
+
+        a {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+          color: $color-gray-1;
+          font-size: 16px;
+          letter-spacing: 0;
+          line-height: 22px;
+          font-weight: normal;
+        }
+      }
+    }
+
+    &:hover {
+      color: $color-dark-red;
+
+      > svg {
+        opacity: 1;
+        transform: rotate(180deg);
+      }
+
+      ul {
+        display: block;
+      }
+    }
+  }
+}
