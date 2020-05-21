@@ -1,0 +1,76 @@
+.c-logos-block-section {
+  
+  height: 100px;
+  transition: all 0.5s ease-in-out;  
+  overflow: hidden;
+
+  @media (max-width: 980px) {
+    display: none;
+  }
+
+  .bar {
+    background-color: white;
+    border-bottom: 2px solid #941333;    
+  }
+
+  &.isFooter {
+    @media (max-width: 980px) {
+      display: block;
+    }
+    .bar {
+      border-bottom: none;
+      background-color: transparent;
+    }
+  }
+
+  .logos-block {
+    @media (min-width: 700px) {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-align: center;
+      align-items: center;
+      -ms-flex-pack: justify;
+      justify-content: space-between;
+    }
+
+    @media (min-width: 980px) {
+      padding: 18px;
+    }
+
+    .logo {
+      margin: 18px 0;
+      width: auto;
+      top: -3px;
+      position: relative;
+    }
+
+    .partners {
+      margin-top: 50px;
+    }
+
+  }
+
+  .bar__inner {
+    max-width: 85vw;
+    margin: 0 auto;
+    
+    h2 {
+      margin: 0;
+    }
+  }
+
+  .button {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    color: #aaa;
+    height: 30px;
+
+    svg {
+      width: 26px;
+      height: 20px;
+      fill: #aaa;
+    }
+  }
+}

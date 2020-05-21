@@ -1,3 +1,7 @@
+/* Disable mapbox logos */
+.mapboxgl-ctrl-logo, .mapboxgl-ctrl-bottom-right{
+  display: none !important;
+}
 html,
 body {
   &.-no-scroll,
@@ -6,18 +10,352 @@ body {
     height: 100%;
     overflow: hidden;
   }
+  
+  font-family: $font-family-3;
+  font-size: $font-size-default;
+  -webkit-font-smoothing: antialiased;
+
+  margin: 0 auto;
+  color: black;
+  overflow-x: hidden;
+  font-size: 18px;
+  line-height: 1.66666667em;
+}
+
+* {
+  box-sizing: border-box;
+  &:after {
+    box-sizing: border-box;
+  }
+  &:before {
+    box-sizing: border-box;
+  }
 }
 
 html {
   height: 100%;
-}
-
-body {
-  font-family: $font-family;
-  font-size: $font-size-default;
+  line-height: 30px;
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
-.page-content {
-  position: relative;
+main,
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+nav,
+section,
+summary {
+  display: block;
 }
+
+:last-child {
+  margin-bottom: 0;
+}
+
+[class]:last-child {
+  margin-bottom: 0;
+}
+
+audio,
+canvas,
+video {
+  display: inline-block;
+}
+
+a {
+  color: #941333;
+  text-decoration: none;
+  outline: 0;
+  transition: all 0.2s ease;
+  background: transparent;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+input {
+  border-radius: 0;
+}
+
+
+label {
+  font-family: "Lato", sans-serif;
+}
+
+button,
+input {
+  border: 0;
+  padding: 18px;
+  margin-bottom: 18px;
+  font-size: 18px;
+  border: 1px solid #941333;
+  border-radius: 0;
+  width: 100%;
+}
+
+@media (min-width: 700px) {
+  button,
+  input {
+    width: auto;
+  }
+}
+
+button[type="button"], button[type="file"]::-webkit-file-upload-button, button[type="submit"], button[type="image"],
+input[type="button"],
+input[type="file"]::-webkit-file-upload-button,
+input[type="submit"],
+input[type="image"] {
+  border: 1px solid #941333;
+  background-color: #941333;
+  color: white;
+}
+
+button[type="button"]:hover, button[type="button"]:focus, button[type="file"]::-webkit-file-upload-button:hover, button[type="file"]::-webkit-file-upload-button:focus, button[type="submit"]:hover, button[type="submit"]:focus, button[type="image"]:hover, button[type="image"]:focus,
+input[type="button"]:hover,
+input[type="button"]:focus,
+input[type="file"]::-webkit-file-upload-button:hover,
+input[type="file"]::-webkit-file-upload-button:focus,
+input[type="submit"]:hover,
+input[type="submit"]:focus,
+input[type="image"]:hover,
+input[type="image"]:focus {
+  background-color: #941333;
+  opacity: 0.8;
+  color: white;
+}
+
+button[type="reset"],
+input[type="reset"] {
+  color: #941333;
+  background-color: white;
+}
+
+input[type="checkbox"] {
+  width: auto;
+}
+
+button {
+  background-color: #941333;
+  color: white;
+}
+
+button:hover, button:focus {
+  background-color: #941333;
+  opacity: 0.8;
+  color: white;
+}
+
+form label {
+  display: block;
+}
+
+
+h1, .h1 {
+  font-size: 28px;
+  line-height: 28px;
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  margin: 0;
+}
+
+@media screen and (min-width: 360px) {
+  h1, .h1 {
+    font-size: calc(28px + 27 * (100vw - 360px) / 840);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  h1, .h1 {
+    font-size: 55px;
+  }
+}
+
+@media screen and (min-width: 360px) {
+  h1, .h1 {
+    line-height: calc(28px + 27 * (100vw - 360px) / 840);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  h1, .h1 {
+    line-height: 55px;
+  }
+}
+
+h1--alt, .h1--alt {
+  font-size: 28px;
+  line-height: 28px;
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  margin: 0;
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+}
+
+@media screen and (min-width: 360px) {
+  h1--alt, .h1--alt {
+    font-size: calc(28px + 27 * (100vw - 360px) / 840);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  h1--alt, .h1--alt {
+    font-size: 55px;
+  }
+}
+
+@media screen and (min-width: 360px) {
+  h1--alt, .h1--alt {
+    line-height: calc(28px + 27 * (100vw - 360px) / 840);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  h1--alt, .h1--alt {
+    line-height: 55px;
+  }
+}
+
+h2, .h2 {
+  font-size: 23px;
+  line-height: 23px;
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+}
+
+@media screen and (min-width: 360px) {
+  h2, .h2 {
+    font-size: calc(23px + 5 * (100vw - 360px) / 840);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  h2, .h2 {
+    font-size: 28px;
+  }
+}
+
+@media screen and (min-width: 360px) {
+  h2, .h2 {
+    line-height: calc(23px + 5 * (100vw - 360px) / 840);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  h2, .h2 {
+    line-height: 28px;
+  }
+}
+
+h2--alt, .h2--alt {
+  font-size: 23px;
+  line-height: 23px;
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  font-family: "Lato", sans-serif;
+  font-weight: 300;
+}
+
+@media screen and (min-width: 360px) {
+  h2--alt, .h2--alt {
+    font-size: calc(23px + 5 * (100vw - 360px) / 840);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  h2--alt, .h2--alt {
+    font-size: 28px;
+  }
+}
+
+@media screen and (min-width: 360px) {
+  h2--alt, .h2--alt {
+    line-height: calc(23px + 5 * (100vw - 360px) / 840);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  h2--alt, .h2--alt {
+    line-height: 28px;
+  }
+}
+
+h3, .h3 {
+  font-size: 18px;
+  line-height: 28px;
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  line-height: 30px;
+  margin-bottom: 0;
+}
+
+@media screen and (min-width: 360px) {
+  h3, .h3 {
+    font-size: calc(18px + 5 * (100vw - 360px) / 840);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  h3, .h3 {
+    font-size: 23px;
+  }
+}
+
+@media screen and (min-width: 360px) {
+  h3, .h3 {
+    line-height: calc(28px + 4 * (100vw - 360px) / 840);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  h3, .h3 {
+    line-height: 32px;
+  }
+}
+
+h3--alt, .h3--alt {
+  font-size: 23px;
+  line-height: 23px;
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  font-family: "Lato", sans-serif;
+  font-weight: 300;
+}
+
+@media screen and (min-width: 360px) {
+  h3--alt, .h3--alt {
+    font-size: calc(23px + 5 * (100vw - 360px) / 840);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  h3--alt, .h3--alt {
+    font-size: 28px;
+  }
+}
+
+@media screen and (min-width: 360px) {
+  h3--alt, .h3--alt {
+    line-height: calc(23px + 5 * (100vw - 360px) / 840);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  h3--alt, .h3--alt {
+    line-height: 28px;
+  }
+}
+
+h4, .h4 {
+  font-family: "Lato", sans-serif;
+}
+

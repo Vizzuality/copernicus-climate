@@ -12,6 +12,7 @@ $color-gray-1: #222222; // dark grey
 $color-gray-2: #313131;
 $color-gray-3: #5C5C5C; //grey
 $color-gray-4: #999999; // light grey
+$color-gray-5: #E6E6E6; // light grey
 
 $color-social-twitter: #55ACEE;
 $color-social-facebook: #3B5998;
@@ -26,6 +27,9 @@ $color-violet: #7044FF;
 $color-green-light: #50BF7C;
 $color-pink: #E15383;
 $color-desert-storm: #F4F4F3;
+$color-dark-red: #941333; // onHover
+
+$color-border: #941333;
 
 // used in charts
 :export {
@@ -54,6 +58,7 @@ $font-size-h5: 9px;
 // TODO: Get the NG font
 $font-family: 'Anonymous Pro', monospace;
 $font-family-2: 'IBM Plex Serif', serif;
+$font-family-3: 'Open Sans', serif;
 
 // Weights
 $font-weight-light: 300;

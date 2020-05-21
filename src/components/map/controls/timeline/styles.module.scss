@@ -1,0 +1,189 @@
+@import '~styles/settings';
+
+$timeline-size: 45px;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 460px;
+
+  @media screen and (max-width: 1260px) {
+    width: 50%;
+  }
+  @media screen and (max-width: 1200px) {
+    width: 50%;
+  }
+}
+
+.header {
+  background-color: $color-white;
+  border-bottom: 2px solid $color-border;
+  border-right: 2px solid $color-border;
+  display: flex;
+  align-items: center;
+  height: $timeline-size;
+  width: 100%;
+  @media screen and (max-width: 1200px) {
+    flex-wrap: wrap;
+    height: auto;
+    padding-top: 10px;
+  }
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  color: $color-black;
+  flex: 1;
+  // padding-right: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 22px;
+}
+
+.tab {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  color: $color-black;
+  cursor: pointer;
+  font-size: $font-size-small;
+  padding: 0 12px;
+  text-transform: uppercase;
+  background-color: transparent;
+  margin: 0;
+  border: none;
+  &:hover, &:focus {
+    background-color: transparent;
+    color: #941333;
+    font-weight: 600;
+  }
+}
+
+.activeTab {
+  background-color: transparent;
+  color: #941333;
+  font-weight: 600;
+}
+
+.timeline {
+  background-color: $color-white;
+  border-bottom: 2px solid $color-border;
+  border-right: 2px solid $color-border;
+  display: flex;
+  height: $timeline-size;
+  position: relative;
+  width: 100%;
+}
+
+.speedButton {
+  // border-left: 1px solid $color-border;
+  border: none;
+  color: $color-black;
+  font-size: $font-size-small;
+  width: $timeline-size;
+  background-color: transparent;
+  padding: 0;
+  padding-right: 24px;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 19px;
+  text-transform: uppercase;
+  &:hover, &:focus {
+    color: #941333;
+    background-color: transparent;
+  }
+}
+
+
+.legendItemTimeStep {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  :global .vizzuality__player-btn,
+  :global .vizzuality__timestep-slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+  }
+
+  :global .vizzuality__player-btn {
+    width: $timeline-size;
+    background-color: transparent;
+    color: $color-black;
+    margin: 0;
+    border: none;
+    height: 100%;
+    padding: 0;
+
+    &:hover, &:focus {
+      background-color: transparent;
+    }
+  }
+
+  :global .vizzuality__timestep-slider {
+    flex: 1;
+    :global .vizzuality-slider {
+      width: 100%;
+      margin-left: 60px;
+      margin-right: 18px;
+
+      .rc-slider-rail {
+        background-color: #E6E6E6 !important;
+        height: 6px !important;
+      }
+      
+      .rc-slider-track {
+        background-color: #941333 !important;
+        height: 6px !important;
+      }
+      .rc-slider-handle {
+        border-color: $color-black !important;
+      }
+    }
+  }
+}
+
+.infoButton {
+  display: flex;
+  align-items: center;
+  padding: 0 10px 0 20px;
+  background-color: transparent;
+  height: 100%;
+  border: none;
+  margin: 0;
+  svg {
+    fill: $color-black;
+  }
+
+  &:hover, &:focus {
+    background-color: transparent;
+  }
+}
+
+.year {
+  align-items: center;
+  font-size: $font-size-small;
+  display: flex;
+  color: $color-black;
+  height: 100%;
+  left: calc(#{$timeline-size});
+  position: absolute;
+}
+
+.switchBlock {
+  display: flex;
+  align-items: center;
+
+  @media screen and (max-width: 1200px) {
+    width: 100%;
+    padding: 10px;
+  }
+}

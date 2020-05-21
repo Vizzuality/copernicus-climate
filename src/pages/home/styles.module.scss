@@ -1,0 +1,77 @@
+@import '~styles/settings';
+
+
+.container {
+  display: flex;
+  align-items: stretch;
+}
+
+.content {
+  width: 50%;
+  min-height: 700px;
+  border-right: 2px solid $color-border;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+}
+
+.contentBox {
+  width: 100%;
+  max-width: calc(85vw / 2);
+  padding-top: 30px;
+  padding-right: 30px;
+  padding-left: 20px;
+  @media (max-width: 1200px) {
+    max-width: 100%;
+  }
+}
+
+.map {
+  width: 50%;
+  position: relative;
+}
+
+.navigationBar {
+  position: absolute;
+  top: 17px;
+  right: 20px;
+}
+
+.targetBox {
+  width: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  box-shadow: 0 2px 10px 0 rgba(0,35,117,0.2);
+}
+
+.zoomBox {
+  margin-top: 13px;
+  width: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  box-shadow: 0 2px 10px 0 rgba(0,35,117,0.2);
+
+  button {
+    border-bottom: 2px solid #E6E6E6;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+.description {
+  padding: 30px 0;
+  color: #222222;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 24px;
+
+  span {
+    color: $color-border;
+  }
+}

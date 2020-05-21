@@ -1,0 +1,102 @@
+.search-bar-box {
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+.search-bar {
+  padding: 50px 18px;
+  background-color: #941333;
+
+  label {
+    font-size: 18px;
+    line-height: 28px;
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    line-height: 30px;
+    margin-bottom: 0;
+    color: white;
+    padding-right: 18px;
+
+    @media screen and (min-width: 360px) {
+      font-size: calc(18px + 5 * (100vw - 360px) / 840);
+    }
+
+    @media screen and (min-width: 1200px) {
+      font-size: 23px;
+    }
+
+    @media screen and (min-width: 360px) {
+      line-height: calc(28px + 4 * (100vw - 360px) / 840);
+    }
+
+    @media screen and (min-width: 1200px) {
+      line-height: 32px;
+    }
+  }
+
+  .form--inline {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-align: end;
+    align-items: flex-end;
+    max-width: 490px;
+    margin-left: auto;
+
+    @media (max-width: 700px) {
+      max-width: 100%;
+    }
+
+    @media (min-width: 480px) {
+      -ms-flex-direction: row;
+      flex-direction: row;
+    }
+
+    div {
+      @media (max-width: 700px) {
+        width: 100%;
+      }
+    }
+  }
+
+  .bar__inner {
+    max-width: 85vw;
+    margin: 0 auto;
+    h2 {
+      margin: 0;
+    }
+  }
+
+  input {
+    border: 3px solid white;
+    background-color: white;
+
+    &[type="submit"] {
+      border: 3px solid white;
+      color: white;
+      font-weight: 700;
+      background-color: transparent;
+      transition: background-color 0.3s ease-out;
+      margin-right: 26px;
+
+      &:hover, &:focus {
+        background-color: white;
+        color: #941333;
+        svg {
+          fill: white;
+        }
+      }  
+    }
+  }
+
+  .form-wrapper {
+    width: 100%;
+    @media (min-width: 700px) {
+      width: auto;
+    }
+
+    [type="submit"] {
+      cursor: pointer;
+    }
+  }
+} 
