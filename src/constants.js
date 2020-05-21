@@ -30,12 +30,12 @@ export const OPTIONS_TYPE = [
     label: 'Heatwaves',
   },
   {
-    value: 'futurelongterm',
-    label: 'Future long-term',
+    value: 'coldsnaps',
+    label: 'ColdSnaps',
   },
   {
-    value: 'seasonal',
-    label: 'Seasonal',
+    value: 'termalcomfort',
+    label: 'Termal Comfort',
   }
 ];
 

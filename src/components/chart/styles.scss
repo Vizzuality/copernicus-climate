@@ -1,0 +1,39 @@
+@import '~styles/settings';
+
+.c-chart {
+  .recharts-legend-wrapper {
+    text-transform: uppercase;
+    font-size: $font-size-small;
+    padding-left: 50px;
+  }
+
+  .custom-tooltip {
+    box-sizing: border-box;
+    padding: 12px;
+    border: 1px solid $color-gray-1;
+    background-color: $color-white;
+
+    .desc,
+    .label {
+      font-family: $font-family;
+      font-size: 14px;
+      line-height: 17px;
+    }
+
+    .label {
+      margin-bottom: 8px;
+    }
+
+    .desc .value{
+      margin-left: 4px;
+    }
+  }
+
+  .custom-legend {
+    .legend-item {
+			display: flex;
+			align-items: center;
+			margin-bottom: 20px;
+    }
+  }
+}
