@@ -35,7 +35,7 @@ const SubHeader = () => {
         <div className={styles.filterSection}>
           <ReactSelect
             styles={searchSelectStyles}
-            defaultValue={optionsCountry[0]}
+            defaultValue={optionsCountry.find(c => c.value === iso) || optionsCountry[0]}
             options={optionsCountry}
             onChange={handleChangeCountry}
             isIcon
@@ -44,7 +44,7 @@ const SubHeader = () => {
         <div className={styles.filterSection}>
           <ReactSelect
             styles={searchSelectStyles}
-            defaultValue={OPTIONS_TIME[0]}
+            defaultValue={OPTIONS_TIME.find(t => t.value === time) || OPTIONS_TIME[0]}
             options={OPTIONS_TIME}
             onChange={handleChangeTime}
           />
