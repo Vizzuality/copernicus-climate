@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouteMatch, useHistory } from 'react-router-dom';
 import styles from "./styles.module.scss";
 import Map from "components/map";
 import Zoom from "components/map/controls/zoom";
 import Target from "components/map/controls/target";
 import Dropdown from 'components/dropdown';
-import { COUNTRIES, OPTIONS_TIME, OPTIONS_TYPE } from 'constants.js';
+import { 
+  COUNTRIES, 
+  OPTIONS_TIME, OPTIONS_TYPE,
+  COUNTRIES_DEFAULT_VIEWPORTS,
+} from 'constants.js';
 import { LineChart, Line, XAxis, YAxis } from 'recharts';
 
 const DEFAULT_VIEWPORT = {
@@ -44,6 +48,8 @@ const HomePage = () => {
   } = (match && match.params) || {};
   const optionValue = OPTIONS_TYPE.find(el => el.value === type);
   const hadleChange = option => history.push(`/${iso}/${time}/${option.value}`);
+
+  useEffect(() => setViewport(COUNTRIES_DEFAULT_VIEWPORTS[iso]), [iso]);
 
   return (
     <div className={styles.container}>

@@ -1,14 +1,5 @@
 import SearchIcon from 'assets/img/svgs/search-filter.svg';
 
-const searchStyles = ({
-  ':before': {
-    content: `url(${SearchIcon})`,
-    position: 'absolute',
-    left: '0',
-    top: '20px',
-  },
-})
-
 export const searchSelectStyles = {
   container: (provided, state) => ({
     ...provided,
@@ -21,7 +12,6 @@ export const searchSelectStyles = {
     height: '100%',
     paddingLeft: state.selectProps.isIcon ? '43px' : '0',
     border: state.isSelected ? 'none' : 'none',
-    ...searchStyles,
     ':before': {
       opacity: state.selectProps.isIcon ? '1' : '0',
       content: `url(${SearchIcon})`,
@@ -51,6 +41,7 @@ export const searchSelectStyles = {
     color: '#000000',
     cursor: 'pointer',
     transition: 'all 0.3s ease-in-out',
+    fontSize: '16px',
     ':hover': {
       backgroundColor: '#E6E6E6',
     },
