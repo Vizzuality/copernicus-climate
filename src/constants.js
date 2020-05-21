@@ -5,6 +5,12 @@ import swedenActive from 'assets/shapes/swedenActive.svg';
 
 export const COUNTRIES = [
   {
+    iso: 'ESP',
+    name: 'spain',
+    svg: sweden,
+    svgActive: swedenActive
+  },
+  {
     iso: 'SWE',
     name: 'sweden',
     svg: sweden,
@@ -40,6 +46,7 @@ export const OPTIONS_TYPE = [
 ];
 
 export const COUNTRIES_DEFAULT_VIEWPORTS = {
+  ESP: { zoom: 5, latitude: 40.416775, longitude: -3.703790 },
   CAN: { zoom: 2, latitude: 56.1351095, longitude: -106.3460756 },
   SWE: { zoom: 4, latitude: 62.295911, longitude: 17.861953 },
   IDN: { zoom: 3, latitude: -4.341701, longitude: 122.389996 },
