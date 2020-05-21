@@ -10,6 +10,15 @@
   width: 50%;
   min-height: 700px;
   border-right: 2px solid $color-border;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  padding-top: 30px;
+}
+
+.contentBox {
+  width: 100%;
+  max-width: calc(85vw / 2 - 20px);
 }
 
 .map {

@@ -1,24 +1,16 @@
 import React from 'react';
-import { useRouteMatch, useLocation, Link, useHistory } from 'react-router-dom';
-import cx from 'classnames';
-import Icon from 'components/icon';
-import { COUNTRIES } from 'constants.js';
+import { useRouteMatch, useHistory } from 'react-router-dom';
+import { COUNTRIES, OPTIONS_TIME } from 'constants.js';
 import styles from './styles.module.scss';
 import ReactSelect from 'react-select';
 import { searchSelectStyles } from './styles';
-
-const optionsTime = [
-  { value: 'historical', label: 'Historical' },
-  { value: 'futurelongterm', label: 'Future Long-Term' },
-  { value: 'seasonal', label: 'Seasonal' }
-];
 
 const SubHeader = () => {
   const history = useHistory();
   const match = useRouteMatch('/:iso/:time/:type?');
   const { 
     iso = COUNTRIES[0].iso, 
-    time = optionsTime[0].value, 
+    time = OPTIONS_TIME[0].value, 
     type = 'heatwaves',
   } = (match && match.params) || {};
 
@@ -52,8 +44,8 @@ const SubHeader = () => {
         <div className={styles.filterSection}>
           <ReactSelect
             styles={searchSelectStyles}
-            defaultValue={optionsTime[0]}
-            options={optionsTime}
+            defaultValue={OPTIONS_TIME[0]}
+            options={OPTIONS_TIME}
             onChange={handleChangeTime}
           />
         </div>

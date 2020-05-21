@@ -1,0 +1,60 @@
+@import '~styles/settings';
+
+.container {
+  position: relative;
+  max-width: 200px;
+}
+
+.drButton {
+  background-color: #941333;
+  color: #FFFFFF;
+  font-size: 18px;
+  letter-spacing: 0;
+  line-height: 24px;
+  height: 40px;
+  padding: 0;
+  padding-left: 13px;
+  padding-right: 13px;
+  text-align: left;
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  svg {
+    fill: white;
+    path {
+    }
+  }
+}
+
+
+.drMenu {
+  z-index: 1;
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  top: 40px;
+  left: 0;
+  box-sizing: border-box;
+  border: 2px solid $color-dark-red;
+  background-color: $color-white;
+
+  li {
+    height: 18px;
+    width: 100%;
+    background-color: $color-white;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: capitalize;
+    font-size: 16px;
+    cursor: pointer;
+    
+    &:hover, &.active {
+      background-color: $color-gray-5;
+      font-weight: normal;
+    }
+  }
+}

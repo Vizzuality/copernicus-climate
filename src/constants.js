@@ -18,6 +18,26 @@ export const COUNTRIES = [
   }
 ];
 
+export const OPTIONS_TIME = [
+  { value: 'historical', label: 'Historical' },
+  { value: 'futurelongterm', label: 'Future Long-Term' },
+  { value: 'seasonal', label: 'Seasonal' }
+];
+
+export const OPTIONS_TYPE = [
+  {
+    value: 'heatwaves',
+    label: 'Heatwaves',
+  },
+  {
+    value: 'futurelongterm',
+    label: 'Future long-term',
+  },
+  {
+    value: 'seasonal',
+    label: 'Seasonal',
+  }
+];
 
 export const COUNTRIES_DEFAULT_VIEWPORTS = {
   CAN: { zoom: 2, latitude: 56.1351095, longitude: -106.3460756 },
