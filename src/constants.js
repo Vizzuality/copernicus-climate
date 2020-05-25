@@ -58,7 +58,8 @@ export const SPECIES_RAMP_COLORS = ['rgba(255, 255, 255, 0)', '#FFFFFF', '#7044F
 export const TEMPERATURE_RAMP_COLORS = ['#FEF6B5', '#FFA679', '#E15383']; // [min, mid, max]
 export const PERCIPITATION_RAMP_COLORS = ['#A6BDDB', '#3690C0', '#034E7B']; // [min, mid, max]
 
-export const MAPBOX_STYLE_DEFAULT = 'mapbox://styles/copernicus-forests/ck3eh5kj049be1cobcp1uh4vn';
+// export const MAPBOX_STYLE_DEFAULT = 'mapbox://styles/copernicus-forests/ck3eh5kj049be1cobcp1uh4vn';
+export const MAPBOX_STYLE_DEFAULT = 'mapbox://styles/mapbox/light-v10';
 
 export const DEFAULT_LAYER_OPACITY = 60;
 

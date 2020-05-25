@@ -51,6 +51,14 @@ const HomePage = () => {
 
   useEffect(() => setViewport(COUNTRIES_DEFAULT_VIEWPORTS[iso]), [iso]);
 
+  const layers = [
+    {
+      active: true,
+      id: 'esp_nuts_01234',
+      url: 'mapbox://copernicus-forests.esp_nuts_01234',
+    }
+  ];
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
