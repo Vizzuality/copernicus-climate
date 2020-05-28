@@ -26,8 +26,8 @@ export const COUNTRIES = [
 
 export const OPTIONS_TIME = [
   { value: 'historical', label: 'Historical' },
-  { value: 'futurelongterm', label: 'Future Long-Term' },
-  { value: 'seasonal', label: 'Seasonal' }
+  { value: 'future_longterm', label: 'Future Long-Term' },
+  { value: 'future_seasonal', label: 'Seasonal' }
 ];
 
 export const OPTIONS_TYPE = [

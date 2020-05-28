@@ -33,7 +33,7 @@ function AppRouter() {
                 exact
                 to="/:iso/hi"
               />
-              <Route path="/:iso/:time?/:type?" exact component={HomePage} />
+              <Route path="/:iso/:time?/:theme?" exact component={HomePage} />
             </Switch>
             <Footer />
           </Suspense>
