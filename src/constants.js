@@ -30,19 +30,24 @@ export const OPTIONS_TIME = [
   { value: 'future_seasonal', label: 'Seasonal' }
 ];
 
-export const OPTIONS_TYPE = [
+
+export const HEATWAVES = 'heatwaves';
+export const COLDSNAPS = 'coldsnaps';
+export const TERMALCOMFORT = 'termalcomfort';
+
+export const OPTIONS_THEME = [
   {
-    value: 'heatwaves',
+    value: HEATWAVES,
     label: 'Heatwaves',
   },
   {
-    value: 'coldsnaps',
+    value: COLDSNAPS,
     label: 'ColdSnaps',
   },
-  {
-    value: 'termalcomfort',
-    label: 'Termal Comfort',
-  }
+  // {
+  //   value: TERMALCOMFORT,
+  //   label: 'Termal Comfort',
+  // }
 ];
 
 export const COUNTRIES_DEFAULT_VIEWPORTS = {

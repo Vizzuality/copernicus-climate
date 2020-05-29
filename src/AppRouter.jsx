@@ -29,11 +29,11 @@ function AppRouter() {
             <Switch>
               <Route path="/" exact component={HomePage} />
               <Redirect
-                from="/:iso"
+                from="/:gid"
                 exact
-                to="/:iso/hi"
+                to="/:gid/hi"
               />
-              <Route path="/:iso/:time?/:theme?" exact component={HomePage} />
+              <Route path="/:gid/:period?/:theme?" exact component={HomePage} />
             </Switch>
             <Footer />
           </Suspense>
