@@ -49,11 +49,12 @@ const HomePage = () => {
   } = (match && match.params) || {};
   const optionValue = OPTIONS_THEME.find(el => el.value === theme);
   const hadleChange = option => history.push(`/${gid}/${period}/${option.value}`);
-
   const layers = LayersData['historical'].layers;
-
+  const gidInfo = GIDS.find(g => g.gid === gid);
+  const { latitude, longitude, admin_level: zoom } = gidInfo;
   useEffect(() => {
-    setViewport(GID_DEFAULT_VIEWPORTS[gid]);
+    const newViewport = { ...DEFAULT_VIEWPORT, latitude, longitude, zoom: zoom + 3 }
+    setViewport(newViewport);
   }, [gid]);
 
   const { from, to } = OPTIONS_TIME.find(t => t.value === period);
