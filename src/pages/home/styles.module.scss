@@ -76,3 +76,18 @@
     color: $color-border;
   }
 }
+
+
+.form-group input {
+  color: black;
+}
+.form-group p {
+  color: 0;
+}
+
+.form-group.error input {
+  color: red
+}
+.form-group.error p {
+  opacity: 1;
+}

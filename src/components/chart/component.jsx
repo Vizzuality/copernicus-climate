@@ -70,8 +70,6 @@ export const RiskEventsChart = ({ data = [], theme = HEATWAVES }) => {
 
   const areasList = riskAreas[theme];
 
-  console.log(areasList);
-
   return (
     <div className={styles['c-chart']}>
       <h4>Risk Events</h4>

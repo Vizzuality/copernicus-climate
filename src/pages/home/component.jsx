@@ -1,4 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import LayersData from 'const/layers.json';
+import gidsData from 'const/gids.json';
 import React, { useState, useEffect } from "react";
 import { useRouteMatch, useHistory } from 'react-router-dom';
 import styles from "./styles.module.scss";
@@ -9,13 +11,14 @@ import Dropdown from 'components/dropdown';
 import { LayerManager, Layer } from 'layer-manager/dist/components';
 import { PluginMapboxGl } from 'layer-manager';
 import Loader from 'components/Loader';
+import _ from 'lodash';
 import { 
-  COUNTRIES, 
   OPTIONS_TIME, 
   OPTIONS_THEME,
-  COUNTRIES_DEFAULT_VIEWPORTS,
   HEATWAVES,
   COLDSNAPS,
+  GIDS,
+  GID_DEFAULT_VIEWPORTS,
 } from 'constants.js';
 import { 
   TermalComfortChart, 
@@ -23,6 +26,7 @@ import {
   TemparatureChart,
 } from 'components/chart';
 import { getWidgetData } from 'api';
+import Description from "components/Description";
 
 const DEFAULT_VIEWPORT = {
   width: 400,
@@ -32,36 +36,33 @@ const DEFAULT_VIEWPORT = {
   zoom: 8,
 };
 
-const data = [
-  {name: 'Page A', uv: 400, pv: 2400, amt: 2400},
-  {name: 'Page A', uv: 300, pv: 2500, amt: 2500},
-  {name: 'Page A', uv: 700, pv: 2800, amt: 2100},
-  {name: 'Page A', uv: 100, pv: 2900, amt: 2100},
-];
-
-const HomePage = () => {
+const HomePage = () => {  
   const history = useHistory();
   const [viewport, setViewport] = useState(DEFAULT_VIEWPORT);
   const [isLoading, setLoading] = useState(false);
   const match = useRouteMatch('/:gid/:period/:theme?');
   const [widgetData, setWidgetData] = useState([]);
-  const { 
-    gid = COUNTRIES[0].iso, 
-    period = OPTIONS_TIME[0].value, 
+  const {
+    gid = GIDS[0].gid,
+    period = OPTIONS_TIME[0].value,
     theme = OPTIONS_THEME[0].value,
   } = (match && match.params) || {};
   const optionValue = OPTIONS_THEME.find(el => el.value === theme);
   const hadleChange = option => history.push(`/${gid}/${period}/${option.value}`);
 
+  const layers = LayersData['historical'].layers;
+
   useEffect(() => {
-    setViewport(COUNTRIES_DEFAULT_VIEWPORTS[gid]);
+    setViewport(GID_DEFAULT_VIEWPORTS[gid]);
   }, [gid]);
 
-  const from = '2015-01-01';
-  const to = '2020-01-01';
+  const { from, to } = OPTIONS_TIME.find(t => t.value === period);
   const fetchWidgetsData = async () => {
     setLoading(true);
+    console.log(from);
+    console.log(to);
     const data = await getWidgetData({
+      gid,
       theme,
       period,
       time: {
@@ -75,32 +76,56 @@ const HomePage = () => {
 
   useEffect(() => {
     fetchWidgetsData();
-  }, [theme, period]);
+  }, [theme, period, gid]);
   
-  let alarmsCount = 0;
-  let alertsCount = 0;
-  let warningsCount = 0;
-  let extreamCount = 0;
-  let moderateCount = 0;
-  let strongCount = 0;
+
+  const params = {
+    alarmsCount: 0,
+    alertsCount: 0,
+    warningsCount: 0,
+    extreamCount: 0,
+    moderateCount: 0,
+    strongCount: 0,
+    temperature: null,
+    temperatureDate :0,
+  }
   const kelvin =  -273.15;
-  widgetData.map(wd => {
-    alarmsCount += theme === HEATWAVES ? wd.heatwave_alarms_mean : wd.coldsnap_alarms_mean;
-    alertsCount += theme === HEATWAVES ? wd.heatwave_alerts_mean : wd.coldsnap_alerts_mean;
-    warningsCount += theme === HEATWAVES ? wd.heatwave_warnings_mean : wd.coldsnap_warnings_mean;
-    extreamCount += theme === HEATWAVES ? wd.heatstress_extreme_mean : wd.coldstress_extreme_mean;
-    moderateCount += theme === HEATWAVES ? wd.heatstress_moderate_mean : wd.coldstress_moderate_mean;
-    strongCount += theme === HEATWAVES ? wd.heatstress_strong_mean : wd.coldstress_strong_mean;
+  const copyData = _.cloneDeep(widgetData);
+  const transformedWidgetData = copyData.map(wd => {
+    params.alarmsCount += theme === HEATWAVES ? wd.heatwave_alarms_mean : wd.coldsnap_alarms_mean;
+    params.alertsCount += theme === HEATWAVES ? wd.heatwave_alerts_mean : wd.coldsnap_alerts_mean;
+    params.warningsCount += theme === HEATWAVES ? wd.heatwave_warnings_mean : wd.coldsnap_warnings_mean;
+    params.extreamCount += theme === HEATWAVES ? wd.heatstress_extreme_mean : wd.coldstress_extreme_mean;
+    params.moderateCount += theme === HEATWAVES ? wd.heatstress_moderate_mean : wd.coldstress_moderate_mean;
+    params.strongCount += theme === HEATWAVES ? wd.heatstress_strong_mean : wd.coldstress_strong_mean;
+    // K to C
     wd.tasmax_mean = parseFloat((wd.tasmax_mean + kelvin).toFixed(2));
     wd.tasmin_mean = parseFloat((wd.tasmin_mean + kelvin).toFixed(2));
+    const date = new Date(wd.time);
+    wd.time = date ? `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}` : wd.time;
+
+    if (!params.temperature) {
+      params.temperature = theme === HEATWAVES ? wd.tasmax_mean : wd.tasmin_mean;
+    }
+    if (theme === HEATWAVES) {
+      if (params.temperature < wd.tasmax_mean) {
+        params.temperature = wd.tasmax_mean;
+        params.temperatureDate = wd.time;
+      }
+    } else {
+      if (params.temperature > wd.tasmin_mean) {
+        params.temperature = wd.tasmin_mean;
+        params.temperatureDate = wd.time;
+      }
+    }
     return wd;
   });
-  alarmsCount = Math.ceil(alarmsCount);
-  alertsCount = Math.ceil(alertsCount);
-  warningsCount = Math.ceil(warningsCount);
-  extreamCount = Math.ceil(extreamCount);
-  moderateCount = Math.ceil(moderateCount);
-  strongCount = Math.ceil(strongCount);
+  params.alarmsCount = Math.ceil(params.alarmsCount) || 0;
+  params.alertsCount = Math.ceil(params.alertsCount) || 0;
+  params.warningsCount = Math.ceil(params.warningsCount) || 0;
+  params.extreamCount = Math.ceil(params.extreamCount) || 0;
+  params.moderateCount = Math.ceil(params.moderateCount) || 0;
+  params.strongCount = Math.ceil(params.strongCount) || 0;
 
   return (
     <div className={styles.container}>
@@ -113,42 +138,29 @@ const HomePage = () => {
             onChange={hadleChange}
           />          
           <div className={styles.description}>
-            {!isLoading && (
-              <>
-                From {from} to {to} {` `}
-                <span>{alarmsCount} alarms</span>,{` `}
-                <span>{alertsCount} alerts</span>{` `}
-                and <span>{warningsCount} warnings</span>,{` `}
-                and <span>{extreamCount} extreme</span>,{` `}
-                <span>{strongCount} strong</span>{` `}
-                and <span>{moderateCount} moderate heat stress events</span> were observed in{` `}
-                <span>Bizkaia</span>. {` `}
-                The highest temperature of 36.59 ºC was observed in 1995-07-01.
-              </>
-            )}
+            {!isLoading && (<Description  theme={theme} params={params} />)}
           </div>
           <div className={styles.charts}>
-            <TemparatureChart data={widgetData} theme={theme} />
-            <RiskEventsChart data={widgetData} theme={theme} />
-            <TermalComfortChart data={widgetData} theme={theme} />
+            <TemparatureChart data={transformedWidgetData} theme={theme} />
+            <RiskEventsChart data={transformedWidgetData} theme={theme} />
+            <TermalComfortChart data={transformedWidgetData} theme={theme} />
           </div>
         </div>
 
       </div>
       <div className={styles.map}>
-        {/* <Map scrollZoom={false} viewport={viewport} setViewport={setViewport} >
-          {map => (
+        <Map scrollZoom={false} viewport={viewport} setViewport={setViewport} >
+          {/* {map => (
             <LayerManager map={map} plugin={PluginMapboxGl}>
               {layers
-                .filter(l => l.active)
                 .map(layer => (
                   // TODO: fix all eslint-disables
                   // eslint-disable-next-line react/jsx-props-no-spreading
                   <Layer key={layer.id} {...layer} />
                 ))}
             </LayerManager>
-          )}
-        </Map> */}
+          )} */}
+        </Map>
         <div className={styles.navigationBar}>
           <div className={styles.targetBox}>
             <Target viewport={viewport} setViewport={setViewport} />
