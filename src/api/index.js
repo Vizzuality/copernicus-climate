@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiUrl = 'https://api.skydipper.com/v1';
-const AuthorizationToken = `Bearer ${process.env.REACT_APP_AUTH_TOKEN}`; 
+const AuthorizationToken = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlMzA0OGIzYTY4NWYzMDAxMDhkZjYyNCIsInJvbGUiOiJBRE1JTiIsInByb3ZpZGVyIjoibG9jYWwiLCJlbWFpbCI6ImVkd2FyZC5tb3JyaXNAdml6enVhbGl0eS5jb20iLCJleHRyYVVzZXJEYXRhIjp7ImFwcHMiOlsic2t5ZGlwcGVyIiwibWFuZ3JvdmVBdGxhcyIsInNvaWxzUmV2ZWFsZWQiLCJjb3Blcm5pY3VzQ2xpbWF0ZSJdfSwiY3JlYXRlZEF0IjoxNTkwNDA0NzU1MTc3LCJpYXQiOjE1OTA0MDQ3NTV9.wRRJQCFtvCZzMTtucly2pmCL5WhsFBgBFDUo2CmJSaY`; 
 
 const queryId = {
   historical: '3a46bbff-73bc-4abc-bad6-11be6e99e2cb',
