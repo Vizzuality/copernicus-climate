@@ -11,7 +11,7 @@ export const COUNTRIES = [
   }
 ];
 
-export const GIDS = gidList.locations.filter(g => g.admin_level < 4);
+export const GIDS = gidList.locations.filter(g => g.admin_level < 4 && g.gid !== 'ES');
 
 const today = new Date();
 const currentMonth = today.getMonth()+1;
