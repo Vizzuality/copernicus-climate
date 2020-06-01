@@ -59,8 +59,6 @@ const HomePage = () => {
   const { from, to } = OPTIONS_TIME.find(t => t.value === period);
   const fetchWidgetsData = async () => {
     setLoading(true);
-    console.log(from);
-    console.log(to);
     const data = await getWidgetData({
       gid,
       theme,

@@ -4,9 +4,9 @@ import { GIDS, OPTIONS_TIME } from 'constants.js';
 import styles from './styles.module.scss';
 import ReactSelect from 'react-select';
 import { searchSelectStyles } from './styles';
-import gidsList from 'const/gids.json';
 
 const SubHeader = () => {
+
   const history = useHistory();
   const match = useRouteMatch('/:gid/:time/:type?');
   const { 
@@ -15,7 +15,7 @@ const SubHeader = () => {
     type = 'heatwaves',
   } = (match && match.params) || {};
 
-  const optionsGids = gidsList.map((g) => {
+  const optionsGids = GIDS.map((g) => {
     return {
       value: g.gid,
       label: `${g.geoname} (${g.gid})`,

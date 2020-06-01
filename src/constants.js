@@ -1,5 +1,6 @@
 import sweden from 'assets/shapes/sweden.svg';
 import swedenActive from 'assets/shapes/swedenActive.svg';
+import gidList from 'const/gids.json';
 
 export const COUNTRIES = [
   {
@@ -10,15 +11,19 @@ export const COUNTRIES = [
   }
 ];
 
-export const GIDS = [
-  {
-    gid: 'ES11',
-    geoname: 'GidName 1',
-  }
-];
+export const GIDS = gidList.locations.filter(g => g.admin_level < 4);
 
 const today = new Date();
-const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+const currentMonth = today.getMonth()+1;
+const date = today.getFullYear()+'-'+currentMonth+'-'+today.getDate();
+const dateSeasonal = {
+  from: currentMonth <= 7 ? today.getFullYear()+'-02-01' : today.getFullYear()+'-07-01',
+  to: currentMonth <= 7 ? today.getFullYear()+'-02-07' : today.getFullYear()+'-12-01',
+};
+const dateLongterm = {
+  from: date,
+  to: today.getFullYear()+20+'-'+currentMonth+'-'+today.getDate(),
+};
 export const OPTIONS_TIME = [
   { 
     value: 'historical', 
@@ -29,14 +34,14 @@ export const OPTIONS_TIME = [
   { 
     value: 'future_longterm', 
     label: 'Future Long-Term', 
-    from: date, 
-    to: '2100-01-01', 
+    from: dateLongterm.from, 
+    to: dateLongterm.to, 
   },
   { 
     value: 'future_seasonal', 
     label: 'Seasonal', 
-    from: date, 
-    to: '2100-01-01', 
+    from: dateSeasonal.from, 
+    to: dateSeasonal.to, 
   }
 ];
 
