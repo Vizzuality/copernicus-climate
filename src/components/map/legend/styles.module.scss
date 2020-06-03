@@ -1,0 +1,119 @@
+.legend {
+  min-height: 0px;
+  width: 419px;
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 10px 0 rgba(0,35,117,0.2);
+  position: absolute;
+  bottom: 42px;
+  right: 21px;
+}
+
+.legendContent {
+  position: relative;
+}
+.legendButton {
+  height: 50px;
+  width: 125px;
+  color: #222222;
+  font-family: "Open Sans";
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 22px;
+  background-color: #FFFFFF;
+  position: absolute;
+  border: transparent;
+  position: absolute;
+  top: -50px;
+  right: 0; 
+  
+  &:hover, &:focus {
+    background-color: #ffffff;
+    color: #222222;
+    opacity: 1;
+  }
+
+  svg {
+    margin-left: 10px;
+    transition: all 0.3s ease-in-out
+  }
+  box-shadow: 0 2px 10px 0 rgba(0,35,117,0.2);
+
+  &.isOpen {
+    svg {
+      transform: rotate(180deg);
+    }
+    box-shadow: none;
+  }
+}
+
+.layers {
+  padding: 20px;
+}
+
+.layer {
+  display:  flex;
+  align-items: center;
+}
+
+.stats {
+  width: 100%;
+}
+
+.line {
+  height: 10px;
+  width: 100%;
+}
+
+.values {
+  color: #222222;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 22px;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 7px;
+}
+
+.title {
+  color: #222222;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 22px;
+  padding-bottom: 8px;
+  padding-top: 8px;
+}
+
+.radio {
+  width: 54px;
+  input {
+    display: none;
+  }
+  
+  label {
+    height: 24px;
+    width: 24px;
+    border: 1px solid #222222;
+    border-radius: 50%;
+    display: block;
+    cursor: pointer;
+    position: relative;
+
+    &:after {
+      content: " ";
+      position: absolute;
+      background-color: #ffffff;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      top: calc(50% - 5px);
+      left: calc(50% - 5px);
+    }
+  }
+  input:focus + label,
+  input:checked + label
+   { 
+    &:after {
+      background-color: #941333;
+    }
+  }
+}

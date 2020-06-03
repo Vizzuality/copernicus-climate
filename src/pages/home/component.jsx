@@ -1,31 +1,29 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import LayersData from 'const/layers.json';
-import gidsData from 'const/gids.json';
 import React, { useState, useEffect } from "react";
 import { useRouteMatch, useHistory } from 'react-router-dom';
 import styles from "./styles.module.scss";
 import Map from "components/map";
 import Zoom from "components/map/controls/zoom";
-import Target from "components/map/controls/target";
 import Dropdown from 'components/dropdown';
-import { LayerManager, Layer } from 'layer-manager/dist/components';
-import { PluginMapboxGl } from 'layer-manager';
+import LayerManager from 'components/map/layer-manager';
 import Loader from 'components/Loader';
+import Legend from 'components/map/legend';
 import _ from 'lodash';
+
 import { 
   OPTIONS_TIME, 
   OPTIONS_THEME,
   HEATWAVES,
   COLDSNAPS,
   GIDS,
-  GID_DEFAULT_VIEWPORTS,
+  LAYERS,
 } from 'constants.js';
-import { 
+import {
   TermalComfortChart, 
   RiskEventsChart,
   TemparatureChart,
 } from 'components/chart';
-import { getWidgetData } from 'api';
+import { getWidgetData, getLayersInfo } from 'api';
 import Description from "components/Description";
 
 const DEFAULT_VIEWPORT = {
@@ -40,6 +38,7 @@ const HomePage = () => {
   const history = useHistory();
   const [viewport, setViewport] = useState(DEFAULT_VIEWPORT);
   const [isLoading, setLoading] = useState(false);
+  const [layersInfo, setLayersInfo] = useState([]);
   const match = useRouteMatch('/:gid/:period/:theme?');
   const [widgetData, setWidgetData] = useState([]);
   const {
@@ -49,7 +48,7 @@ const HomePage = () => {
   } = (match && match.params) || {};
   const optionValue = OPTIONS_THEME.find(el => el.value === theme);
   const hadleChange = option => history.push(`/${gid}/${period}/${option.value}`);
-  const layers = LayersData['historical'].layers;
+  const { layers } = LAYERS[period][theme];
   const gidInfo = GIDS.find(g => g.gid === gid);
   const { latitude, longitude, admin_level: zoom } = gidInfo;
   useEffect(() => {
@@ -73,10 +72,21 @@ const HomePage = () => {
     setWidgetData(data.data);
   }
 
+  const fetchLayersInfo = async () => {
+    const data = await getLayersInfo(layers.map(l => l.id));
+    if (data) {
+      setLayersInfo(data);
+    }
+  }
+
   useEffect(() => {
     fetchWidgetsData();
+    fetchLayersInfo();
   }, [theme, period, gid]);
   
+  useEffect(() => {
+    fetchLayersInfo();
+  }, [theme, period]);
 
   const params = {
     alarmsCount: 0,
@@ -148,21 +158,15 @@ const HomePage = () => {
 
       </div>
       <div className={styles.map}>
-        <Map scrollZoom={false} viewport={viewport} setViewport={setViewport} >
-          {/* {map => (
-            <LayerManager map={map} plugin={PluginMapboxGl}>
-              {layers
-                .map(layer => (
-                  // TODO: fix all eslint-disables
-                  // eslint-disable-next-line react/jsx-props-no-spreading
-                  <Layer key={layer.id} {...layer} />
-                ))}
-            </LayerManager>
-          )} */}
-        </Map>
+          <Map scrollZoom={false} viewport={viewport} setViewport={setViewport} >
+            {map => (
+              <LayerManager map={map} layers={layers} />
+            )}
+          </Map>
+          <Legend layers={layersInfo} align="right" layout="vertical" verticalAlign="top" />
         <div className={styles.navigationBar}>
           <div className={styles.targetBox}>
-            <Target viewport={viewport} setViewport={setViewport} />
+            {/* <Target viewport={viewport} setViewport={setViewport} /> */}
           </div>
           <div className={styles.zoomBox}>
             <Zoom viewport={viewport} setViewport={setViewport} />

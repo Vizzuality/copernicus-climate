@@ -153,3 +153,18 @@ export const getWidgetData = async (params = defaultParams) => {
   return res.data;
 }
 
+export const getLayersInfo = async (ids = []) => {
+  const result = Promise.all(ids.map(async (id) => {
+    const axiosConfig = {
+      url: `/layer/${id}`,
+      method: 'GET',
+      baseURL: apiUrl,
+      headers: {
+        Authorization: AuthorizationToken,
+      }
+    };  
+    const res = await axios.request(axiosConfig);
+    return res.status === 200 ? res.data.data : null;
+  }));
+  return result;
+}

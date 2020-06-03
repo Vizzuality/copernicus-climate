@@ -2,6 +2,8 @@ import sweden from 'assets/shapes/sweden.svg';
 import swedenActive from 'assets/shapes/swedenActive.svg';
 import gidList from 'const/gids.json';
 
+import layersList from 'const/layers.json';
+
 export const COUNTRIES = [
   {
     iso: 'ESP',
@@ -10,7 +12,24 @@ export const COUNTRIES = [
     svgActive: swedenActive
   }
 ];
-
+Object.keys(layersList).forEach(time => {
+  Object.keys(layersList[time]).forEach(theme => {
+    layersList[time][theme].layers = layersList[time][theme].layers.map(l => {
+      return {
+        id: l.id,
+        type: 'raster',
+        name: l.name,
+        source: {
+          "type": "raster",
+          "tiles": [l.endpoint]
+        },   
+        active: true,
+        opacity: 1
+      }
+    });
+  })
+});
+export const LAYERS = layersList;
 export const GIDS = gidList.locations.filter(g => g.admin_level < 4 && g.gid !== 'ES');
 
 const today = new Date();
