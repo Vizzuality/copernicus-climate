@@ -1,31 +1,33 @@
 import React from 'react';
 import { useRouteMatch, useHistory } from 'react-router-dom';
-import { COUNTRIES, OPTIONS_TIME } from 'constants.js';
+import { GIDS, OPTIONS_TIME } from 'constants.js';
 import styles from './styles.module.scss';
 import ReactSelect from 'react-select';
 import { searchSelectStyles } from './styles';
 
 const SubHeader = () => {
+
   const history = useHistory();
-  const match = useRouteMatch('/:iso/:time/:type?');
+  const match = useRouteMatch('/:gid/:time/:type?');
   const { 
-    iso = COUNTRIES[0].iso, 
+    gid = GIDS[0].gid, 
     time = OPTIONS_TIME[0].value, 
     type = 'heatwaves',
   } = (match && match.params) || {};
 
-  const optionsCountry = COUNTRIES.map((c) => {
+  const optionsGids = GIDS.map((g) => {
     return {
-      value: c.iso,
-      label: c.name
+      value: g.gid,
+      label: `${g.geoname} (${g.gid})`,
     }
   });
 
-  const handleChangeCountry = (option) => {
+  const handleChangeGid = (option) => {
     history.push(`/${option.value}/${time}/${type}`);
   }
+
   const handleChangeTime = (option) => {
-    history.push(`/${iso}/${option.value}/${type}`);
+    history.push(`/${gid}/${option.value}/${type}`);
   }
   
   return (
@@ -35,9 +37,9 @@ const SubHeader = () => {
         <div className={styles.filterSection}>
           <ReactSelect
             styles={searchSelectStyles}
-            defaultValue={optionsCountry.find(c => c.value === iso) || optionsCountry[0]}
-            options={optionsCountry}
-            onChange={handleChangeCountry}
+            defaultValue={optionsGids.find(c => c.value === gid) || optionsGids[0]}
+            options={optionsGids}
+            onChange={handleChangeGid}
             isIcon
           />
         </div>

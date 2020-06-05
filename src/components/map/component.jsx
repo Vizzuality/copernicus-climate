@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import ReactMapGL from 'react-map-gl';
 import { easeCubic } from 'd3-ease';
 import { MAPBOX_STYLE_DEFAULT } from 'constants.js';
-
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './styles.scss';
 
@@ -46,6 +45,7 @@ const MapComponent = props => {
         [customClass]: !!customClass
       })}
     >
+      
       <ReactMapGL
         ref={mapRef}
         // CUSTOM PROPS FROM REACT MAPBOX API

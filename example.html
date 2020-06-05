@@ -1,0 +1,614 @@
+<iframe id="map" ,="" srcdoc="<!DOCTYPE html>
+    <html>
+    <head>
+    <title>mapboxgl-jupyter viz</title>
+    <meta charset='UTF-8' />
+    <meta name='viewport'
+          content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script type='text/javascript'
+            src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
+    <link type='text/css'
+          href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' 
+          rel='stylesheet' />
+    
+    <style type='text/css'>
+        body { margin:0; padding:0; }
+        .map { position: absolute; top:0; bottom:0; width:100%; }
+        .legend {
+            background-color: white;
+            color: #6e6e6e;
+            border-radius: 3px;
+            bottom: 10px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            padding: 0;
+            position: absolute;
+            right: 10px;
+            z-index: 1;
+            min-width: 100px;
+        }
+       .legend.horizontal {bottom: 10px; text-align: left;}
+    
+        /* legend header */
+        .legend .legend-header { border-radius: 3px 3px 0 0; background: white; }
+        .legend .legend-title {
+            padding: 6px 12px 6px 12px;
+            text-shadow: 0 0 2px white;
+            text-transform: capitalize;
+            text-align: center;
+            font-weight: bold !important;
+            font-size: 14px;
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            max-width: 160px;
+        }
+        .legend-title {padding: 6px 12px 6px 12px; text-shadow: 0 0 2px #FFF; text-transform: capitalize; text-align: center; max-width: 160px; font-size: 0.9em; font-weight: bold;}
+        .legend.horizontal .legend-title {text-align: left;}
+    
+        /* legend items */
+        .legend-content {margin: 6px 12px 6px 12px; overflow: hidden; padding: 0; float: left; list-style: none; font-size: 0.8em;}
+        .legend.vertical .legend-item {white-space: nowrap;}
+        .legend-value {display: inline-block; line-height: 18px; vertical-align: top;}
+        .legend.horizontal ul.legend-content li.legend-item .legend-value,
+        .legend.horizontal ul.legend-content li.legend-item {display: inline-block; float: left; width: 30px; margin-bottom: 0; text-align: center; min-height: 30px;}
+    
+        /* legend key styles */
+        .legend-key {display: inline-block; height: 10px;}
+        .legend-key.default, .legend-key.square {border-radius: 0;}
+        .legend-key.circle {border-radius: 50%;}
+        .legend-key.rounded-square {border-radius: 20%;}
+        .legend.vertical .legend-key {width: 10px; margin-right: 5px; margin-left: 1px;}
+        .legend.horizontal .legend-key {width: 30px; margin-right: 0; margin-top: 1px; float: left;}
+        .legend.horizontal .legend-key.square, .legend.horizontal .legend-key.rounded-square, .legend.horizontal .legend-key.circle {margin-left: 10px; width: 10px;}
+        .legend.horizontal .legend-key.line {margin-left: 5px;}
+        .legend.horizontal .legend-key.line, .legend.vertical .legend-key.line {border-radius: 10%; width: 20px; height: 3px; margin-bottom: 2px;}
+    
+        /* gradient bar alignment */
+        .gradient-bar {margin: 6px 12px 6px 12px;}
+        .legend.horizontal .gradient-bar {width: 88%; height: 10px;}
+        .legend.vertical .gradient-bar {width: 10px; min-height: 50px; position: absolute; bottom: 4px;}
+    
+        /* contiguous vertical bars (discrete) */
+        .legend.vertical.contig .legend-key {height: 15px; width: 10px;}
+        .legend.vertical.contig li.legend-item {height: 15px;}
+        .legend.vertical.contig {padding-bottom: 6px;}
+    
+        /* vertical radius legend */
+        .legend.horizontal.legend-variable-radius ul.legend-content li.legend-item .legend-value,
+        .legend.horizontal.legend-variable-radius ul.legend-content li.legend-item {width: 30px; min-height: 20px;}
+    
+        /* scale annotation */
+        .mapboxgl-ctrl.mapboxgl-ctrl-scale { border-color: #6e6e6e; 
+                                             background-color: white; 
+                                             color: #131516; }
+    </style>
+    
+    
+        <style type='text/css'>
+            .gradient.bordered, .legend-key.bordered { border: solid rgb(128,0,38) 0.5px; }
+        </style>
+    
+    
+    </head>
+    <body>
+    
+    <div id='map' class='map'></div>
+    
+    <script type='text/javascript'>
+    
+    var legendHeader;
+    
+    function calcColorLegend(myColorStops, title) {
+        // create legend
+        var legend = document.createElement('div'),
+            legendContainer = document.getElementsByClassName('mapboxgl-ctrl-bottom-right')[0];
+    
+        if ('bar' === 'contiguous-bar') {
+            legend.className = 'legend horizontal contig';
+        }
+        else {
+            legend.className = 'legend horizontal';
+        }
+        legend.id = 'legend-0';
+        document.body.appendChild(legend);
+        // add legend header and content elements
+        var mytitle = document.createElement('div'),
+            legendContent = document.createElement('ul');
+        legendHeader = document.createElement('div');
+        mytitle.textContent = title;
+        mytitle.className = 'legend-title'
+        legendHeader.className = 'legend-header'
+        legendContent.className = 'legend-content'
+        legendHeader.appendChild(mytitle);
+        legend.appendChild(legendHeader);
+        legend.appendChild(legendContent);
+        if (false === true) {
+            var gradientText = 'linear-gradient(to right, ',
+                gradient = document.createElement('div');
+            gradient.className = 'gradient-bar';
+            legend.appendChild(gradient);
+        }
+        // calculate a legend entries on a Mapbox GL Style Spec property function stops array
+        for (p = 0; p < myColorStops.length; p++) {
+            if (!!document.getElementById('legend-color-points-value-' + p)) {
+                // update the legend if it already exists
+                document.getElementById('legend-color-points-value-' + p).textContent = myColorStops[p][0];
+                document.getElementById('legend-color-points-id-' + p).style.backgroundColor = myColorStops[p][1];
+            }
+            else {
+                // create the legend if it doesn't yet exist
+                var item = document.createElement('li');
+                item.className = 'legend-item';
+                var key = document.createElement('span');
+                key.className = 'legend-key bar';
+                key.id = 'legend-color-points-id-' + p;
+                key.style.backgroundColor = myColorStops[p][1];
+                var value = document.createElement('span');
+                value.className = 'legend-value';
+                value.id = 'legend-color-points-value-' + p;
+                item.appendChild(key);
+                item.appendChild(value);
+                legendContent.appendChild(item);
+                
+                data = document.getElementById('legend-color-points-value-' + p)
+                // round number values in legend if precision defined
+                if ((typeof(myColorStops[p][0]) == 'number') &amp;&amp; (typeof(null) == 'number')) {
+                    data.textContent = myColorStops[p][0].toFixed(null);
+                }
+                else {
+                    data.textContent = myColorStops[p][0];
+                }
+                // add color stop to gradient list
+                if (false === true) {
+                    if (p < myColorStops.length - 1) {
+                        gradientText = gradientText + myColorStops[p][1] + ', ';
+                    }
+                    else {
+                        gradientText = gradientText + myColorStops[p][1] + ')';
+                    }
+                    if ('horizontal' === 'vertical') {
+                        gradientText = gradientText.replace('to right', 'to bottom');
+                    }
+                }
+            }
+        }
+        if (false === true) {
+            // convert to gradient scale appearance
+            gradient.style.background = gradientText;
+            // hide legend keys generated above
+            var keys = document.getElementsByClassName('legend-key');
+            for (var i=0; i < keys.length; i++) {
+                keys[i].style.visibility = 'hidden';
+            }
+            if ('horizontal' === 'vertical') {
+                gradient.style.height = (legendContent.offsetHeight - 6) + 'px';
+            }
+        }
+        // add class for styling bordered legend keys
+        if (false) {
+            var keys = document.getElementsByClassName('legend-key');
+            for (var i=0; i < keys.length; i++) {
+                if (keys[i]) {
+                    keys[i].classList.add('bordered');
+                }
+            }
+            var gradientBars = document.getElementsByClassName('gradient-bar');
+            for (var i=0; i < keys.length; i++) {
+                if (gradientBars[i]) {
+                    gradientBars[i].classList.add('bordered');
+                }
+            }
+        }
+        // update right-margin for compact Mapbox attribution based on calculated legend width
+        updateAttribMargin(legend);
+        updateLegendMargin(legend);
+    }
+    
+    
+    function calcRadiusLegend(myRadiusStops, title, color) {
+    
+        // maximum legend item height
+        var maxLegendItemHeight = 2 * myRadiusStops[myRadiusStops.length - 1][1];
+    
+        // create legend
+        var legend = document.createElement('div');
+        legend.className = 'legend horizontal legend-variable-radius';
+    
+        legend.id = 'legend-1';
+        document.body.appendChild(legend);
+    
+        // add legend header and content elements
+        var mytitle = document.createElement('div'),
+            legendContent = document.createElement('ul');
+        legendHeader = document.createElement('div');
+        mytitle.textContent = title;
+        mytitle.className = 'legend-title'
+        legendHeader.className = 'legend-header'
+        legendContent.className = 'legend-content'
+        legendHeader.appendChild(mytitle);
+        legend.appendChild(legendHeader);
+        legend.appendChild(legendContent);
+    
+        // calculate a legend entries on a Mapbox GL Style Spec property function stops array
+        for (p = 0; p < myRadiusStops.length; p++) {
+            if (!!document.getElementById('legend-radius-points-value-' + p)) {
+                //update the legend if it already exists
+                document.getElementById('legend-radius-points-value-' + p).textContent = myRadiusStops[p][0];
+                document.getElementById('legend-radius-points-id-' + p).style.backgroundColor = color;
+            }
+            else {
+                // create the legend if it doesn't yet exist
+                var item = document.createElement('li');
+                item.className = 'legend-item';
+                item.height = '' + maxLegendItemHeight + 'px';
+    
+                var key = document.createElement('span');
+                key.className = 'legend-key bar';
+                key.id = 'legend-radius-points-id-' + p;
+                key.style.backgroundColor = color;   
+    
+                key.style.width = '' + myRadiusStops[p][1] * 2 + 'px';
+                key.style.height = '' + myRadiusStops[p][1] * 2 + 'px';
+    
+                keyVerticalMargin = (maxLegendItemHeight - myRadiusStops[p][1] * 2) * 0.5;
+                key.style.marginTop = '' + keyVerticalMargin + 'px';
+                key.style.marginBottom = '' + keyVerticalMargin + 'px';
+    
+                var value = document.createElement('span');
+                value.className = 'legend-value';
+                value.id = 'legend-radius-points-value-' + p;
+    
+                item.appendChild(key);
+                item.appendChild(value);
+                legendContent.appendChild(item);
+                
+                data = document.getElementById('legend-radius-points-value-' + p)
+    
+                // round number values in legend if precision defined
+                if ((typeof(myRadiusStops[p][0]) == 'number') &amp;&amp; (typeof(null) == 'number')) {
+                    data.textContent = myRadiusStops[p][0].toFixed(null);
+                }
+                else {
+                    data.textContent = myRadiusStops[p][0];
+                }
+            }
+        }
+    
+        // add class for styling bordered legend keys
+        if (false) {
+            var keys = document.getElementsByClassName('legend-key');
+            for (var i=0; i < keys.length; i++) {
+                if (keys[i]) {
+                    keys[i].classList.add('bordered');
+                }
+            }
+        }
+    
+        // update right-margin for compact Mapbox attribution based on calculated legend width
+        updateAttribMargin(legend);
+        updateLegendMargin(legend);
+    
+    }
+    
+    
+    function updateAttribMargin(legend) {
+    
+        // default margin is based on calculated legend width
+        var attribMargin = legend.offsetWidth + 15;
+        
+        // if horizontal legend layout (multiple legends are stacked vertically)
+        if ('horizontal' === 'horizontal') {
+            document.getElementsByClassName('mapboxgl-ctrl-attrib')[0].style.marginRight = (attribMargin).toString() + 'px';
+        }
+        // vertical legend layout means multiple legends are side-by-side
+        else if ('horizontal' === 'vertical') {
+            var currentMargin = Number(document.getElementsByClassName('mapboxgl-ctrl-attrib')[0].style.marginRight.replace('px', ''));
+            document.getElementsByClassName('mapboxgl-ctrl-attrib')[0].style.marginRight = (attribMargin + currentMargin).toString() + 'px';
+        }
+    }
+    
+    
+    function updateLegendMargin(legend) {
+    
+        var verticalLegends = document.getElementsByClassName('legend vertical'),
+            horizontalLegends = document.getElementsByClassName('legend horizontal');
+    
+        if (verticalLegends.length > 1) {
+            for (i = 1; i < verticalLegends.length; i++) {
+                verticalLegends[i].style.marginRight = (legend.offsetWidth - 5).toString() + 'px';
+                var legend = verticalLegends[i];
+            }
+        }
+        else if (horizontalLegends.length > 1) {
+            for (i = 1; i < horizontalLegends.length; i++) {
+                horizontalLegends[i].style.marginBottom = (legend.offsetHeight + 15).toString() + 'px';
+                var legend = horizontalLegends[i];
+            }
+        }
+    }
+    
+    
+    function generateInterpolateExpression(propertyValue, stops) {
+        var expression;
+        if (propertyValue == 'zoom') {
+            expression = ['interpolate', ['exponential', 1.2], ['zoom']]
+        }
+        else if (propertyValue == 'heatmap-density') {
+            expression = ['interpolate', ['linear'], ['heatmap-density']]
+        }
+        else {
+            expression = ['interpolate', ['linear'], ['get', propertyValue]]
+        }
+    
+        for (var i=0; i<stops.length; i++) {
+            expression.push(stops[i][0], stops[i][1])
+        }
+        return expression
+    }
+    
+    
+    function generateMatchExpression(propertyValue, stops, defaultValue) {
+        var expression;
+        expression = ['match', ['get', propertyValue]]
+        for (var i=0; i<stops.length; i++) {
+            expression.push(stops[i][0], stops[i][1])
+        }
+        expression.push(defaultValue)
+        
+        return expression
+    }
+    
+    
+    function generatePropertyExpression(expressionType, propertyValue, stops, defaultValue) {
+        var expression;
+        if (expressionType == 'match') {
+            expression = generateMatchExpression(propertyValue, stops, defaultValue)
+        }
+        else if (propertyValue == 'identity') {
+            expression = ['get', propertyValue]
+        }
+        else {
+            expression = generateInterpolateExpression(propertyValue, stops)
+        }
+    
+        return expression
+    }
+    
+    </script>
+    
+    <!-- main map creation code, extended by mapboxgl/templates/vector_choropleth.html -->
+    <script type='text/javascript'>
+    
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY29wZXJuaWN1cy1mb3Jlc3RzIiwiYSI6ImNrMWdxcmtyMDA2YTMzaWp5ajExd3Zwd24ifQ.mc5TAKT9UXkbav2OMvkmrg';
+    
+        var transformRequest = function(url, resourceType) {
+            const isMapboxRequest = url.slice(8, 22) === 'api.mapbox.com' ||
+              url.slice(10, 26) === 'tiles.mapbox.com';
+          
+            return {
+              url: isMapboxRequest ? url.replace('?', '?pluginName=PythonMapboxgl&amp;') : url
+            }
+        };
+    
+        var map = new mapboxgl.Map({
+            container: 'map',
+            attributionControl: false,
+            style: 'mapbox://styles/copernicus-forests/ck3eh5kj049be1cobcp1uh4vn',
+            center: [-2.851397462735968, 43.23791062469379],
+            zoom: 7,
+            pitch: 0,
+            bearing: 0,
+            scrollZoom: true,
+            touchZoom: true,
+            doubleClickZoom: true,
+            boxZoom: true,
+            preserveDrawingBuffer: false,
+            transformRequest: transformRequest
+        });
+    
+        
+        
+            map.addControl(new mapboxgl.AttributionControl({ compact: true }));
+    
+        
+    
+        
+    
+            map.addControl(new mapboxgl.NavigationControl());
+    
+        
+    
+        
+        
+        
+            
+                calcColorLegend([[-999, 'rgb(128,128,128)'], [6, '#c9dbed'], [8, '#d7bdec'], [9, '#ff95ae'], [11, '#e66046'], [14, '#cb181d']], 'min_tasmin');
+            
+        
+    
+    
+    
+        
+            
+            
+    
+        
+    
+        
+    
+        map.on('style.load', function() {
+            
+            
+    
+        
+    
+            // extract JSON property used for data-driven styling to add to popup
+            
+    
+                let joinData = [{'gid': 'ES_01002', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Amurrio', 'iso3': 'ESP', 'min_tasmin': 8.8561706543}, {'gid': 'ES_01003', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Aramaio', 'iso3': 'ESP', 'min_tasmin': 9.0606384277}, {'gid': 'ES_01004', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Artziniega', 'iso3': 'ESP', 'min_tasmin': 9.3902282715}, {'gid': 'ES_01010', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Ayala / Aiara', 'iso3': 'ESP', 'min_tasmin': 9.1070251465}, {'gid': 'ES_01036', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Laudio / Llodio', 'iso3': 'ESP', 'min_tasmin': 10.0103759766}, {'gid': 'ES_01042', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Okondo', 'iso3': 'ESP', 'min_tasmin': 10.2370910645}, {'gid': 'ES_01058', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Legutio', 'iso3': 'ESP', 'min_tasmin': 8.762298584}, {'gid': 'ES_09190', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Junta De Villalba De Losa', 'iso3': 'ESP', 'min_tasmin': 8.102355957}, {'gid': 'ES_20030', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Eibar', 'iso3': 'ESP', 'min_tasmin': 10.6131286621}, {'gid': 'ES_20032', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Elgoibar', 'iso3': 'ESP', 'min_tasmin': 10.7396240234}, {'gid': 'ES_20033', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Elgeta', 'iso3': 'ESP', 'min_tasmin': 10.0582885742}, {'gid': 'ES_20055', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Arrasate / Mondragón', 'iso3': 'ESP', 'min_tasmin': 9.3080749512}, {'gid': 'ES_20056', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Mutriku', 'iso3': 'ESP', 'min_tasmin': 11.6390075684}, {'gid': 'ES_20065', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Soraluze-Placencia De Las Armas', 'iso3': 'ESP', 'min_tasmin': 10.3534545898}, {'gid': 'ES_20901', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Mendaro', 'iso3': 'ESP', 'min_tasmin': 11.2313842773}, {'gid': 'ES_39030', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Guriezo', 'iso3': 'ESP', 'min_tasmin': 10.8395080566}, {'gid': 'ES_39057', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Ramales De La Victoria', 'iso3': 'ESP', 'min_tasmin': 9.5933227539}, {'gid': 'ES_39058', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Rasines', 'iso3': 'ESP', 'min_tasmin': 10.272064209}, {'gid': 'ES_39101', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Valle De Villaverde', 'iso3': 'ESP', 'min_tasmin': 9.9809265137}, {'gid': 'ES_48001', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Abadiño', 'iso3': 'ESP', 'min_tasmin': 9.6100769043}, {'gid': 'ES_48002', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Abanto Y Ciérvana-Abanto Zierbena', 'iso3': 'ESP', 'min_tasmin': 11.4747009277}, {'gid': 'ES_48003', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Amorebieta-Etxano', 'iso3': 'ESP', 'min_tasmin': 10.7708129883}, {'gid': 'ES_48004', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Amoroto', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48005', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Arakaldo', 'iso3': 'ESP', 'min_tasmin': 10.1234130859}, {'gid': 'ES_48006', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Arantzazu', 'iso3': 'ESP', 'min_tasmin': 9.9695129395}, {'gid': 'ES_48007', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Munitibar-Arbatzegi Gerrikaitz', 'iso3': 'ESP', 'min_tasmin': 11.648223877}, {'gid': 'ES_48008', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Artzentales', 'iso3': 'ESP', 'min_tasmin': 10.2296142578}, {'gid': 'ES_48009', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Arrankudiaga', 'iso3': 'ESP', 'min_tasmin': 10.4324035645}, {'gid': 'ES_48010', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Arrieta', 'iso3': 'ESP', 'min_tasmin': 13.0466308594}, {'gid': 'ES_48011', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Arrigorriaga', 'iso3': 'ESP', 'min_tasmin': 10.8202209473}, {'gid': 'ES_48012', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Bakio', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48013', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Barakaldo', 'iso3': 'ESP', 'min_tasmin': 11.6436157227}, {'gid': 'ES_48014', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Barrika', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48015', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Basauri', 'iso3': 'ESP', 'min_tasmin': 11.205657959}, {'gid': 'ES_48016', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Berango', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48017', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Bermeo', 'iso3': 'ESP', 'min_tasmin': 13.7428894043}, {'gid': 'ES_48018', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Berriatua', 'iso3': 'ESP', 'min_tasmin': 11.7971801758}, {'gid': 'ES_48019', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Berriz', 'iso3': 'ESP', 'min_tasmin': 10.5693054199}, {'gid': 'ES_48020', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Bilbao', 'iso3': 'ESP', 'min_tasmin': 11.518951416}, {'gid': 'ES_48021', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Busturia', 'iso3': 'ESP', 'min_tasmin': 13.4057922363}, {'gid': 'ES_48022', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Karrantza Harana / Valle De Carranza', 'iso3': 'ESP', 'min_tasmin': 9.2134399414}, {'gid': 'ES_48023', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Artea', 'iso3': 'ESP', 'min_tasmin': 9.6493835449}, {'gid': 'ES_48024', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Zeanuri', 'iso3': 'ESP', 'min_tasmin': 9.0537719727}, {'gid': 'ES_48025', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Zeberio', 'iso3': 'ESP', 'min_tasmin': 10.0601501465}, {'gid': 'ES_48026', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Dima', 'iso3': 'ESP', 'min_tasmin': 9.5082092285}, {'gid': 'ES_48027', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Durango', 'iso3': 'ESP', 'min_tasmin': 10.0299072266}, {'gid': 'ES_48028', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Ea', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48029', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Etxebarri', 'iso3': 'ESP', 'min_tasmin': 11.5675354004}, {'gid': 'ES_48030', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Etxebarria', 'iso3': 'ESP', 'min_tasmin': 11.2832641602}, {'gid': 'ES_48031', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Elantxobe', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48032', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Elorrio', 'iso3': 'ESP', 'min_tasmin': 9.7212524414}, {'gid': 'ES_48033', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Ereño', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48034', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Ermua', 'iso3': 'ESP', 'min_tasmin': 10.5389404297}, {'gid': 'ES_48035', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Fruiz', 'iso3': 'ESP', 'min_tasmin': 12.7774353027}, {'gid': 'ES_48036', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Galdakao', 'iso3': 'ESP', 'min_tasmin': 11.1556396484}, {'gid': 'ES_48037', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Galdames', 'iso3': 'ESP', 'min_tasmin': 11.0126037598}, {'gid': 'ES_48038', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Gamiz-Fika', 'iso3': 'ESP', 'min_tasmin': 12.5471801758}, {'gid': 'ES_48039', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Garai', 'iso3': 'ESP', 'min_tasmin': 10.5444335938}, {'gid': 'ES_48040', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Gatika', 'iso3': 'ESP', 'min_tasmin': 13.2362365723}, {'gid': 'ES_48041', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Gautegiz Arteaga', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48042', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Gordexola', 'iso3': 'ESP', 'min_tasmin': 10.0749816895}, {'gid': 'ES_48043', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Gorliz', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48044', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Getxo', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48045', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Güeñes', 'iso3': 'ESP', 'min_tasmin': 10.6394348145}, {'gid': 'ES_48046', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Gernika-Lumo', 'iso3': 'ESP', 'min_tasmin': 12.3921813965}, {'gid': 'ES_48047', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Gizaburuaga', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48048', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Ibarrangelu', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48049', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Ispaster', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48050', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Izurtza', 'iso3': 'ESP', 'min_tasmin': 9.8542175293}, {'gid': 'ES_48051', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Lanestosa', 'iso3': 'ESP', 'min_tasmin': 8.9043884277}, {'gid': 'ES_48052', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Larrabetzu', 'iso3': 'ESP', 'min_tasmin': 11.7691345215}, {'gid': 'ES_48053', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Laukiz', 'iso3': 'ESP', 'min_tasmin': 12.9701538086}, {'gid': 'ES_48054', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Leioa', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48055', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Lemoa', 'iso3': 'ESP', 'min_tasmin': 10.5996398926}, {'gid': 'ES_48056', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Lemoiz', 'iso3': 'ESP', 'min_tasmin': 13.7549133301}, {'gid': 'ES_48057', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Lekeitio', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48058', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Mallabia', 'iso3': 'ESP', 'min_tasmin': 10.7622680664}, {'gid': 'ES_48059', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Mañaria', 'iso3': 'ESP', 'min_tasmin': 9.541015625}, {'gid': 'ES_48060', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Markina-Xemein', 'iso3': 'ESP', 'min_tasmin': 11.4638977051}, {'gid': 'ES_48061', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Maruri-Jatabe', 'iso3': 'ESP', 'min_tasmin': 13.6604614258}, {'gid': 'ES_48062', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Mendata', 'iso3': 'ESP', 'min_tasmin': 11.9696655273}, {'gid': 'ES_48063', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Mendexa', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48064', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Meñaka', 'iso3': 'ESP', 'min_tasmin': 13.3721008301}, {'gid': 'ES_48065', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Ugao-Miraballes', 'iso3': 'ESP', 'min_tasmin': 10.4748535156}, {'gid': 'ES_48066', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Morga', 'iso3': 'ESP', 'min_tasmin': 12.3102722168}, {'gid': 'ES_48067', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Muxika', 'iso3': 'ESP', 'min_tasmin': 11.5940856934}, {'gid': 'ES_48068', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Mundaka', 'iso3': 'ESP', 'min_tasmin': 13.8364562988}, {'gid': 'ES_48069', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Mungia', 'iso3': 'ESP', 'min_tasmin': 13.2484436035}, {'gid': 'ES_48070', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Aulesti', 'iso3': 'ESP', 'min_tasmin': 12.0341186523}, {'gid': 'ES_48071', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Muskiz', 'iso3': 'ESP', 'min_tasmin': 11.3614807129}, {'gid': 'ES_48072', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Otxandio', 'iso3': 'ESP', 'min_tasmin': 8.9516601562}, {'gid': 'ES_48073', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Ondarroa', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48074', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Urduña / Orduña', 'iso3': 'ESP', 'min_tasmin': 8.5708007812}, {'gid': 'ES_48075', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Orozko', 'iso3': 'ESP', 'min_tasmin': 9.401763916}, {'gid': 'ES_48076', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Sukarrieta', 'iso3': 'ESP', 'min_tasmin': 13.682800293}, {'gid': 'ES_48077', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Plentzia', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48078', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Portugalete', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48079', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Errigoiti', 'iso3': 'ESP', 'min_tasmin': 12.7630310059}, {'gid': 'ES_48080', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Valle De Trápaga-Trapagaran', 'iso3': 'ESP', 'min_tasmin': 11.6796569824}, {'gid': 'ES_48081', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Lezama', 'iso3': 'ESP', 'min_tasmin': 11.935333252}, {'gid': 'ES_48082', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Santurtzi', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48083', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Ortuella', 'iso3': 'ESP', 'min_tasmin': 11.5489196777}, {'gid': 'ES_48084', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Sestao', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48085', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Sopela', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48086', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Sopuerta', 'iso3': 'ESP', 'min_tasmin': 10.7435302734}, {'gid': 'ES_48087', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Trucios-Turtzioz', 'iso3': 'ESP', 'min_tasmin': 10.5492858887}, {'gid': 'ES_48088', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Ubide', 'iso3': 'ESP', 'min_tasmin': 8.8516845703}, {'gid': 'ES_48089', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Urduliz', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48090', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Balmaseda', 'iso3': 'ESP', 'min_tasmin': 9.7370300293}, {'gid': 'ES_48091', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Atxondo', 'iso3': 'ESP', 'min_tasmin': 9.390625}, {'gid': 'ES_48092', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Bedia', 'iso3': 'ESP', 'min_tasmin': 10.6154174805}, {'gid': 'ES_48093', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Areatza', 'iso3': 'ESP', 'min_tasmin': 9.3503112793}, {'gid': 'ES_48094', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Igorre', 'iso3': 'ESP', 'min_tasmin': 10.2074890137}, {'gid': 'ES_48095', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Zaldibar', 'iso3': 'ESP', 'min_tasmin': 10.2485046387}, {'gid': 'ES_48096', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Zalla', 'iso3': 'ESP', 'min_tasmin': 10.1319274902}, {'gid': 'ES_48097', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Zaratamo', 'iso3': 'ESP', 'min_tasmin': 10.7698669434}, {'gid': 'ES_48901', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Derio', 'iso3': 'ESP', 'min_tasmin': 12.3647460938}, {'gid': 'ES_48902', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Erandio', 'iso3': 'ESP', 'min_tasmin': 12.1626586914}, {'gid': 'ES_48903', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Loiu', 'iso3': 'ESP', 'min_tasmin': 12.4822692871}, {'gid': 'ES_48904', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Sondika', 'iso3': 'ESP', 'min_tasmin': 12.0803527832}, {'gid': 'ES_48905', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Zamudio', 'iso3': 'ESP', 'min_tasmin': 12.1136474609}, {'gid': 'ES_48906', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Forua', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48907', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Kortezubi', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48908', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Murueta', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48909', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Nabarniz', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48910', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Iurreta', 'iso3': 'ESP', 'min_tasmin': 10.4243774414}, {'gid': 'ES_48911', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Ajangiz', 'iso3': 'ESP', 'min_tasmin': 12.2933959961}, {'gid': 'ES_48912', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Alonsotegi', 'iso3': 'ESP', 'min_tasmin': 11.0559997559}, {'gid': 'ES_48913', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Zierbena', 'iso3': 'ESP', 'min_tasmin': -999.0}, {'gid': 'ES_48914', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Arratzu', 'iso3': 'ESP', 'min_tasmin': 12.3798217773}, {'gid': 'ES_48915', 'admin_level': 4.0, 'experiment': 'rcp85', 'geoname': 'Ziortza-Bolibar', 'iso3': 'ESP', 'min_tasmin': 11.3355102539}];
+                var popUpKeys = {},
+                    heightPopUpKeys = {};
+    
+                // Create filter for layers from join data
+                let layerFilter = ['in', 'gid']
+                
+                joinData.forEach(function(row, index) {
+                    popUpKeys[row['gid']] = row['min_tasmin'];
+                    
+                    
+    
+                    layerFilter.push(row['gid']);
+                });
+    
+            
+    
+        
+    
+        // Add vector data source
+        map.addSource('vector-data', {
+            type: 'vector',
+            url: 'mapbox://copernicus-forests.esp_nuts_01234',
+        });
+    
+        // Add layer from the vector tile source with data-driven style
+        map.addLayer({
+            'id': 'choropleth-fill',
+            'type': 'fill',
+            'source': 'vector-data',
+            'source-layer': 'esp_nuts_01234',
+            'paint': {
+                
+                'fill-color': ['case',
+                    ['boolean', ['feature-state', 'hover'], false], 
+                    'black', 
+                    generatePropertyExpression('match', 'gid', [['ES_01002', 'rgb(249,155,183)'], ['ES_01003', 'rgb(254,147,171)'], ['ES_01004', 'rgb(250,139,154)'], ['ES_01010', 'rgb(254,146,168)'], ['ES_01036', 'rgb(242,122,121)'], ['ES_01042', 'rgb(240,116,110)'], ['ES_01058', 'rgb(245,159,189)'], ['ES_09190', 'rgb(219,185,230)'], ['ES_20030', 'rgb(235,106,90)'], ['ES_20032', 'rgb(233,103,84)'], ['ES_20033', 'rgb(242,121,119)'], ['ES_20055', 'rgb(251,141,158)'], ['ES_20056', 'rgb(224,81,61)'], ['ES_20065', 'rgb(238,113,104)'], ['ES_20901', 'rgb(228,90,67)'], ['ES_39030', 'rgb(232,100,78)'], ['ES_39057', 'rgb(248,133,143)'], ['ES_39058', 'rgb(239,115,108)'], ['ES_39101', 'rgb(243,123,123)'], ['ES_48001', 'rgb(247,133,142)'], ['ES_48002', 'rgb(226,85,64)'], ['ES_48003', 'rgb(233,102,82)'], ['ES_48004', 'rgb(128,128,128)'], ['ES_48005', 'rgb(241,119,116)'], ['ES_48006', 'rgb(243,123,124)'], ['ES_48007', 'rgb(224,80,61)'], ['ES_48008', 'rgb(240,116,110)'], ['ES_48009', 'rgb(237,111,100)'], ['ES_48010', 'rgb(212,47,42)'], ['ES_48011', 'rgb(232,101,79)'], ['ES_48012', 'rgb(128,128,128)'], ['ES_48013', 'rgb(224,81,61)'], ['ES_48014', 'rgb(128,128,128)'], ['ES_48015', 'rgb(228,91,67)'], ['ES_48016', 'rgb(128,128,128)'], ['ES_48017', 'rgb(205,30,33)'], ['ES_48018', 'rgb(223,77,59)'], ['ES_48019', 'rgb(235,107,92)'], ['ES_48020', 'rgb(225,84,63)'], ['ES_48021', 'rgb(208,38,37)'], ['ES_48022', 'rgb(252,143,163)'], ['ES_48023', 'rgb(247,132,140)'], ['ES_48024', 'rgb(254,148,171)'], ['ES_48025', 'rgb(242,121,119)'], ['ES_48026', 'rgb(249,136,148)'], ['ES_48027', 'rgb(242,122,120)'], ['ES_48028', 'rgb(128,128,128)'], ['ES_48029', 'rgb(225,82,62)'], ['ES_48030', 'rgb(227,89,66)'], ['ES_48031', 'rgb(128,128,128)'], ['ES_48032', 'rgb(246,130,136)'], ['ES_48033', 'rgb(128,128,128)'], ['ES_48034', 'rgb(236,108,94)'], ['ES_48035', 'rgb(214,53,46)'], ['ES_48036', 'rgb(229,92,68)'], ['ES_48037', 'rgb(230,96,70)'], ['ES_48038', 'rgb(216,59,49)'], ['ES_48039', 'rgb(236,108,94)'], ['ES_48040', 'rgb(210,42,39)'], ['ES_48041', 'rgb(128,128,128)'], ['ES_48042', 'rgb(242,121,118)'], ['ES_48043', 'rgb(128,128,128)'], ['ES_48044', 'rgb(128,128,128)'], ['ES_48045', 'rgb(235,106,89)'], ['ES_48046', 'rgb(217,63,51)'], ['ES_48047', 'rgb(128,128,128)'], ['ES_48048', 'rgb(128,128,128)'], ['ES_48049', 'rgb(128,128,128)'], ['ES_48050', 'rgb(244,126,130)'], ['ES_48051', 'rgb(251,153,180)'], ['ES_48052', 'rgb(223,78,59)'], ['ES_48053', 'rgb(212,49,43)'], ['ES_48054', 'rgb(128,128,128)'], ['ES_48055', 'rgb(235,107,91)'], ['ES_48056', 'rgb(205,30,32)'], ['ES_48057', 'rgb(128,128,128)'], ['ES_48058', 'rgb(233,102,82)'], ['ES_48059', 'rgb(248,135,146)'], ['ES_48060', 'rgb(226,85,64)'], ['ES_48061', 'rgb(206,32,34)'], ['ES_48062', 'rgb(221,73,57)'], ['ES_48063', 'rgb(128,128,128)'], ['ES_48064', 'rgb(209,39,38)'], ['ES_48065', 'rgb(237,110,97)'], ['ES_48066', 'rgb(218,65,52)'], ['ES_48067', 'rgb(225,82,62)'], ['ES_48068', 'rgb(204,28,31)'], ['ES_48069', 'rgb(210,42,39)'], ['ES_48070', 'rgb(221,71,56)'], ['ES_48071', 'rgb(227,87,65)'], ['ES_48072', 'rgb(253,151,177)'], ['ES_48073', 'rgb(128,128,128)'], ['ES_48074', 'rgb(238,166,201)'], ['ES_48075', 'rgb(250,138,153)'], ['ES_48076', 'rgb(206,32,33)'], ['ES_48077', 'rgb(128,128,128)'], ['ES_48078', 'rgb(128,128,128)'], ['ES_48079', 'rgb(214,54,46)'], ['ES_48080', 'rgb(224,80,61)'], ['ES_48081', 'rgb(222,74,57)'], ['ES_48082', 'rgb(128,128,128)'], ['ES_48083', 'rgb(225,83,62)'], ['ES_48084', 'rgb(128,128,128)'], ['ES_48085', 'rgb(128,128,128)'], ['ES_48086', 'rgb(233,103,83)'], ['ES_48087', 'rgb(236,108,93)'], ['ES_48088', 'rgb(249,155,183)'], ['ES_48089', 'rgb(128,128,128)'], ['ES_48090', 'rgb(246,129,136)'], ['ES_48091', 'rgb(250,139,154)'], ['ES_48092', 'rgb(235,106,90)'], ['ES_48093', 'rgb(251,140,156)'], ['ES_48094', 'rgb(240,117,111)'], ['ES_48095', 'rgb(239,116,109)'], ['ES_48096', 'rgb(241,119,115)'], ['ES_48097', 'rgb(233,102,82)'], ['ES_48901', 'rgb(218,63,51)'], ['ES_48902', 'rgb(220,68,54)'], ['ES_48903', 'rgb(217,60,50)'], ['ES_48904', 'rgb(220,70,55)'], ['ES_48905', 'rgb(220,69,55)'], ['ES_48906', 'rgb(128,128,128)'], ['ES_48907', 'rgb(128,128,128)'], ['ES_48908', 'rgb(128,128,128)'], ['ES_48909', 'rgb(128,128,128)'], ['ES_48910', 'rgb(237,111,100)'], ['ES_48911', 'rgb(218,65,52)'], ['ES_48912', 'rgb(229,95,69)'], ['ES_48913', 'rgb(128,128,128)'], ['ES_48914', 'rgb(218,63,51)'], ['ES_48915', 'rgb(227,88,65)']], 'grey')],
+                
+                'fill-opacity': 0.9
+            }
+            
+            , 'filter': layerFilter
+            
+        }, '');
+    
+        // Add border layer
+        map.addLayer({
+            'id': 'choropleth-line',
+            'source': 'vector-data',
+            'source-layer': 'esp_nuts_01234',
+            'type': 'line',
+            'layout': {
+                'line-join': 'round',
+                'line-cap': 'round'
+            },
+            'paint': {
+                
+                    'line-dasharray': [1, 0],
+                
+                'line-color': ['case',
+                    ['boolean', ['feature-state', 'hover'], false], 
+                    'black', 
+                    'rgb(128,0,38)'],
+                'line-width': 0.5,
+                'line-opacity': 0.2
+            }
+            
+            , 'filter': layerFilter
+            
+        }, '');
+    
+        // Add label layer
+        map.addLayer({
+            'id': 'choropleth-label',
+            'source': 'vector-data',
+            'source-layer': 'esp_nuts_01234',
+            'type': 'symbol',
+            'layout': {
+                
+                'text-size' : generateInterpolateExpression('zoom', [[0, 8],[22, 3* 8]] ),
+                'text-offset': [0,-1]
+            },
+            'paint': {
+                'text-halo-color': 'white',
+                'text-halo-width': generatePropertyExpression('interpolate', 'zoom', [[0,1], [18,5* 1]]),
+                'text-color': ['case',
+                    ['boolean', ['feature-state', 'hover'], false], 
+                    'black', '#131516']
+            }
+            
+            , 'filter': layerFilter
+            
+        }, '');
+    
+        // Optional extrusion layer
+        
+    
+    
+    
+            // Popups
+            var interactionLayer =  'choropleth-fill' ;
+            
+                var popupAction = 'mousemove',
+                    popupSettings =  {
+                        closeButton: false,
+                        closeOnClick: false
+                    };
+            
+    
+            // Create a popup
+            var popup = new mapboxgl.Popup(popupSettings);
+            
+            
+    
+        // Show the popup on mouseover
+        var interactionLayer =  'choropleth-fill' ;
+        var hoveredStateId = 0;
+    
+        map.on(popupAction, function(e) {
+            var features = map.queryRenderedFeatures(e.point, {layers: [interactionLayer, 'choropleth-label'] });
+    
+            if (features.length > 0) {
+                map.getCanvas().style.cursor = 'pointer';
+                var f = features[0];
+                newHoveredStateId = f.id;
+                if (newHoveredStateId != hoveredStateId) {
+                    map.removeFeatureState({source: 'vector-data', sourceLayer: 'esp_nuts_01234', id: hoveredStateId});
+                    hoveredStateId = newHoveredStateId;
+                }
+                map.setFeatureState({source: 'vector-data', sourceLayer: 'esp_nuts_01234', id: hoveredStateId}, { hover: true});
+                let popup_html = '<div>';
+    
+                for (key in f.properties) {
+                    popup_html += '<li><b> ' + key + '</b>: ' + f.properties[key] + ' </li>'
+                }
+    
+                popup_html += '</div>'
+                popup.setLngLat(e.lngLat)
+                    .setHTML(popup_html)
+                    .addTo(map);
+            }
+            else {
+                map.getCanvas().style.cursor = '';
+                popup.remove();
+                map.removeFeatureState({source: 'vector-data', sourceLayer: 'esp_nuts_01234', id: hoveredStateId});
+            }
+        });
+    
+    
+            
+            // Fly to selected feature on click
+            map.on('click', interactionLayer, function(e) {
+                map.easeTo({
+                    center: e.lngLat
+                });
+            });
+    
+        });
+    
+    
+    
+    </script>
+    
+    <!-- add capability to export map or legend to image file -->
+    
+    
+    </body>
+    </html>" style="width: 100%; height: 200px;"></iframe>
