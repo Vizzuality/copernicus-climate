@@ -4,7 +4,7 @@ import { useRouteMatch, useHistory } from 'react-router-dom';
 import styles from "./styles.module.scss";
 import Map from "components/map";
 import Zoom from "components/map/controls/zoom";
-import Dropdown from 'components/dropdown';
+import Dropdown from 'components/Dropdown';
 import LayerManager from 'components/map/layer-manager';
 import Loader from 'components/Loader';
 import Legend from 'components/map/legend';
@@ -18,6 +18,7 @@ import {
   GIDS,
   LAYERS,
   TERMALCOMFORT,
+  OPTIONS_MONTHES,
 } from 'constants.js';
 import {
   TermalComfortChart, 
@@ -40,6 +41,7 @@ const HomePage = () => {
   const history = useHistory();
   const [viewport, setViewport] = useState(DEFAULT_VIEWPORT);
   const [isLoading, setLoading] = useState(false);
+  const [activeMonth, setActiveMonth] = useState(OPTIONS_MONTHES[0]);
   const [layersInfo, setLayersInfo] = useState([]);
   const match = useRouteMatch('/:gid/:period/:theme?');
   const [widgetData, setWidgetData] = useState([]);
@@ -49,7 +51,9 @@ const HomePage = () => {
     theme = OPTIONS_THEME[0].value,
   } = (match && match.params) || {};
   const optionValue = OPTIONS_THEME.find(el => el.value === theme);
+  const optionMonthValue = activeMonth;
   const hadleChange = option => history.push(`/${gid}/${period}/${option.value}`);
+  const hadleChangeMonth = option => setActiveMonth(option);
   const { layers = [] } = LAYERS[period][theme] || {};
   const gidInfo = GIDS.find(g => g.gid === gid);
   const { latitude, longitude, admin_level: zoom } = gidInfo;
@@ -68,7 +72,8 @@ const HomePage = () => {
       time: {
         start: from,
         end: to,
-      }
+      },
+      month: activeMonth.value,
     });
     setLoading(false);
     setWidgetData(data.data);
@@ -84,7 +89,7 @@ const HomePage = () => {
   useEffect(() => {
     fetchWidgetsData();
     fetchLayersInfo();
-  }, [theme, period, gid]);
+  }, [theme, period, gid, activeMonth]);
   
   useEffect(() => {
     fetchLayersInfo();
@@ -164,6 +169,12 @@ const HomePage = () => {
             )}
             {theme === TERMALCOMFORT && (
               <>
+              <Dropdown 
+                options={OPTIONS_MONTHES}
+                value={optionMonthValue}
+                onChange={hadleChangeMonth}
+                mode={'calendar'}
+              />
                 <ClimatologyChart data={transformedWidgetData} />
               </>
             )}

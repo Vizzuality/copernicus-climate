@@ -4,7 +4,7 @@ import styles from "./styles.module.scss";
 import Map from "components/map";
 import Zoom from "components/map/controls/zoom";
 import Target from "components/map/controls/target";
-import Dropdown from 'components/dropdown';
+import Dropdown from 'components/Dropdown';
 import { LayerManager, Layer } from 'layer-manager/dist/components';
 import { PluginMapboxGl } from 'layer-manager';
 import { 
