@@ -17,11 +17,13 @@ import {
   COLDSNAPS,
   GIDS,
   LAYERS,
+  TERMALCOMFORT,
 } from 'constants.js';
 import {
   TermalComfortChart, 
   RiskEventsChart,
   TemparatureChart,
+  ClimatologyChart,
 } from 'components/chart';
 import { getWidgetData, getLayersInfo } from 'api';
 import Description from "components/Description";
@@ -48,7 +50,7 @@ const HomePage = () => {
   } = (match && match.params) || {};
   const optionValue = OPTIONS_THEME.find(el => el.value === theme);
   const hadleChange = option => history.push(`/${gid}/${period}/${option.value}`);
-  const { layers } = LAYERS[period][theme];
+  const { layers = [] } = LAYERS[period][theme] || {};
   const gidInfo = GIDS.find(g => g.gid === gid);
   const { latitude, longitude, admin_level: zoom } = gidInfo;
   useEffect(() => {
@@ -100,7 +102,7 @@ const HomePage = () => {
   }
   const kelvin =  -273.15;
   const copyData = _.cloneDeep(widgetData);
-  const transformedWidgetData = copyData.map(wd => {
+  const transformedWidgetData = theme === TERMALCOMFORT ? copyData : copyData.map(wd => {
     params.alarmsCount += theme === HEATWAVES ? wd.heatwave_alarms_mean : wd.coldsnap_alarms_mean;
     params.alertsCount += theme === HEATWAVES ? wd.heatwave_alerts_mean : wd.coldsnap_alerts_mean;
     params.warningsCount += theme === HEATWAVES ? wd.heatwave_warnings_mean : wd.coldsnap_warnings_mean;
@@ -129,12 +131,15 @@ const HomePage = () => {
     }
     return wd;
   });
-  params.alarmsCount = Math.ceil(params.alarmsCount) || 0;
-  params.alertsCount = Math.ceil(params.alertsCount) || 0;
-  params.warningsCount = Math.ceil(params.warningsCount) || 0;
-  params.extreamCount = Math.ceil(params.extreamCount) || 0;
-  params.moderateCount = Math.ceil(params.moderateCount) || 0;
-  params.strongCount = Math.ceil(params.strongCount) || 0;
+
+  if (theme !== TERMALCOMFORT) {
+    params.alarmsCount = Math.ceil(params.alarmsCount) || 0;
+    params.alertsCount = Math.ceil(params.alertsCount) || 0;
+    params.warningsCount = Math.ceil(params.warningsCount) || 0;
+    params.extreamCount = Math.ceil(params.extreamCount) || 0;
+    params.moderateCount = Math.ceil(params.moderateCount) || 0;
+    params.strongCount = Math.ceil(params.strongCount) || 0;
+  }
 
   return (
     <div className={styles.container}>
@@ -145,17 +150,25 @@ const HomePage = () => {
             options={OPTIONS_THEME}
             value={optionValue}
             onChange={hadleChange}
-          />          
+          />      
           <div className={styles.description}>
             {!isLoading && (<Description  theme={theme} params={params} />)}
           </div>
           <div className={styles.charts}>
-            <TemparatureChart data={transformedWidgetData} theme={theme} />
-            <RiskEventsChart data={transformedWidgetData} theme={theme} />
-            <TermalComfortChart data={transformedWidgetData} theme={theme} />
+            {(theme === COLDSNAPS || theme === HEATWAVES) && (
+              <>
+                <TemparatureChart data={transformedWidgetData} theme={theme} />
+                <RiskEventsChart data={transformedWidgetData} theme={theme} />
+                <TermalComfortChart data={transformedWidgetData} theme={theme} />
+              </>
+            )}
+            {theme === TERMALCOMFORT && (
+              <>
+                <ClimatologyChart data={transformedWidgetData} />
+              </>
+            )}
           </div>
         </div>
-
       </div>
       <div className={styles.map}>
           <Map scrollZoom={false} viewport={viewport} setViewport={setViewport} >

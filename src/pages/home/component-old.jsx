@@ -59,7 +59,6 @@ const HomePage = () => {
     setViewport(COUNTRIES_DEFAULT_VIEWPORTS[gid]);
   }, [gid]);
 
-  console.log(widgetData);
   const fetchWidgetsData = async () => {
     const data = await getWidgetData({
       theme,

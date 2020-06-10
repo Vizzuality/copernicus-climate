@@ -1,4 +1,9 @@
 import axios from 'axios';
+import {
+  TERMALCOMFORT,
+  COLDSNAPS,
+  HEATWAVES
+} from 'constants.js';
 
 const apiUrl = 'https://api.skydipper.com/v1';
 const AuthorizationToken = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlMzA0OGIzYTY4NWYzMDAxMDhkZjYyNCIsInJvbGUiOiJBRE1JTiIsInByb3ZpZGVyIjoibG9jYWwiLCJlbWFpbCI6ImVkd2FyZC5tb3JyaXNAdml6enVhbGl0eS5jb20iLCJleHRyYVVzZXJEYXRhIjp7ImFwcHMiOlsic2t5ZGlwcGVyIiwibWFuZ3JvdmVBdGxhcyIsInNvaWxzUmV2ZWFsZWQiLCJjb3Blcm5pY3VzQ2xpbWF0ZSJdfSwiY3JlYXRlZEF0IjoxNTkwNDA0NzU1MTc3LCJpYXQiOjE1OTA0MDQ3NTV9.wRRJQCFtvCZzMTtucly2pmCL5WhsFBgBFDUo2CmJSaY`; 
@@ -16,7 +21,8 @@ const defaultParams = {
   time: {
     start: '1980-01-01',
     end: '2100-01-01',
-  }
+  },
+  month: (new Date()).getMonth(),
 };
 
 const {
@@ -24,15 +30,18 @@ const {
   theme: themeDef,
   period: periodDef,
   time: timeDef,
+  month: monthDef,
 } = defaultParams;
-
 const tables = {
   historical: 'historical_monthly_zs_nuts_level_234',
   future_seasonal: 'future_seasonal_monthly_zs_nuts_level_234',
   future_longterm: 'future_longterm_monthly_zs_nuts_level_234',
 }
+const tablesTermalComfort = {
+  historical: 'historical_hourly_petmax_quantiles_zs_nuts_level_2',
+};
 const params = {
-  heatwaves: {
+  [HEATWAVES]: {
     historical: [
       'gid',
       'time',
@@ -73,7 +82,7 @@ const params = {
       'heatwave_warnings_std'
     ]
   },
-  coldsnaps: {
+  [COLDSNAPS]: {
     historical: [
       'gid',
       'time',
@@ -113,11 +122,20 @@ const params = {
       'coldsnap_warnings_mean',
       'coldsnap_warnings_std'
     ]
-  }
+  },
+  [TERMALCOMFORT]: {
+    historical: [
+      'gid',
+      'month',
+      'hour',
+      'quantile',
+      'pet_mean'
+    ]
+  },
 }
 
-const generateSql = (gid, period, theme, time) => {
-  const table = tables[period];
+const generateSql = (gid, period, theme, time, month) => {
+  const table = theme === TERMALCOMFORT ? tablesTermalComfort[period] : tables[period];
   const selectParams = params[theme][period];
   const sql = `
     SELECT 
@@ -127,7 +145,16 @@ const generateSql = (gid, period, theme, time) => {
     AND time between '${time.start}' AND '${time.end}'
     ORDER BY time
   `;
-  return sql;
+
+  const sqlTermalComfort = `
+    SELECT 
+    ${selectParams.join(',')}
+    FROM ${table}
+    WHERE gid='${gid}'
+    AND month = ${month}
+    ORDER BY hour
+  `;
+  return theme === TERMALCOMFORT ? sqlTermalComfort : sql;
 }
 
 export const getWidgetData = async (params = defaultParams) => {
@@ -136,9 +163,10 @@ export const getWidgetData = async (params = defaultParams) => {
     gid = gidDef,
     theme = themeDef,
     time = timeDef,
+    month = monthDef,
   } = params;
   const id = queryId[period];
-  const sql = generateSql(gid, period, theme, time)
+  const sql = generateSql(gid, period, theme, time, month)
   const axiosConfig = {
     url: `/query/${id}/?sql=${sql}`,
     method: 'GET',

@@ -78,10 +78,10 @@ export const OPTIONS_THEME = [
     value: COLDSNAPS,
     label: 'ColdSnaps',
   },
-  // {
-  //   value: TERMALCOMFORT,
-  //   label: 'Termal Comfort',
-  // }
+  {
+    value: TERMALCOMFORT,
+    label: 'Termal Comfort',
+  }
 ];
 
 export const GID_DEFAULT_VIEWPORTS = {

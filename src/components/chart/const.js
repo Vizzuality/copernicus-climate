@@ -107,14 +107,68 @@ riskAreas[COLDSNAPS] = [
     type:"linear",
     name:"Warning",
     dataKey:"coldsnap_warnings_mean", 
-    stackId:"1",
-    stroke:"#FFC744", 
-    fill:"#FFC744",
+    fill:"#8884d8"
   },
 ];
 riskAreas[TERMALCOMFORT] = [];
 
+/**
+ * Colors climatology
+ * [4, 8, 13, 18, 23, 29, 35, 41],  
+ * ["#DAEFF5", "#BFD3E6", "#9EBCDA", "#8C96C6", "#8C6BB1", "#88419D", "#6E016B", "#3F0046"]
+ */
+
+const climatologyTypes = {
+  type1: {
+    fill: '#DAEFF5',
+    condition: (x) => x < 4,
+  },
+  type2: {
+    fill: '#BFD3E6',
+    condition: (x) => x >= 4 && x < 8,
+    name: 'Extreme cold stress',
+  },
+  type3: {
+    fill: '#9EBCDA',
+    condition: (x) => x >= 8 && x < 13,
+    name: 'Strong cold stress',
+  },
+  type4: {
+    fill: '#8C96C6',
+    condition: (x) => x >= 13 && x < 18,
+    name: 'Moderate cold stress',
+  },
+  type5: {
+    fill: '#8C6BB1',
+    condition: (x) => x >= 18 && x < 23,
+    name: 'Comfort no stress',
+  },
+  type6: {
+    fill: '#88419D',
+    condition: (x) => x >= 23 && x < 29,
+    name: 'Moderate heat stress',
+  },
+  type7: {
+    fill: '#6E016B',
+    condition: (x) => x >= 29 && x < 35,
+    name: 'Strong heat stress',
+  },
+  type8: {
+    fill: '#3F0046',
+    condition: (x) => x >= 35 && x < 41,
+    name: 'Extreme heat stress',
+  },
+}
+const climatologyBars = {};
+climatologyBars[TERMALCOMFORT] = Object.keys(climatologyTypes).map(type => ({
+  dataKey: type,
+  fill: climatologyTypes[type].fill,
+  name: climatologyTypes[type].name,
+}));
+
 export {
   termalAreas,
   riskAreas,
+  climatologyBars,
+  climatologyTypes,
 }
