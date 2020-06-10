@@ -10,8 +10,8 @@ import Loader from 'components/Loader';
 import Legend from 'components/map/legend';
 import _ from 'lodash';
 
-import { 
-  OPTIONS_TIME, 
+import {
+  OPTIONS_TIME,
   OPTIONS_THEME,
   HEATWAVES,
   COLDSNAPS,
@@ -21,7 +21,7 @@ import {
   OPTIONS_MONTHES,
 } from 'constants.js';
 import {
-  TermalComfortChart, 
+  TermalComfortChart,
   RiskEventsChart,
   TemparatureChart,
   ClimatologyChart,
@@ -74,6 +74,7 @@ const HomePage = () => {
         end: to,
       },
       month: activeMonth.value,
+      admin_level: gidInfo.admin_level,
     });
     setLoading(false);
     setWidgetData(data.data);

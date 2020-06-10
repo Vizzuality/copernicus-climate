@@ -23,6 +23,7 @@ const defaultParams = {
     end: '2100-01-01',
   },
   month: (new Date()).getMonth(),
+  admin_level: 2,
 };
 
 const {
@@ -31,6 +32,7 @@ const {
   period: periodDef,
   time: timeDef,
   month: monthDef,
+  admin_level: adminLevelDef,
 } = defaultParams;
 const tables = {
   historical: 'historical_monthly_zs_nuts_level_234',
@@ -38,7 +40,8 @@ const tables = {
   future_longterm: 'future_longterm_monthly_zs_nuts_level_234',
 }
 const tablesTermalComfort = {
-  historical: 'historical_hourly_petmax_quantiles_zs_nuts_level_2',
+  '2': 'historical_hourly_petmax_quantiles_zs_nuts_level_2',
+  '3': 'historical_hourly_petmax_quantiles_zs_nuts_level_3',
 };
 const params = {
   [HEATWAVES]: {
@@ -134,8 +137,8 @@ const params = {
   },
 }
 
-const generateSql = (gid, period, theme, time, month) => {
-  const table = theme === TERMALCOMFORT ? tablesTermalComfort[period] : tables[period];
+const generateSql = (gid, period, theme, time, month, admin_level) => {
+  const table = theme === TERMALCOMFORT ? tablesTermalComfort[admin_level] : tables[period];
   const selectParams = params[theme][period];
   const sql = `
     SELECT 
@@ -164,9 +167,10 @@ export const getWidgetData = async (params = defaultParams) => {
     theme = themeDef,
     time = timeDef,
     month = monthDef,
+    admin_level = adminLevelDef,
   } = params;
   const id = queryId[period];
-  const sql = generateSql(gid, period, theme, time, month)
+  const sql = generateSql(gid, period, theme, time, month, admin_level)
   const axiosConfig = {
     url: `/query/${id}/?sql=${sql}`,
     method: 'GET',
