@@ -13,6 +13,7 @@ import {
   BarChart,
   Bar,
   Cell,
+  Surface,
 } from 'recharts';
 import styles from './styles.module.scss';
 import {
@@ -24,6 +25,19 @@ import {
 import { HEATWAVES, TERMALCOMFORT } from 'constants.js';
 import cx from 'classnames';
 
+function ClimatilogyLegend(props) {
+  const { payload } = props;
+  return (
+    <ul className={styles['custom-legend']}>
+      {payload.reverse().map((entry, index) => (
+        <li key={`item-${index}`} className={styles['legend-item']}>
+          <div className={styles.colorBox} style={{backgroundColor: entry.color}} />
+          <div className={styles.labelText}>{entry.value}</div>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 
 export const TermalComfortChart = ({ data = [], theme = HEATWAVES }) => {
@@ -319,6 +333,7 @@ export const ClimatologyChart = ({ data = [], theme = TERMALCOMFORT }) => {
               iconType="circle"
               align="left"
               chartHeight={33}
+              content={ClimatilogyLegend}
             />
           </BarChart>
         </ResponsiveContainer>
