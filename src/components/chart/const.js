@@ -120,45 +120,51 @@ riskAreas[TERMALCOMFORT] = [];
 
 const climatologyTypes = {
   type1: {
-    fill: '#DAEFF5',
+    fill: '#B2182B',
     condition: (x) => x < 4,
-  },
-  type2: {
-    fill: '#BFD3E6',
-    condition: (x) => x >= 4 && x < 8,
     name: 'Extreme cold stress',
   },
-  type3: {
-    fill: '#9EBCDA',
-    condition: (x) => x >= 8 && x < 13,
+  type2: {
+    fill: '#D6604D',
+    condition: (x) => x >= 4 && x < 8,
     name: 'Strong cold stress',
   },
-  type4: {
-    fill: '#8C96C6',
-    condition: (x) => x >= 13 && x < 18,
+  type3: {
+    fill: '#F4A582',
+    condition: (x) => x >= 8 && x < 13,
     name: 'Moderate cold stress',
   },
+  type4: {
+    fill: '#FDDBC7',
+    condition: (x) => x >= 13 && x < 18,
+    name: 'Slight cold stress',
+  },
   type5: {
-    fill: '#8C6BB1',
+    fill: '#F7F7F7',
     condition: (x) => x >= 18 && x < 23,
-    name: 'Comfort no stress',
+    name: 'Comfortable',
   },
   type6: {
-    fill: '#88419D',
+    fill: '#D1E5F0',
     condition: (x) => x >= 23 && x < 29,
-    name: 'Moderate heat stress',
+    name: 'Slight heat stress',
   },
   type7: {
-    fill: '#6E016B',
+    fill: '#92C5DE',
     condition: (x) => x >= 29 && x < 35,
-    name: 'Strong heat stress',
+    name: 'Moderate heat stress',
   },
   type8: {
-    fill: '#3F0046',
+    fill: '#4393C3',
     condition: (x) => x >= 35 && x < 41,
+    name: 'Strong heat stress',
+  },
+  type9: {
+    fill: '#2166AC',
+    condition: (x) => x >= 41,
     name: 'Extreme heat stress',
   },
-}
+};
 const climatologyBars = {};
 climatologyBars[TERMALCOMFORT] = Object.keys(climatologyTypes).map(type => ({
   dataKey: type,
