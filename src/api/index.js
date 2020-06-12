@@ -133,7 +133,21 @@ const params = {
       'hour',
       'quantile',
       'pet_mean'
-    ]
+    ],
+    future_seasonal: [
+      'gid',
+      'month',
+      'hour',
+      'quantile',
+      'pet_mean'
+    ],
+    future_longterm: [
+      'gid',
+      'month',
+      'hour',
+      'quantile',
+      'pet_mean'
+    ],
   },
 }
 

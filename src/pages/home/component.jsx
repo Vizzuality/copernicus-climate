@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useRouteMatch, useHistory } from 'react-router-dom';
 import styles from "./styles.module.scss";
 import Map from "components/map";
+import { checkType } from "components/chart/const";
 import Zoom from "components/map/controls/zoom";
 import Dropdown from 'components/Dropdown';
 import LayerManager from 'components/map/layer-manager';
@@ -138,6 +139,10 @@ const HomePage = () => {
     return wd;
   });
 
+  const thermalValues = {
+    min: 0,
+    max: 0,
+  }
   if (theme !== TERMALCOMFORT) {
     params.alarmsCount = Math.ceil(params.alarmsCount) || 0;
     params.alertsCount = Math.ceil(params.alertsCount) || 0;
@@ -145,6 +150,10 @@ const HomePage = () => {
     params.extreamCount = Math.ceil(params.extreamCount) || 0;
     params.moderateCount = Math.ceil(params.moderateCount) || 0;
     params.strongCount = Math.ceil(params.strongCount) || 0;
+  } else {
+    const sortedData = transformedWidgetData.length > 0 ? transformedWidgetData.sort((a, b) => a.pet_mean > b.pet_mean ? 1 : -1) : [];
+    thermalValues.min = sortedData[0] ? checkType(sortedData[0].pet_mean).name : 0;
+    thermalValues.max = sortedData[sortedData.length - 1] ? checkType(sortedData[sortedData.length - 1].pet_mean).name : 0;
   }
 
   return (
@@ -156,10 +165,12 @@ const HomePage = () => {
             options={OPTIONS_THEME}
             value={optionValue}
             onChange={hadleChange}
-          />      
-          <div className={styles.description}>
-            {!isLoading && (<Description  theme={theme} params={params} />)}
-          </div>
+          />
+          {(theme === COLDSNAPS || theme === HEATWAVES) && (
+            <div className={styles.description}>
+              {!isLoading && (<Description gidInfo={gidInfo} theme={theme} params={params} />)}
+            </div>
+          )}
           <div className={styles.charts}>
             {(theme === COLDSNAPS || theme === HEATWAVES) && (
               <>
@@ -170,12 +181,21 @@ const HomePage = () => {
             )}
             {theme === TERMALCOMFORT && (
               <>
-              <Dropdown 
-                options={OPTIONS_MONTHES}
-                value={optionMonthValue}
-                onChange={hadleChangeMonth}
-                mode={'calendar'}
-              />
+                <br/>
+                <Dropdown 
+                  options={OPTIONS_MONTHES}
+                  value={optionMonthValue}
+                  onChange={hadleChangeMonth}
+                  mode={'calendar'}
+                />
+                <div className={styles.description}>
+                  <Description
+                    gidInfo={gidInfo}
+                    theme={theme}
+                    params={params}
+                    thermalValues={thermalValues}
+                  />
+                </div>
                 <ClimatologyChart data={transformedWidgetData} />
               </>
             )}

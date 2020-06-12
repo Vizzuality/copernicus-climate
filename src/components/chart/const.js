@@ -172,9 +172,16 @@ climatologyBars[TERMALCOMFORT] = Object.keys(climatologyTypes).map(type => ({
   name: climatologyTypes[type].name,
 }));
 
+const checkType = (x) => {
+  const types = Object.keys(climatologyTypes);
+  const current = types.find(t => climatologyTypes[t].condition(x));
+  return climatologyTypes[current];
+}
+
 export {
   termalAreas,
   riskAreas,
   climatologyBars,
   climatologyTypes,
+  checkType,
 }
