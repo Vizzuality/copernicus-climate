@@ -301,6 +301,8 @@ export const ClimatologyChart = ({ data = [], theme = TERMALCOMFORT }) => {
               width={50}
               dx={-20}
               stroke="1"
+              type="number"
+              domain={[0, 100]}
               padding={{top: 0, bottom: 20}}
             />
             <Tooltip 
