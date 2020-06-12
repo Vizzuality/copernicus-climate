@@ -12,8 +12,6 @@ import {
   ResponsiveContainer,
   BarChart,
   Bar,
-  Cell,
-  Surface,
 } from 'recharts';
 import styles from './styles.module.scss';
 import {

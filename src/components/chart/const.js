@@ -120,22 +120,22 @@ riskAreas[TERMALCOMFORT] = [];
 
 const climatologyTypes = {
   type1: {
-    fill: '#B2182B',
+    fill: '#2166AC',
     condition: (x) => x < 4,
     name: 'Extreme cold stress',
   },
   type2: {
-    fill: '#D6604D',
+    fill: '#4393C3',
     condition: (x) => x >= 4 && x < 8,
     name: 'Strong cold stress',
   },
   type3: {
-    fill: '#F4A582',
+    fill: '#92C5DE',
     condition: (x) => x >= 8 && x < 13,
     name: 'Moderate cold stress',
   },
   type4: {
-    fill: '#FDDBC7',
+    fill: '#D1E5F0',
     condition: (x) => x >= 13 && x < 18,
     name: 'Slight cold stress',
   },
@@ -145,22 +145,22 @@ const climatologyTypes = {
     name: 'Comfortable',
   },
   type6: {
-    fill: '#D1E5F0',
+    fill: '#FDDBC7',
     condition: (x) => x >= 23 && x < 29,
     name: 'Slight heat stress',
   },
   type7: {
-    fill: '#92C5DE',
+    fill: '#F4A582',
     condition: (x) => x >= 29 && x < 35,
     name: 'Moderate heat stress',
   },
   type8: {
-    fill: '#4393C3',
+    fill: '#D6604D',
     condition: (x) => x >= 35 && x < 41,
     name: 'Strong heat stress',
   },
   type9: {
-    fill: '#2166AC',
+    fill: '#B2182B',
     condition: (x) => x >= 41,
     name: 'Extreme heat stress',
   },
