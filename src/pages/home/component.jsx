@@ -152,8 +152,8 @@ const HomePage = () => {
     params.strongCount = Math.ceil(params.strongCount) || 0;
   } else {
     const sortedData = transformedWidgetData.length > 0 ? transformedWidgetData.sort((a, b) => a.pet_mean > b.pet_mean ? 1 : -1) : [];
-    thermalValues.min = sortedData[0] ? checkType(sortedData[0].pet_mean).name : 0;
-    thermalValues.max = sortedData[sortedData.length - 1] ? checkType(sortedData[sortedData.length - 1].pet_mean).name : 0;
+    thermalValues.min = sortedData[0] && sortedData[0].pet_mean ? checkType(sortedData[0].pet_mean).name : 0;
+    thermalValues.max = sortedData[sortedData.length - 1] && sortedData[sortedData.length - 1].pet_mean ? checkType(sortedData[sortedData.length - 1].pet_mean).name : 0;
   }
 
   return (
