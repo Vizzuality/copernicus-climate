@@ -17,6 +17,8 @@ import {
   COLDSNAPS,
   GIDS,
   LAYERS,
+  DEFAULT_VIEWPORT,
+  ADMIN_LEVEL_ZOOM,
 } from 'constants.js';
 import {
   TermalComfortChart, 
@@ -25,14 +27,6 @@ import {
 } from 'components/chart';
 import { getWidgetData, getLayersInfo } from 'api';
 import Description from "components/Description";
-
-const DEFAULT_VIEWPORT = {
-  width: 400,
-  height: 400,
-  latitude: 37.7577,
-  longitude: -122.4376,
-  zoom: 8,
-};
 
 const HomePage = () => {  
   const history = useHistory();
@@ -50,12 +44,11 @@ const HomePage = () => {
   const hadleChange = option => history.push(`/${gid}/${period}/${option.value}`);
   const { layers } = LAYERS[period][theme];
   const gidInfo = GIDS.find(g => g.gid === gid);
-  const { latitude, longitude, admin_level: zoom } = gidInfo;
+  const { latitude, longitude, admin_level } = gidInfo;
   useEffect(() => {
-    const newViewport = { ...DEFAULT_VIEWPORT, latitude, longitude, zoom: zoom + 3 }
+    const newViewport = { ...DEFAULT_VIEWPORT, latitude, longitude, zoom: ADMIN_LEVEL_ZOOM[admin_level] }
     setViewport(newViewport);
   }, [gid]);
-
   const { from, to } = OPTIONS_TIME.find(t => t.value === period);
   const fetchWidgetsData = async () => {
     setLoading(true);
@@ -136,6 +129,12 @@ const HomePage = () => {
   params.moderateCount = Math.ceil(params.moderateCount) || 0;
   params.strongCount = Math.ceil(params.strongCount) || 0;
 
+
+  layersInfo.map(l => {
+    l.attributes.layerConfig.params.admin_level = admin_level;
+    return l;
+  })
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -160,7 +159,7 @@ const HomePage = () => {
       <div className={styles.map}>
           <Map scrollZoom={false} viewport={viewport} setViewport={setViewport} >
             {map => (
-              <LayerManager map={map} layers={layers} />
+              <LayerManager map={map} layers={layersInfo} />
             )}
           </Map>
           <Legend layers={layersInfo} align="right" layout="vertical" verticalAlign="top" />

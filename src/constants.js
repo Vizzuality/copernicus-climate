@@ -200,3 +200,19 @@ export const MODAL_INFO_DATA = {
       'The current observed distribution shows the points from GBIF where the species has been observed in the last 20 years. The modelled distribution is the committe average of the 180 calibrated models.'
   },
 };
+
+
+export const DEFAULT_VIEWPORT = {
+  width: 400,
+  height: 400,
+  latitude: 37.7577,
+  longitude: -122.4376,
+  zoom: 8,
+};
+
+export const ADMIN_LEVEL_ZOOM = {
+  '1' : 4,
+  '2' : 6,
+  '3' : 10,
+  '4' : 15,
+};
