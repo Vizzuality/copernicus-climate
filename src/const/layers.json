@@ -1,61 +1,76 @@
 {
   "historical": {
       "heatwaves": {
-          "layers": [{
-              "name": "Historical max tasmax admin level 2, 3, and 4",
-              "id": "514ed56e-84b8-4e08-a9da-252952e6e2dd",
-              "endpoint": "https://api.skydipper.com/v1/layer/514ed56e-84b8-4e08-a9da-252952e6e2dd"
-          }]
+          "layers": [
+              {
+                  "name": "Historical max tasmax admin level 2, 3, and 4",
+                  "id": "424a20e9-efc1-4813-b031-791a4707dbcb",
+                  "endpoint": "https://api.skydipper.com/v1/layer/424a20e9-efc1-4813-b031-791a4707dbcb"
+              }
+          ]
       },
       "coldsnaps": {
-          "layers": [ {
-              "name": "Historical min tasmin admin level 2, 3, and 4",
-              "id": "da8383e3-4a5b-47e4-bc16-33b26e81fdd4",
-              "endpoint": "https://api.skydipper.com/v1/layer/da8383e3-4a5b-47e4-bc16-33b26e81fdd4"
-          }]
+          "layers": [
+              {
+                  "name": "Historical min tasmin admin level 2, 3, and 4",
+                  "id": "e0692e43-a495-49d3-876b-8bd3b83ab5be",
+                  "endpoint": "https://api.skydipper.com/v1/layer/e0692e43-a495-49d3-876b-8bd3b83ab5be"
+              }
+          ]
       },
       "thermalcomfort": {
-          "layers": [{
-              "name": "Historical max petmax admin level 2, 3, and 4",
-              "id": "152ab5d2-cee0-4de0-a3fb-c57e598e7ff5",
-              "endpoint": "https://api.skydipper.com/v1/layer/152ab5d2-cee0-4de0-a3fb-c57e598e7ff5"
-          },  {
-              "name": "Historical min petmin admin level 2, 3, and 4",
-              "id": "ee94749f-6af5-4f54-85c2-e93bdebbb601",
-              "endpoint": "https://api.skydipper.com/v1/layer/ee94749f-6af5-4f54-85c2-e93bdebbb601"
-          }]
+          "layers": [
+              {
+                  "name": "Historical max petmax admin level 2, 3, and 4",
+                  "id": "9a07929a-d9c7-4ed6-b4c6-3c6e6c4d5ce3",
+                  "endpoint": "https://api.skydipper.com/v1/layer/9a07929a-d9c7-4ed6-b4c6-3c6e6c4d5ce3"
+              },
+              {
+                  "name": "Historical min petmin admin level 2, 3, and 4",
+                  "id": "9a061750-3202-4004-8ab7-cc4bd4a13bf5",
+                  "endpoint": "https://api.skydipper.com/v1/layer/9a061750-3202-4004-8ab7-cc4bd4a13bf5"
+              }
+          ]
       }
   },
   "future_seasonal": {
       "heatwaves": {
-          "layers": [   {
-              "name": "Future seasonal max tasmax admin level 2, 3, and 4",
-              "id": "0a6285c6-ed4a-4dff-8f6c-21e1c85ddf48",
-              "endpoint": "https://api.skydipper.com/v1/layer/0a6285c6-ed4a-4dff-8f6c-21e1c85ddf48"
-          }]
+          "layers": [
+              {
+                  "name": "Future seasonal max tasmax admin level 2, 3, and 4",
+                  "id": "81c79122-189d-4842-a6c0-d97f0c56f556",
+                  "endpoint": "https://api.skydipper.com/v1/layer/81c79122-189d-4842-a6c0-d97f0c56f556"
+              }
+          ]
       },
       "coldsnaps": {
-          "layers": [ {
-              "name": "Future seasonal min tasmin admin level 2, 3, and 4",
-              "id": "1f0fa38b-9d79-461e-a80e-5c6e574bf75b",
-              "endpoint": "https://api.skydipper.com/v1/layer/1f0fa38b-9d79-461e-a80e-5c6e574bf75b"
-          }]
+          "layers": [
+              {
+                  "name": "Future seasonal min tasmin admin level 2, 3, and 4",
+                  "id": "752a7741-27d8-4fac-9c88-888e26e546e7",
+                  "endpoint": "https://api.skydipper.com/v1/layer/752a7741-27d8-4fac-9c88-888e26e546e7"
+              }
+          ]
       }
   },
   "future_longterm": {
       "heatwaves": {
-          "layers": [   {
-              "name": "Future longterm max tasmax admin level 2, 3, and 4",
-              "id": "10bf5a96-7b1f-47fd-89f5-0242c92fc3ac",
-              "endpoint": "https://api.skydipper.com/v1/layer/10bf5a96-7b1f-47fd-89f5-0242c92fc3ac"
-          }]
+          "layers": [
+              {
+                  "name": "Future longterm max tasmax admin level 2, 3, and 4",
+                  "id": "48ec523f-8e98-47f6-9b15-70c5dff671ef",
+                  "endpoint": "https://api.skydipper.com/v1/layer/48ec523f-8e98-47f6-9b15-70c5dff671ef"
+              }
+          ]
       },
       "coldsnaps": {
-          "layers": [ {
-              "name": "Future longterm min tasmin admin level 2, 3, and 4",
-              "id": "30d8cc53-e02b-4ba2-8d28-ab38bce6bf78",
-              "endpoint": "https://api.skydipper.com/v1/layer/30d8cc53-e02b-4ba2-8d28-ab38bce6bf78"
-          }]
+          "layers": [
+              {
+                  "name": "Future longterm min tasmin admin level 2, 3, and 4",
+                  "id": "8127719e-ab03-4214-9831-53267c11208c",
+                  "endpoint": "https://api.skydipper.com/v1/layer/8127719e-ab03-4214-9831-53267c11208c"
+              }
+          ]
       }
   }
 }
