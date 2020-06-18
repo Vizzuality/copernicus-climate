@@ -25,7 +25,7 @@ export default {
     const apiParamsString = Object.keys(apiParams)
       .map(k => `${k}=${apiParams[k]}`)
       .join('&');
-    const url = `https://35.233.41.65/user/${provider.account}/api/v1/map?${apiParamsString}`;
+    const url = `http://35.233.41.65/user/${provider.account}/api/v1/map?${apiParamsString}`;
 
     fetch('get', url, {}, layerModel)
       .then(response => {
