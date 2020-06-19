@@ -27,25 +27,18 @@ export default {
       .join('&');
     const url = `http://35.233.41.65/user/${provider.account}/api/v1/map?${apiParamsString}`;
     
-    // fetch('get', url, {}, layerModel)
-    //   .then(response => {
-    //     const tiles = response.metadata.tilejson.vector.tiles;      
-    //     console.log(tiles);
-    //     return resolve({
-    //       ...layer,
-    //       source: {
-    //         ...omit(layer.source, 'provider'),
-    //         tiles: tiles,
-    //       }
-    //     });
-    //   })
-    //   .catch(err => reject(err));
-    return resolve({
-      ...layer,
-      source: {
-        ...omit(layer.source, 'provider'),
-        tiles: ["http://35.233.41.65/user/skydipper/api/v1/map/a2bf1ce9fa2b77902a4532b265692d36:1590567714766/{z}/{x}/{y}.mvt"],
-      }
-    });
+    fetch('get', url, {}, layerModel)
+      .then(response => {
+        const tiles = response.metadata.tilejson.vector.tiles;      
+        console.log(tiles);
+        return resolve({
+          ...layer,
+          source: {
+            ...omit(layer.source, 'provider'),
+            tiles: tiles,
+          }
+        });
+      })
+      .catch(err => reject(err));
   }
 };
