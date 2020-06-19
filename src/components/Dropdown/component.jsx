@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import Icon from 'components/icon';
 import styles from './styles.module.scss';
+import cx from 'classnames';
 
 const Dropdown = ({ 
   options = [],
   value = '',
-  onChange = () => {}
+  onChange = () => {},
+  mode = 'standart',
  }) => {
 
   const [open, setOpen] = useState(false);
@@ -16,10 +18,11 @@ const Dropdown = ({
   }
 
   return  (
-    <div className={styles.container}>
+    <div className={cx(styles.container, { [styles.calendar]: mode === 'calendar' })}>
       <button onClick={() => setOpen(!open)} className={styles.drButton}>
         {value.label}
-        <Icon name="icon-dropdown" />
+        {mode === 'standart' && <Icon name="icon-dropdown" /> }
+        {mode === 'calendar' && <Icon name="icon-calendar" /> }
       </button>
       {open && options && options.length > 0 && (
         <ul className={styles.drMenu}>
