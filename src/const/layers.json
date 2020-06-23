@@ -42,7 +42,7 @@
           }]
       }
   },
-  "future_seasonal": {
+  "future-seasonal": {
       "heatwaves": {
           "layers": [{
               "name": "Future seasonal max tasmax admin 3",
@@ -66,7 +66,7 @@
           }]
       }
   },
-  "future_longterm": {
+  "future-longterm": {
       "heatwaves": {
           "layers": [{
               "name": "Future longterm max tasmax admin 3",

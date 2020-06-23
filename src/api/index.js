@@ -10,8 +10,8 @@ const AuthorizationToken = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6
 
 const queryId = {
   historical: '3a46bbff-73bc-4abc-bad6-11be6e99e2cb',
-  future_seasonal: 'e1cc3f3e-133a-4a14-b2c2-f3192ee213c3',
-  future_longterm: 'bef42c82-2714-4ba0-8694-75e49916013a',
+  'future-seasonal': 'e1cc3f3e-133a-4a14-b2c2-f3192ee213c3',
+  'future-longterm': 'bef42c82-2714-4ba0-8694-75e49916013a',
 };
 
 const defaultParams = {
@@ -36,8 +36,8 @@ const {
 } = defaultParams;
 const tables = {
   historical: 'historical_monthly_zs_nuts_level_234',
-  future_seasonal: 'future_seasonal_monthly_zs_nuts_level_234',
-  future_longterm: 'future_longterm_monthly_zs_nuts_level_234',
+  'future-seasonal': 'future_seasonal_monthly_zs_nuts_level_234',
+  'future-longterm': 'future_longterm_monthly_zs_nuts_level_234',
 }
 const tablesTermalComfort = {
   '2': 'historical_hourly_petmax_quantiles_zs_nuts_level_2',
@@ -57,7 +57,7 @@ const params = {
       'heatstress_strong_mean',
       'heatstress_moderate_mean'
     ],
-    future_seasonal: [
+    'future-seasonal': [
       'gid', 
       'time',
       'tasmax_mean',
@@ -70,7 +70,7 @@ const params = {
       'heatwave_warnings_mean',
       'heatwave_warnings_std'
     ],
-    future_longterm: [
+    'future-longterm': [
       'gid',
       'experiment',
       'time',
@@ -98,7 +98,7 @@ const params = {
       'coldstress_strong_mean',
       'coldstress_moderate_mean',
     ],
-    future_seasonal: [
+    'future-seasonal': [
       'gid',
       'time',
       'tasmax_mean',
@@ -111,7 +111,7 @@ const params = {
       'coldsnap_warnings_mean',
       'coldsnap_warnings_std',
     ],
-    future_longterm: [
+    'future-longterm': [
       'gid',
       'experiment',
       'time',
@@ -134,14 +134,14 @@ const params = {
       'quantile',
       'pet_mean'
     ],
-    future_seasonal: [
+    'future-seasonal': [
       'gid',
       'month',
       'hour',
       'quantile',
       'pet_mean'
     ],
-    future_longterm: [
+    'future-longterm': [
       'gid',
       'month',
       'hour',
