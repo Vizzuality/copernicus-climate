@@ -216,3 +216,9 @@ export const ADMIN_LEVEL_ZOOM = {
   '3' : 10,
   '4' : 15,
 };
+
+export const SOURCE_LAYERS = {
+  historical: 'historicallevel234',
+  future_longterm: 'futurelongtermlevel234',
+  future_seasonal: 'futureseasonallevel234',
+}

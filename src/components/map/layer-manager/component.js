@@ -28,14 +28,15 @@ class LayerManager extends PureComponent {
         providers={DEFAULT_PROVIDERS}
       >
         {layers.map(_layer => {
-          console.log(_layer);
-          delete _layer.attributes.layerConfig.sqlParams;
+          // console.log(_layer);
+          // delete _layer.attributes.layerConfig.sqlParams;
           return (
             <Layer
+              {..._layer}
               key={_layer.id}
               // {..._layer}
               {..._layer.attributes.layerConfig}
-              type="vector"
+              // type="vector"
             />
           );
         })}

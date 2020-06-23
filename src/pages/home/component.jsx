@@ -10,6 +10,8 @@ import Loader from 'components/Loader';
 import Legend from 'components/map/legend';
 import _ from 'lodash';
 
+
+
 import { 
   OPTIONS_TIME, 
   OPTIONS_THEME,
@@ -19,6 +21,7 @@ import {
   LAYERS,
   DEFAULT_VIEWPORT,
   ADMIN_LEVEL_ZOOM,
+  SOURCE_LAYERS,
 } from 'constants.js';
 import {
   TermalComfortChart, 
@@ -64,6 +67,37 @@ const HomePage = () => {
     setLoading(false);
     setWidgetData(data.data);
   }
+
+  const latersMapbox = [
+    {
+      id: 'some-layer',
+      type: 'vector',
+      source: {
+        type: 'vector',
+        url: 'mapbox://copernicus-forests.zonal-stats-totals_esp_nuts_234',
+      },
+      // render: {
+      //   layers: [          
+      //     {
+      //       "type": "fill",
+      //       "source-layer": "historicallevel234",
+      //       "paint": {
+      //         "fill-color": "#000000",
+      //         "fill-opacity": 1
+      //       }
+      //     },
+      //     {
+      //       "type": "line",
+      //       "source-layer": "historicallevel234",
+      //       "paint": {
+      //         "line-color": "#000000",
+      //         "line-opacity": 0.1
+      //       }
+      //     }
+      //   ],
+      // }
+    }
+  ];
 
   const fetchLayersInfo = async () => {
     const data = await getLayersInfo(layers.map(l => l.id));
@@ -129,11 +163,19 @@ const HomePage = () => {
   params.moderateCount = Math.ceil(params.moderateCount) || 0;
   params.strongCount = Math.ceil(params.strongCount) || 0;
 
-
   layersInfo.map(l => {
     l.attributes.layerConfig.params.admin_level = admin_level;
+    l.attributes.layerConfig.source = latersMapbox[0].source;
+    l.attributes.layerConfig.type = latersMapbox[0].type;
+    l.attributes.layerConfig.render.layers.map(lc => {
+      lc['source-layer'] = SOURCE_LAYERS[period];
+      // lc.filter = ['==', 'admin_level', '{admin_level}'];
+      return lc;
+    });
     return l;
   })
+
+  console.log(layersInfo);
 
   return (
     <div className={styles.container}>
