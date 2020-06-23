@@ -29,7 +29,16 @@ Object.keys(layersList).forEach(time => {
   })
 });
 export const LAYERS = layersList;
-export const GIDS = gidList.locations.filter(g => g.admin_level < 4 && g.gid !== 'ES');
+export const GIDS = gidList.locations.filter(g => g.admin_level < 4 && g.gid !== 'ES').sort((a, b) => {
+  if (a.geoname > b.geoname) {
+    return 1;
+  }
+  if (a.geoname < b.geoname) {
+    return -1;
+  }
+  // a должно быть равным b
+  return 0;
+});
 
 const today = new Date();
 const currentMonth = today.getMonth()+1;
@@ -50,37 +59,37 @@ export const OPTIONS_TIME = [
     to: date, 
   },
   { 
-    value: 'future_longterm', 
-    label: 'Future Long-Term', 
+    value: 'future-seasonal', 
+    label: 'Seasonal Forecast', 
+    from: dateSeasonal.from, 
+    to: dateSeasonal.to, 
+  },
+  { 
+    value: 'future-longterm', 
+    label: 'Long-Term Forecast', 
     from: dateLongterm.from, 
     to: dateLongterm.to, 
   },
-  { 
-    value: 'future_seasonal', 
-    label: 'Seasonal', 
-    from: dateSeasonal.from, 
-    to: dateSeasonal.to, 
-  }
 ];
 
 
 export const HEATWAVES = 'heatwaves';
 export const COLDSNAPS = 'coldsnaps';
-export const TERMALCOMFORT = 'termalcomfort';
+export const TERMALCOMFORT = 'thermalcomfort';
 
 export const OPTIONS_THEME = [
   {
     value: HEATWAVES,
-    label: 'Heatwaves',
+    label: 'Heatwave',
   },
   {
     value: COLDSNAPS,
-    label: 'ColdSnaps',
+    label: 'Cold Snap',
   },
   {
     value: TERMALCOMFORT,
-    label: 'Termal Comfort',
-  }
+    label: 'Thermal Comfort',
+  },
 ];
 
 export const GID_DEFAULT_VIEWPORTS = {

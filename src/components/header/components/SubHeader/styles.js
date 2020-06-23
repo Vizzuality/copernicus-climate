@@ -1,12 +1,19 @@
 import SearchIcon from 'assets/img/svgs/search-filter.svg';
 
 export const searchSelectStyles = {
-  container: (provided, state) => ({
-    ...provided,
-    width: '100%',
-    cursor: 'pointer',
-    maxWidth: state.selectProps.isIcon ? '250px' : '175px',
-  }),
+  container: (provided, state) => {
+    let autoWidth = 0;
+    if (state.selectProps.autoWidth) {
+      const value = state.getValue()[0].label;
+      autoWidth = `${value.length * 13}px`;
+    }
+    return {
+      ...provided,
+      width: '100%',
+      cursor: 'pointer',
+      maxWidth: state.selectProps.isIcon ? '250px' : autoWidth ? autoWidth : '175px',
+    }
+  },
   valueContainer:  (provided, state) => ({
     ...provided,
     height: '100%',
@@ -42,6 +49,7 @@ export const searchSelectStyles = {
     cursor: 'pointer',
     transition: 'all 0.3s ease-in-out',
     fontSize: '16px',
+    lineHeight: '22px',
     ':hover': {
       backgroundColor: '#E6E6E6',
     },
@@ -67,11 +75,19 @@ export const searchSelectStyles = {
   singleValue: (provided, state) => {
     const opacity = state.isDisabled ? 0.5 : 1;
     const transition = 'opacity 300ms';
+    const width = state.selectProps.isIcon ? '80%' : 'auto';
     return {
       ...provided,
+      width,
       opacity,
       transition,
       textTransform: 'capitalize',
+      height: '100%',
+      display: 'flex',
+      alignItems: 'center',
+      whiteSpace: 'wrap',
+      textOverflow: 'initial',
+      lineHeight: '22px',
     };
   }
 }
