@@ -33,7 +33,7 @@
           ]
       }
   },
-  "future_seasonal": {
+  "future-seasonal": {
       "heatwaves": {
           "layers": [
               {
@@ -53,7 +53,7 @@
           ]
       }
   },
-  "future_longterm": {
+  "future-longterm": {
       "heatwaves": {
           "layers": [
               {

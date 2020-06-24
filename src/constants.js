@@ -1,7 +1,6 @@
 import sweden from 'assets/shapes/sweden.svg';
 import swedenActive from 'assets/shapes/swedenActive.svg';
 import gidList from 'const/gids.json';
-
 import layersList from 'const/layers.json';
 
 export const COUNTRIES = [
@@ -30,7 +29,16 @@ Object.keys(layersList).forEach(time => {
   })
 });
 export const LAYERS = layersList;
-export const GIDS = gidList.locations.filter(g => g.admin_level < 4 && g.gid !== 'ES');
+export const GIDS = gidList.locations.filter(g => g.admin_level < 4 && g.gid !== 'ES').sort((a, b) => {
+  if (a.geoname > b.geoname) {
+    return 1;
+  }
+  if (a.geoname < b.geoname) {
+    return -1;
+  }
+  // a должно быть равным b
+  return 0;
+});
 
 const today = new Date();
 const currentMonth = today.getMonth()+1;
@@ -51,37 +59,37 @@ export const OPTIONS_TIME = [
     to: date, 
   },
   { 
-    value: 'future_longterm', 
-    label: 'Future Long-Term', 
+    value: 'future-seasonal', 
+    label: 'Seasonal Forecast', 
+    from: dateSeasonal.from, 
+    to: dateSeasonal.to, 
+  },
+  { 
+    value: 'future-longterm', 
+    label: 'Long-Term Forecast', 
     from: dateLongterm.from, 
     to: dateLongterm.to, 
   },
-  { 
-    value: 'future_seasonal', 
-    label: 'Seasonal', 
-    from: dateSeasonal.from, 
-    to: dateSeasonal.to, 
-  }
 ];
 
 
 export const HEATWAVES = 'heatwaves';
 export const COLDSNAPS = 'coldsnaps';
-export const TERMALCOMFORT = 'termalcomfort';
+export const TERMALCOMFORT = 'thermalcomfort';
 
 export const OPTIONS_THEME = [
   {
     value: HEATWAVES,
-    label: 'Heatwaves',
+    label: 'Heatwave',
   },
   {
     value: COLDSNAPS,
-    label: 'ColdSnaps',
+    label: 'Cold Snap',
   },
-  // {
-  //   value: TERMALCOMFORT,
-  //   label: 'Termal Comfort',
-  // }
+  {
+    value: TERMALCOMFORT,
+    label: 'Thermal Comfort',
+  },
 ];
 
 export const GID_DEFAULT_VIEWPORTS = {
@@ -217,8 +225,77 @@ export const ADMIN_LEVEL_ZOOM = {
   '4' : 15,
 };
 
-export const SOURCE_LAYERS = {
-  historical: 'historicallevel234',
-  future_longterm: 'futurelongtermlevel234',
-  future_seasonal: 'futureseasonallevel234',
+export const SOURCE_URLS = {
+  historical: 'mapbox://copernicus-forests.zst_esp_nuts_234_historical',
+  'future-longterm': 'mapbox://copernicus-forests.zst_esp_nuts_234_future-longterm',
+  'future-seasonal': 'mapbox://copernicus-forests.zst_esp_nuts_234_future-seasonal',
 }
+
+export const SOURCE_LAYERS = {
+  historical: {
+    "2": "historicallevel2",
+    "3": "historicallevel3",
+    "4": "historicallevel4"
+  },
+  'future-longterm': {
+    "2": "futurelongtermlevel2",
+    "3": "futurelongtermlevel3",
+    "4": "futurelongtermlevel4"
+  },
+  'future-seasonal': {
+    "2": "futureseasonallevel2",
+    "3": "futureseasonallevel3",
+    "4": "futureseasonallevel4"
+  },
+}
+
+export const OPTIONS_MONTHES = [
+  {
+    value: 1,
+    label: 'January',
+  },
+  {
+    value: 2,
+    label: 'February',
+  },
+  {
+    value: 3,
+    label: 'March',
+  },
+  {
+    value: 4,
+    label: 'April',
+  },
+  {
+    value: 5,
+    label: 'May',
+  },
+  {
+    value: 6,
+    label: 'June',
+  },
+  {
+    value: 7,
+    label: 'July',
+  },
+  {
+    value: 8,
+    label: 'August',
+  },
+  {
+    value: 9,
+    label: 'September',
+  },
+  {
+    value: 10,
+    label: 'October',
+  },
+  {
+    value: 11,
+    label: 'November',
+  },
+  {
+    value: 12,
+    label: 'December',
+  },
+];

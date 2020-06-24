@@ -8,6 +8,15 @@
   &.withPadding {
     padding-left: 50px;
   }
+
+  &.climatology {
+    padding-left: 0;
+
+    h4 {
+      padding-left: 50px;
+      padding-bottom: 10px;
+    }
+  }
   
   h4 {
     margin-top: 30px;
@@ -62,4 +71,20 @@
   top: 0;
   cursor: pointer;
   z-index: 2;
+}
+
+.colorBox {
+  height: 15px;
+  width: 100%;
+}
+
+.labelText {
+  color: #222222;
+  font-size: 14px;
+  line-height: 16px;
+  padding: 5px;
+}
+
+.custom-legend {
+  display: flex;
 }

@@ -33,7 +33,7 @@ const SubHeader = () => {
   return (
     <div className={styles.cSubheader}>
       <div className={styles.container}>
-        <h1 className={styles.title}>Climate Change Dashboards for Decision Makers</h1>
+        <h1 className={styles.title}>Thermal Assessment Tool</h1>
         <div className={styles.filterSection}>
           <ReactSelect
             styles={searchSelectStyles}
@@ -49,6 +49,7 @@ const SubHeader = () => {
             defaultValue={OPTIONS_TIME.find(t => t.value === time) || OPTIONS_TIME[0]}
             options={OPTIONS_TIME}
             onChange={handleChangeTime}
+            autoWidth
           />
         </div>
       </div>

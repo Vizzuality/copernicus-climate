@@ -10,12 +10,32 @@ import {
   Legend,
   Line,
   ResponsiveContainer,
+  BarChart,
+  Bar,
 } from 'recharts';
 import styles from './styles.module.scss';
-import { riskAreas, termalAreas } from './const';
-import { HEATWAVES } from 'constants.js';
+import {
+  riskAreas,
+  termalAreas,
+  climatologyBars,
+  climatologyTypes
+} from './const';
+import { HEATWAVES, TERMALCOMFORT } from 'constants.js';
 import cx from 'classnames';
 
+function ClimatilogyLegend(props) {
+  const { payload } = props;
+  return (
+    <ul className={styles['custom-legend']}>
+      {payload.reverse().map((entry, index) => (
+        <li key={`item-${index}`} className={styles['legend-item']}>
+          <div className={styles.colorBox} style={{backgroundColor: entry.color}} />
+          <div className={styles.labelText}>{entry.value}</div>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 
 export const TermalComfortChart = ({ data = [], theme = HEATWAVES }) => {
@@ -219,6 +239,105 @@ export const TemparatureChart = ({ data = [] }) => {
         />
       </LineChart>
       </ResponsiveContainer>
+    </div>
+  );
+}
+
+
+
+export const ClimatologyChart = ({ data = [], theme = TERMALCOMFORT }) => {
+
+  const barsList = climatologyBars[theme];
+  const hours = 24;
+  const transformedData = [];
+  const types = Object.keys(climatologyTypes);
+  
+  for (let i = 0; i < hours; i++) {
+    const hourData = data.filter((d) => d.hour === i);
+    const barData = {
+      hour: i,
+    };
+    let summ = 0;
+    hourData.forEach(d => {
+      types.forEach(t => {
+        if (!barData[t]) {
+          barData[t] = 0;
+        }
+        if (climatologyTypes[t].condition(d.pet_mean)) {
+          barData[t] = barData[t] ? barData[t] + d.quantile : d.quantile;
+        }
+      });
+      summ += d.quantile;
+    });
+    Object.keys(barData).forEach(b => {
+      if (types.indexOf(b) !== -1) {
+        barData[b] = summ > 0 ? ((barData[b] / summ) * 100).toFixed(2) : 0;
+      }
+    });
+    transformedData.push(barData);
+  }
+  return (
+    <div className={cx(styles['c-chart'], styles.withPadding, styles.climatology)}>
+      <div className={styles.info}>
+        i 
+      </div>  
+      <h4>Hourly Climatology</h4>
+      <div className={styles['c-chart-inside']}>
+        <ResponsiveContainer width="100%" height={530}>
+          <BarChart
+            data={transformedData.length > 0 ? transformedData : []}
+            margin={{
+              top: 40, right: 0, left: 0, bottom: 0,
+            }}
+            fontSize={14}
+            fontFamily="Open Sans"
+          >
+            <XAxis 
+              dataKey="hour" 
+              stroke="1"
+            />
+            <YAxis 
+              label={{value: '%', position: 'insideTop', dx:-15, dy: -40}}
+              width={50}
+              dx={-20}
+              stroke="1"
+              type="number"
+              domain={[0, 100]}
+              padding={{top: 0, bottom: 20}}
+            />
+            <Tooltip 
+              itemStyle={{
+                fontSize: "14px",
+                lineHeight: "20px",
+              }} 
+              wrapperStyle={{
+                backgroundColor: "#FFFFFF",
+                boxShadow: "0 2px 10px 0 rgba(0,35,117,0.2)",
+              }}
+              contentStyle={{
+                fontSize: "14px",
+                lineHeight: "20px",
+              }}
+            />
+            {barsList.map((bar) => (<Bar stackId="a" key={bar.dataKey} {...bar} />))}
+            <Legend
+              layout="horizontal"
+              verticalAlign="bottom"
+              wrapperStyle={{
+                fontSize: "14px",
+                lineHeight: "19px",
+                bottom: "-10px",
+                left: 0,
+              }}
+              iconSize={9}
+              iconType="circle"
+              align="left"
+              chartHeight={33}
+              content={ClimatilogyLegend}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }
