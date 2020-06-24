@@ -4,9 +4,6 @@ import { LayerManager as VizzLayerManager, Layer } from 'layer-manager/dist/comp
 import { PluginMapboxGl } from 'layer-manager';
 import DEFAULT_PROVIDERS from './providers';
 
-// utils
-import CANVAS_DECODERS from 'utils/layers/canvas-decoders';
-
 class LayerManager extends PureComponent {
   static propTypes = {
     map: PropTypes.object.isRequired,
@@ -28,15 +25,11 @@ class LayerManager extends PureComponent {
         providers={DEFAULT_PROVIDERS}
       >
         {layers.map(_layer => {
-          // console.log(_layer);
-          // delete _layer.attributes.layerConfig.sqlParams;
           return (
             <Layer
-              {..._layer}
               key={_layer.id}
-              // {..._layer}
+              {..._layer}
               {..._layer.attributes.layerConfig}
-              // type="vector"
             />
           );
         })}

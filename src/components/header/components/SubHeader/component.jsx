@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouteMatch, useHistory } from 'react-router-dom';
-import { GIDS, OPTIONS_TIME } from 'constants.js';
+import { GIDS, OPTIONS_TIME } from 'const/constants';
 import styles from './styles.module.scss';
 import ReactSelect from 'react-select';
 import { searchSelectStyles } from './styles';

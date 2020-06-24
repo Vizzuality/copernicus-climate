@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useRouteMatch, useHistory } from 'react-router-dom';
-import styles from "./styles.module.scss";
+import _ from 'lodash';
 import Map from "components/map";
 import { checkType } from "components/chart/const";
 import Zoom from "components/map/controls/zoom";
@@ -9,8 +9,7 @@ import Dropdown from 'components/Dropdown';
 import LayerManager from 'components/map/layer-manager';
 import Loader from 'components/Loader';
 import Legend from 'components/map/legend';
-import _ from 'lodash';
-
+import styles from "./styles.module.scss";
 
 import {
   OPTIONS_TIME,
@@ -25,7 +24,7 @@ import {
   SOURCE_LAYERS,
   TERMALCOMFORT,
   OPTIONS_MONTHES,
-} from 'constants.js';
+} from 'const/constants';
 import {
   TermalComfortChart,
   RiskEventsChart,
@@ -55,10 +54,12 @@ const HomePage = () => {
   const { layers = [] } = LAYERS[period][theme] || {};
   const gidInfo = GIDS.find(g => g.gid === gid);
   const { latitude, longitude, admin_level } = gidInfo;
+
   useEffect(() => {
     const newViewport = { ...DEFAULT_VIEWPORT, latitude, longitude, zoom: ADMIN_LEVEL_ZOOM[admin_level] }
     setViewport(newViewport);
   }, [gid]);
+
   const { from, to } = OPTIONS_TIME.find(t => t.value === period);
   const fetchWidgetsData = async () => {
     setLoading(true);
@@ -76,37 +77,6 @@ const HomePage = () => {
     setLoading(false);
     setWidgetData(data.data);
   }
-
-  const latersMapbox = [
-    {
-      id: 'some-layer',
-      type: 'vector',
-      source: {
-        type: 'vector',
-        url: 'mapbox://copernicus-forests.zonal-stats-totals_esp_nuts_234',
-      },
-      // render: {
-      //   layers: [          
-      //     {
-      //       "type": "fill",
-      //       "source-layer": "historicallevel234",
-      //       "paint": {
-      //         "fill-color": "#000000",
-      //         "fill-opacity": 1
-      //       }
-      //     },
-      //     {
-      //       "type": "line",
-      //       "source-layer": "historicallevel234",
-      //       "paint": {
-      //         "line-color": "#000000",
-      //         "line-opacity": 0.1
-      //       }
-      //     }
-      //   ],
-      // }
-    }
-  ];
 
   const fetchLayersInfo = async () => {
     const data = await getLayersInfo(layers.map(l => l.id));
@@ -143,7 +113,7 @@ const HomePage = () => {
     params.extreamCount += theme === HEATWAVES ? wd.heatstress_extreme_mean : wd.coldstress_extreme_mean;
     params.moderateCount += theme === HEATWAVES ? wd.heatstress_moderate_mean : wd.coldstress_moderate_mean;
     params.strongCount += theme === HEATWAVES ? wd.heatstress_strong_mean : wd.coldstress_strong_mean;
-    // K to C
+    // temperature - K to C
     wd.tasmax_mean = parseFloat((wd.tasmax_mean + kelvin).toFixed(2));
     wd.tasmin_mean = parseFloat((wd.tasmin_mean + kelvin).toFixed(2));
     const date = new Date(wd.time);
@@ -196,8 +166,6 @@ const HomePage = () => {
     });
     return l;
   })
-
-  console.log(layersInfo);
 
   return (
     <div className={styles.container}>

@@ -1,34 +1,8 @@
-import sweden from 'assets/shapes/sweden.svg';
-import swedenActive from 'assets/shapes/swedenActive.svg';
-import gidList from 'const/gids.json';
-import layersList from 'const/layers.json';
+import gidList from './gids.json';
+import layersList from './layers.json';
 
-export const COUNTRIES = [
-  {
-    iso: 'ESP',
-    name: 'spain',
-    svg: sweden,
-    svgActive: swedenActive
-  }
-];
-Object.keys(layersList).forEach(time => {
-  Object.keys(layersList[time]).forEach(theme => {
-    layersList[time][theme].layers = layersList[time][theme].layers.map(l => {
-      return {
-        id: l.id,
-        type: 'raster',
-        name: l.name,
-        source: {
-          "type": "raster",
-          "tiles": [l.endpoint]
-        },   
-        active: true,
-        opacity: 1
-      }
-    });
-  })
-});
-export const LAYERS = layersList;
+/** GIDS */
+// Filter gids by admin level (enable 2, 3) and sort by alphabet
 export const GIDS = gidList.locations.filter(g => g.admin_level < 4 && g.gid !== 'ES').sort((a, b) => {
   if (a.geoname > b.geoname) {
     return 1;
@@ -36,10 +10,10 @@ export const GIDS = gidList.locations.filter(g => g.admin_level < 4 && g.gid !==
   if (a.geoname < b.geoname) {
     return -1;
   }
-  // a должно быть равным b
   return 0;
 });
 
+/** PERIOD (TIME) */
 const today = new Date();
 const currentMonth = today.getMonth()+1;
 const date = today.getFullYear()+'-'+currentMonth+'-'+today.getDate();
@@ -72,7 +46,7 @@ export const OPTIONS_TIME = [
   },
 ];
 
-
+/** THEMES */
 export const HEATWAVES = 'heatwaves';
 export const COLDSNAPS = 'coldsnaps';
 export const TERMALCOMFORT = 'thermalcomfort';
@@ -92,20 +66,52 @@ export const OPTIONS_THEME = [
   },
 ];
 
-export const GID_DEFAULT_VIEWPORTS = {
-  ES11: { zoom: 5, latitude: 40.416775, longitude: -3.703790 },
-};
 
-export const COUNTRIES_DEFAULT_VIEWPORTS = {
-  ESP: { zoom: 5, latitude: 40.416775, longitude: -3.703790 },
-};
-
-export const SPECIES_RAMP_COLORS = ['rgba(255, 255, 255, 0)', '#FFFFFF', '#7044FF']; // [min (transparent), mid, max]
-export const TEMPERATURE_RAMP_COLORS = ['#FEF6B5', '#FFA679', '#E15383']; // [min, mid, max]
-export const PERCIPITATION_RAMP_COLORS = ['#A6BDDB', '#3690C0', '#034E7B']; // [min, mid, max]
+/** MAPBOX */
 export const MAPBOX_STYLE_DEFAULT = 'mapbox://styles/mapbox/light-v10';
 
-export const DEFAULT_LAYER_OPACITY = 60;
+export const DEFAULT_VIEWPORT = {
+  width: 400,
+  height: 400,
+  latitude: 37.7577,
+  longitude: -122.4376,
+  zoom: 8,
+};
+
+export const ADMIN_LEVEL_ZOOM = {
+  '1' : 4,
+  '2' : 6,
+  '3' : 8,
+  '4' : 10,
+};
+
+export const SOURCE_URLS = {
+  historical: 'mapbox://copernicus-forests.zst_esp_nuts_234_historical',
+  'future-longterm': 'mapbox://copernicus-forests.zst_esp_nuts_234_future-longterm',
+  'future-seasonal': 'mapbox://copernicus-forests.zst_esp_nuts_234_future-seasonal',
+}
+
+export const SOURCE_LAYERS = {
+  historical: {
+    "2": "historicallevel2",
+    "3": "historicallevel3",
+    "4": "historicallevel4"
+  },
+  'future-longterm': {
+    "2": "futurelongtermlevel2",
+    "3": "futurelongtermlevel3",
+    "4": "futurelongtermlevel4"
+  },
+  'future-seasonal': {
+    "2": "futureseasonallevel2",
+    "3": "futureseasonallevel3",
+    "4": "futureseasonallevel4"
+  },
+}
+
+/** LAYERS */
+// Set static layers urls
+export const LAYERS = layersList;
 
 export const FOOTER_MENU = [
   {
@@ -195,59 +201,6 @@ export const HEADER_MENU_SECOND = [
   }
 ];
 
-export const DISTRIBUTIONS = {
-  CURRENT: 'current',
-  OBSERVED: 'observed',
-  MODELLED: 'modelled'
-};
-
-export const MODAL_INFO_DATA = {
-  currentDistribution: {
-    title: 'Current Distribution',
-    text:
-      'The current observed distribution shows the points from GBIF where the species has been observed in the last 20 years. The modelled distribution is the committe average of the 180 calibrated models.'
-  },
-};
-
-
-export const DEFAULT_VIEWPORT = {
-  width: 400,
-  height: 400,
-  latitude: 37.7577,
-  longitude: -122.4376,
-  zoom: 8,
-};
-
-export const ADMIN_LEVEL_ZOOM = {
-  '1' : 4,
-  '2' : 6,
-  '3' : 10,
-  '4' : 15,
-};
-
-export const SOURCE_URLS = {
-  historical: 'mapbox://copernicus-forests.zst_esp_nuts_234_historical',
-  'future-longterm': 'mapbox://copernicus-forests.zst_esp_nuts_234_future-longterm',
-  'future-seasonal': 'mapbox://copernicus-forests.zst_esp_nuts_234_future-seasonal',
-}
-
-export const SOURCE_LAYERS = {
-  historical: {
-    "2": "historicallevel2",
-    "3": "historicallevel3",
-    "4": "historicallevel4"
-  },
-  'future-longterm': {
-    "2": "futurelongtermlevel2",
-    "3": "futurelongtermlevel3",
-    "4": "futurelongtermlevel4"
-  },
-  'future-seasonal': {
-    "2": "futureseasonallevel2",
-    "3": "futureseasonallevel3",
-    "4": "futureseasonallevel4"
-  },
-}
 
 export const OPTIONS_MONTHES = [
   {

@@ -6,7 +6,7 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { HEADER_MENU_FIRST, HEADER_MENU_SECOND } from 'constants.js';
+import { HEADER_MENU_FIRST, HEADER_MENU_SECOND } from 'const/constants';
 import BgHeader from 'assets/img/bg-header.png';
 import LogoImage from 'assets/img/c3s-logo.svg';
 import LogosBlock from '../LogosBlock';

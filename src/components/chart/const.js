@@ -2,7 +2,7 @@ import {
   HEATWAVES,
   COLDSNAPS,
   TERMALCOMFORT,
-} from 'constants.js';
+} from 'const/constants';
 
 const termalAreas = {};
 termalAreas[HEATWAVES] = [

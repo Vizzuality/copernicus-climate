@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import ReactMapGL from 'react-map-gl';
 import { easeCubic } from 'd3-ease';
-import { MAPBOX_STYLE_DEFAULT } from 'constants.js';
+import { MAPBOX_STYLE_DEFAULT } from 'const/constants';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './styles.scss';
 

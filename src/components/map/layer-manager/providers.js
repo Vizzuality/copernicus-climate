@@ -30,7 +30,6 @@ export default {
     fetch('get', url, {}, layerModel)
       .then(response => {
         const tiles = response.metadata.tilejson.vector.tiles;      
-        console.log(tiles);
         return resolve({
           ...layer,
           source: {

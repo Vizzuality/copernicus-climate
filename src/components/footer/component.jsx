@@ -2,7 +2,7 @@
 import React from 'react';
 import LogosBlock from 'components/LogosBlock';
 import BgFooter from 'assets/img/bg-header.png';
-import { FOOTER_MENU, FOOTER_SOCIAL_LINKS } from 'constants.js';
+import { FOOTER_MENU, FOOTER_SOCIAL_LINKS } from 'const/constants';
 import './styles.scss';
 
 const Footer = () => {
