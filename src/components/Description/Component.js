@@ -1,5 +1,5 @@
 import React from 'react';
-import { HEATWAVES, COLDSNAPS, TERMALCOMFORT } from 'constants.js';
+import { HEATWAVES, COLDSNAPS, TERMALCOMFORT } from 'const/constants';
 
 const Description = ({ theme, params, gidInfo, thermalValues = {} }) => {
 

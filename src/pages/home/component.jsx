@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useRouteMatch, useHistory } from 'react-router-dom';
-import styles from "./styles.module.scss";
+import _ from 'lodash';
 import Map from "components/map";
 import { checkType } from "components/chart/const";
 import Zoom from "components/map/controls/zoom";
@@ -9,7 +9,7 @@ import Dropdown from 'components/Dropdown';
 import LayerManager from 'components/map/layer-manager';
 import Loader from 'components/Loader';
 import Legend from 'components/map/legend';
-import _ from 'lodash';
+import styles from "./styles.module.scss";
 
 import {
   OPTIONS_TIME,
@@ -18,9 +18,13 @@ import {
   COLDSNAPS,
   GIDS,
   LAYERS,
+  DEFAULT_VIEWPORT,
+  ADMIN_LEVEL_ZOOM,
+  SOURCE_URLS,
+  SOURCE_LAYERS,
   TERMALCOMFORT,
   OPTIONS_MONTHES,
-} from 'constants.js';
+} from 'const/constants';
 import {
   TermalComfortChart,
   RiskEventsChart,
@@ -29,14 +33,6 @@ import {
 } from 'components/chart';
 import { getWidgetData, getLayersInfo } from 'api';
 import Description from "components/Description";
-
-const DEFAULT_VIEWPORT = {
-  width: 400,
-  height: 400,
-  latitude: 37.7577,
-  longitude: -122.4376,
-  zoom: 8,
-};
 
 const HomePage = () => {  
   const history = useHistory();
@@ -57,9 +53,10 @@ const HomePage = () => {
   const hadleChangeMonth = option => setActiveMonth(option);
   const { layers = [] } = LAYERS[period][theme] || {};
   const gidInfo = GIDS.find(g => g.gid === gid);
-  const { latitude, longitude, admin_level: zoom } = gidInfo;
+  const { latitude, longitude, admin_level } = gidInfo;
+
   useEffect(() => {
-    const newViewport = { ...DEFAULT_VIEWPORT, latitude, longitude, zoom: zoom + 3 }
+    const newViewport = { ...DEFAULT_VIEWPORT, latitude, longitude, zoom: ADMIN_LEVEL_ZOOM[admin_level] }
     setViewport(newViewport);
   }, [gid]);
 
@@ -116,7 +113,7 @@ const HomePage = () => {
     params.extreamCount += theme === HEATWAVES ? wd.heatstress_extreme_mean : wd.coldstress_extreme_mean;
     params.moderateCount += theme === HEATWAVES ? wd.heatstress_moderate_mean : wd.coldstress_moderate_mean;
     params.strongCount += theme === HEATWAVES ? wd.heatstress_strong_mean : wd.coldstress_strong_mean;
-    // K to C
+    // temperature - K to C
     wd.tasmax_mean = parseFloat((wd.tasmax_mean + kelvin).toFixed(2));
     wd.tasmin_mean = parseFloat((wd.tasmin_mean + kelvin).toFixed(2));
     const date = new Date(wd.time);
@@ -155,6 +152,20 @@ const HomePage = () => {
     thermalValues.min = sortedData[0] && sortedData[0].pet_mean ? checkType(sortedData[0].pet_mean).name : 0;
     thermalValues.max = sortedData[sortedData.length - 1] && sortedData[sortedData.length - 1].pet_mean ? checkType(sortedData[sortedData.length - 1].pet_mean).name : 0;
   }
+
+  layersInfo.map(l => {
+    l.attributes.layerConfig.params.admin_level = admin_level;
+    l.attributes.layerConfig.source = {
+      type: 'vector',
+      url: SOURCE_URLS[period],
+    };
+    l.attributes.layerConfig.type = 'vector';
+    l.attributes.layerConfig.render.layers.map(lc => {
+      lc['source-layer'] = SOURCE_LAYERS[period][admin_level];
+      return lc;
+    });
+    return l;
+  })
 
   return (
     <div className={styles.container}>
@@ -205,7 +216,7 @@ const HomePage = () => {
       <div className={styles.map}>
           <Map scrollZoom={false} viewport={viewport} setViewport={setViewport} >
             {map => (
-              <LayerManager map={map} layers={layers} />
+              <LayerManager map={map} layers={layersInfo} />
             )}
           </Map>
           <Legend layers={layersInfo} align="right" layout="vertical" verticalAlign="top" />

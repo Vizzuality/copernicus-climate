@@ -20,7 +20,7 @@ import {
   climatologyBars,
   climatologyTypes
 } from './const';
-import { HEATWAVES, TERMALCOMFORT } from 'constants.js';
+import { HEATWAVES, TERMALCOMFORT } from 'const/constants';
 import cx from 'classnames';
 
 function ClimatilogyLegend(props) {
