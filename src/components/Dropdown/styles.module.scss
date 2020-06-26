@@ -16,6 +16,64 @@
       border-color: #E6E6E6;
     }
   }
+
+  &.block {
+    width: 100%;
+    max-width: 100%;
+    min-width: auto;
+    button {
+      width: 100%;
+      min-width: auto;
+    }
+    .drButton {
+
+      svg {
+        position: absolute;
+        bottom: 12px;
+        right: 15px;
+        fill: #941333;
+      }
+    }
+  }
+
+  &.light {
+    button {
+      display: block;
+      width: 100%;
+      color: #222222;
+      background-color: #E6E6E6;
+      border-color: #E6E6E6;
+    }
+    .drButton {
+      svg {
+        fill: #941333;
+      }
+    }
+  }
+
+  label {
+    color: #222222;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 19px;
+    padding-bottom: 10px;
+    display: block;
+  }
+
+  &.label {
+    .drMenu {
+      top: 70px;
+    }
+  }
+
+  &.disabled {
+    
+    button {
+      pointer-events: none;
+      opacity: 0.4;
+    }
+  }
 }
 
 .drButton {
@@ -38,6 +96,7 @@
   svg {
     fill: white;
     path {
+
     }
   }
 }
