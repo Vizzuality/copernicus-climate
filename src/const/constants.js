@@ -252,3 +252,34 @@ export const OPTIONS_MONTHES = [
     label: 'December',
   },
 ];
+
+export const PETS_JSON = 'https://storage.googleapis.com/copernicus-climate/zonal_stats/pet_2018_bilbao_vitoria_madrid.json';
+
+export const OPTIONS_ACTIVITY = [
+  {
+    value: 'met40',
+    label: 'Relax',
+  },
+  {
+    value: 'met80',
+    label: 'Walk',
+  },
+  {
+    value: 'met240',
+    label: 'Sport',
+  }
+];
+
+export const OPTIONS_AGE = [
+  {
+    value: 'adult',
+    label: 'Adult',
+  }
+];
+
+export const OPTIONS_CLOTHING = [
+  {
+    value: 'clothing',
+    label: 'Clothing',
+  }
+];

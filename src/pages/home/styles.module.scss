@@ -92,3 +92,22 @@
 .form-group.error p {
   opacity: 1;
 }
+
+.tc-filters {
+  padding-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-left: -11px;
+  margin-right: -11px;
+  > div {
+    width: 33.333%;
+    padding-left: 11px;
+    padding-right: 11px;
+  }
+}
+
+.tc-period {
+  max-width: 60%;
+  padding-top: 20px;
+}

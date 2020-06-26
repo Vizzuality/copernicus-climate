@@ -24,14 +24,18 @@ import {
   SOURCE_LAYERS,
   TERMALCOMFORT,
   OPTIONS_MONTHES,
+  OPTIONS_ACTIVITY,
+  OPTIONS_AGE,
+  OPTIONS_CLOTHING,
 } from 'const/constants';
 import {
   TermalComfortChart,
+  ThermalComfortMainChart,
   RiskEventsChart,
   TemparatureChart,
   ClimatologyChart,
 } from 'components/chart';
-import { getWidgetData, getLayersInfo } from 'api';
+import { getWidgetData, getLayersInfo, getPets } from 'api';
 import Description from "components/Description";
 
 const HomePage = () => {  
@@ -39,9 +43,12 @@ const HomePage = () => {
   const [viewport, setViewport] = useState(DEFAULT_VIEWPORT);
   const [isLoading, setLoading] = useState(false);
   const [activeMonth, setActiveMonth] = useState(OPTIONS_MONTHES[0]);
+  const [activeMonthTC, setActiveMonthTC] = useState(OPTIONS_MONTHES[0]);
+  const [activity, setActivity] = useState(OPTIONS_ACTIVITY[0]);
   const [layersInfo, setLayersInfo] = useState([]);
   const match = useRouteMatch('/:gid/:period/:theme?');
   const [widgetData, setWidgetData] = useState([]);
+  const [pets, setPets] = useState([]);
   const {
     gid = GIDS[0].gid,
     period = OPTIONS_TIME[0].value,
@@ -51,6 +58,8 @@ const HomePage = () => {
   const optionMonthValue = activeMonth;
   const hadleChange = option => history.push(`/${gid}/${period}/${option.value}`);
   const hadleChangeMonth = option => setActiveMonth(option);
+  const hadleChangeActivity = option => setActivity(option);
+  const hadleChangeMonthTC = option => setActiveMonthTC(option);
   const { layers = [] } = LAYERS[period][theme] || {};
   const gidInfo = GIDS.find(g => g.gid === gid);
   const { latitude, longitude, admin_level } = gidInfo;
@@ -85,9 +94,17 @@ const HomePage = () => {
     }
   }
 
+  const fetchPets = async () => {
+    const data = await getPets();
+    if (data) {
+      setPets(data);
+    }
+  }
+
   useEffect(() => {
     fetchWidgetsData();
     fetchLayersInfo();
+    fetchPets();
   }, [theme, period, gid, activeMonth]);
   
   useEffect(() => {
@@ -192,12 +209,58 @@ const HomePage = () => {
             )}
             {theme === TERMALCOMFORT && (
               <>
+                <div className={styles['tc-filters']}>
+                  <div>
+                    <Dropdown
+                      block
+                      label="Activity"
+                      options={OPTIONS_ACTIVITY}
+                      value={activity}
+                      onChange={hadleChangeActivity}
+                      mode="light"
+                    />
+                  </div>
+                  <div>
+                    <Dropdown
+                      block
+                      label="Age"
+                      options={OPTIONS_AGE}
+                      value={OPTIONS_AGE[0]}
+                      mode="light"
+                    />
+                  </div>
+                  <div>
+                    <Dropdown
+                      block
+                      label="Clothing"
+                      options={OPTIONS_CLOTHING}
+                      value={OPTIONS_CLOTHING[0]}
+                      mode="light"
+                    />
+                  </div>
+                </div>
+                <div className={styles['tc-period']}>
+                  <Dropdown 
+                    options={OPTIONS_MONTHES}
+                    value={activeMonthTC}
+                    onChange={hadleChangeMonthTC}
+                    mode="calendar"
+                  />
+                </div>
+                <ThermalComfortMainChart
+                  data={pets}
+                  filters={{
+                    gid: gidInfo.gid,
+                    activity: activity.value,
+                    month: activeMonthTC.value,              
+                  }}
+                />
                 <br/>
                 <Dropdown 
                   options={OPTIONS_MONTHES}
                   value={optionMonthValue}
                   onChange={hadleChangeMonth}
-                  mode={'calendar'}
+                  mode="calendar"
                 />
                 <div className={styles.description}>
                   <Description

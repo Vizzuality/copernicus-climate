@@ -2,7 +2,8 @@ import axios from 'axios';
 import {
   TERMALCOMFORT,
   COLDSNAPS,
-  HEATWAVES
+  HEATWAVES,
+  PETS_JSON,
 } from 'const/constants';
 
 const apiUrl = 'https://api.skydipper.com/v1';
@@ -213,4 +214,9 @@ export const getLayersInfo = async (ids = []) => {
     return res.status === 200 ? res.data.data : null;
   }));
   return result;
+}
+
+export const getPets = async () => {
+  const res = await axios.get(PETS_JSON);
+  return res.status === 200 ? res.data : null; 
 }
