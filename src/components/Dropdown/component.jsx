@@ -10,6 +10,7 @@ const Dropdown = ({
   mode = 'standart',
   label,
   block = false,
+  disabled = false,
  }) => {
 
   const [open, setOpen] = useState(false);
@@ -44,6 +45,7 @@ const Dropdown = ({
           { [styles.light]: mode === 'light' },
           { [styles.block]: block },
           { [styles.label]: label },
+          { [styles.disabled]: disabled },
         )
       }
     >
@@ -52,7 +54,7 @@ const Dropdown = ({
           {label}
         </label>
       )}
-      <button onClick={() => setOpen(!open)} className={styles.drButton}>
+      <button onClick={() => setOpen(!open)} className={styles.drButton} disabled={disabled}>
         {value.label}
         {mode === 'standart' && <Icon name="icon-dropdown" /> }
         {mode === 'light' && <Icon name="icon-dropdown" /> }

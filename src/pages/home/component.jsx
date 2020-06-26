@@ -227,6 +227,7 @@ const HomePage = () => {
                       options={OPTIONS_AGE}
                       value={OPTIONS_AGE[0]}
                       mode="light"
+                      disabled
                     />
                   </div>
                   <div>
@@ -236,6 +237,7 @@ const HomePage = () => {
                       options={OPTIONS_CLOTHING}
                       value={OPTIONS_CLOTHING[0]}
                       mode="light"
+                      disabled
                     />
                   </div>
                 </div>

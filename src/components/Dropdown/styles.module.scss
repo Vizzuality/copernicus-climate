@@ -66,6 +66,14 @@
       top: 70px;
     }
   }
+
+  &.disabled {
+    
+    button {
+      pointer-events: none;
+      opacity: 0.4;
+    }
+  }
 }
 
 .drButton {
