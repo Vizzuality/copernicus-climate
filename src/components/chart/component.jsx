@@ -410,7 +410,7 @@ export const ThermalComfortMainChart = ({ data = [], filters = {} }) => {
             <Line
               type="basis"
               name="(PET) Physiological Equivalent Temperature"
-              dataKey="hour"
+              dataKey="pet"
               stroke="#CB181D"
               dot={false}
             />        
