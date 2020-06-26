@@ -373,61 +373,67 @@ export const ThermalComfortMainChart = ({ data = [], filters = {} }) => {
         i 
       </div>
       <h4>Thermal Comfort</h4>
-      <ResponsiveContainer width="100%" height={330}>
-      <LineChart
-        data={filteredData.length > 0 ? filteredData : []}
-        margin={{
-          top: 40, right: 0, left: 0, bottom: 0,
-        }}
-        fontSize={14}
-        fontFamily="Open Sans"
-      >
-        <CartesianGrid vertical={false} />
-        <XAxis dataKey="hour" stroke="1" />
-        <YAxis 
-          label={{value: 'PET', position: 'insideTop', dx:-15, dy: -30}}
-          width={50}
-          dx={-20}
-          stroke="1"
-          padding={{top: 0, bottom: 20}}
-          dataKey="pet"
-        />
-        <Tooltip 
-          itemStyle={{
-            fontSize: "14px",
-            lineHeight: "20px",
-          }} 
-          wrapperStyle={{
-            backgroundColor: "#FFFFFF",
-            boxShadow: "0 2px 10px 0 rgba(0,35,117,0.2)",
-          }}
-          contentStyle={{
-            fontSize: "14px",
-            lineHeight: "20px",
-          }}
-        />
-        <Line
-          type="basis"
-          name="(PET) Physiological Equivalent Temperature"
-          dataKey="hour"
-          stroke="#CB181D"
-          dot={false}
-        />        
-        <Legend
-          layout="horizontal"
-          verticalAlign="bottom"
-          wrapperStyle={{
-            fontSize: "14px",
-            lineHeight: "19px",
-            left: '15px',
-          }}
-          iconSize={9}
-          iconType="plainline"
-          align="left"
-          chartHeight={33}
-        />
-      </LineChart>
-      </ResponsiveContainer>
+      {filteredData.length > 0 ? (
+        <ResponsiveContainer width="100%" height={330}>
+          <LineChart
+            data={filteredData.length > 0 ? filteredData : []}
+            margin={{
+              top: 40, right: 0, left: 0, bottom: 0,
+            }}
+            fontSize={14}
+            fontFamily="Open Sans"
+          >
+            <CartesianGrid vertical={false} />
+            <XAxis dataKey="hour" stroke="1" />
+            <YAxis 
+              label={{value: 'PET', position: 'insideTop', dx:-15, dy: -30}}
+              width={50}
+              dx={-20}
+              stroke="1"
+              padding={{top: 0, bottom: 20}}
+              dataKey="pet"
+            />
+            <Tooltip 
+              itemStyle={{
+                fontSize: "14px",
+                lineHeight: "20px",
+              }} 
+              wrapperStyle={{
+                backgroundColor: "#FFFFFF",
+                boxShadow: "0 2px 10px 0 rgba(0,35,117,0.2)",
+              }}
+              contentStyle={{
+                fontSize: "14px",
+                lineHeight: "20px",
+              }}
+            />
+            <Line
+              type="basis"
+              name="(PET) Physiological Equivalent Temperature"
+              dataKey="hour"
+              stroke="#CB181D"
+              dot={false}
+            />        
+            <Legend
+              layout="horizontal"
+              verticalAlign="bottom"
+              wrapperStyle={{
+                fontSize: "14px",
+                lineHeight: "19px",
+                left: '15px',
+              }}
+              iconSize={9}
+              iconType="plainline"
+              align="left"
+              chartHeight={33}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      ) : (
+        <div className={styles.noData}>
+          No data available for this time period
+        </div>
+      )}
     </div>
   );
 }
