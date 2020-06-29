@@ -9,6 +9,7 @@ import Dropdown from 'components/Dropdown';
 import LayerManager from 'components/map/layer-manager';
 import Loader from 'components/Loader';
 import Legend from 'components/map/legend';
+import Modal from 'components/modal';
 import styles from "./styles.module.scss";
 import cx from 'classnames';
 
@@ -28,6 +29,7 @@ import {
   OPTIONS_ACTIVITY,
   OPTIONS_AGE,
   OPTIONS_CLOTHING,
+  MODAL_INFO_DATA
 } from 'const/constants';
 import {
   TermalComfortChart,
@@ -38,6 +40,12 @@ import {
 } from 'components/chart';
 import { getWidgetData, getLayersInfo, getPets } from 'api';
 import Description from "components/Description";
+
+const DEFAULT_INFO_MODAL = {
+  open: false,
+  title: '',
+  text: '',
+}
 
 const HomePage = () => {  
   const history = useHistory();
@@ -50,6 +58,7 @@ const HomePage = () => {
   const match = useRouteMatch('/:gid/:period/:theme?');
   const [widgetData, setWidgetData] = useState([]);
   const [pets, setPets] = useState([]);
+  const [infoModal, setInfoModal] = useState(DEFAULT_INFO_MODAL);
   const {
     gid = GIDS[0].gid,
     period = OPTIONS_TIME[0].value,
@@ -100,6 +109,24 @@ const HomePage = () => {
     if (data) {
       setPets(data);
     }
+  }
+
+  const infoModalOpen = (key) => {
+
+    const { title, text } = MODAL_INFO_DATA[key];
+
+    setInfoModal({
+      open: true,
+      title,
+      text,
+    })
+  };
+
+  const infoModalClose = () => {
+    setInfoModal({
+      ...infoModal,
+      open: false,
+    })
   }
 
   useEffect(() => {
@@ -187,6 +214,14 @@ const HomePage = () => {
 
   return (
     <div className={styles.container}>
+      {infoModal && infoModal.open && (
+        <Modal 
+          isOpen={infoModal.open}
+          handleClose={() => infoModalClose()}
+          title={infoModal.title ? infoModal.title : ''}
+          text={infoModal.text ? infoModal.text : ''}
+        />
+      )}
       <div className={styles.content}>
         <div className={styles.contentBox}>
           {isLoading && (<Loader />)}
@@ -203,9 +238,21 @@ const HomePage = () => {
           <div className={styles.charts}>
             {(theme === COLDSNAPS || theme === HEATWAVES) && (
               <>
-                <TemparatureChart data={transformedWidgetData} theme={theme} />
-                <RiskEventsChart data={transformedWidgetData} theme={theme} />
-                <TermalComfortChart data={transformedWidgetData} theme={theme} />
+                <TemparatureChart
+                  data={transformedWidgetData}
+                  theme={theme}
+                  iconClickAfter={() => infoModalOpen('temperature')}
+                />
+                <RiskEventsChart
+                  data={transformedWidgetData}
+                  theme={theme}
+                  iconClickAfter={() => infoModalOpen('riskEvents')}
+                />
+                <TermalComfortChart
+                  data={transformedWidgetData}
+                  theme={theme}
+                  iconClickAfter={() => infoModalOpen('thermalComfort')}
+                />
               </>
             )}
             {theme === TERMALCOMFORT && (
@@ -258,6 +305,7 @@ const HomePage = () => {
                     activity: activity.value,
                     month: activeMonthTC.value,              
                   }}
+                  iconClickAfter={() => infoModalOpen('thermalComfortMain')}
                 />
                 <div className={styles.calendarBox}>
                   <Dropdown 
@@ -276,7 +324,10 @@ const HomePage = () => {
                     thermalValues={thermalValues}
                   />
                 </div>
-                <ClimatologyChart data={transformedWidgetData} />
+                <ClimatologyChart
+                  data={transformedWidgetData}
+                  iconClickAfter={() => infoModalOpen('hourlyClimatology')}
+                />
               </>
             )}
           </div>

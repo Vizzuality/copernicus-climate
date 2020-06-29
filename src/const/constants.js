@@ -283,3 +283,26 @@ export const OPTIONS_CLOTHING = [
     label: 'Clothing',
   }
 ];
+
+export const MODAL_INFO_DATA = {
+  temperature: {
+    title: 'Temperature',
+    text: 'Maximum and minimum temperature average across the selected administration',
+  },
+  riskEvents: {
+    title: 'Risk Events',
+    text: 'Count of extreme events in the selected administration. The risk level relates to the duration of the extreme event.',
+  },
+  thermalComfort: {
+    title: 'Thermal comfort ',
+    text: 'Count of the levels of extreme stress events experienced in the selected administration',
+  },
+  thermalComfortMain: {
+    title: 'Thermal comfort ',
+    text: 'Hourly Physiologically Equivalent Temperature along the 15th of the selected month for the year 2018. ',
+  },
+  hourlyClimatology: {
+    title: 'Hourly climatology ',
+    text: 'Hourly distribution of the stress.',
+  },
+}
