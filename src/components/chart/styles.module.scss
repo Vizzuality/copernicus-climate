@@ -60,8 +60,6 @@
 .info {
   height: 21.25px;
   width: 21.25px;
-  border: 1.25px solid #222222;
-  border-radius: 50%;
   color: #222222;
   display: flex;
   align-items: center;
@@ -71,6 +69,11 @@
   top: 0;
   cursor: pointer;
   z-index: 2;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .colorBox {

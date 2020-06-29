@@ -22,6 +22,7 @@ import {
 } from './const';
 import { HEATWAVES, TERMALCOMFORT } from 'const/constants';
 import cx from 'classnames';
+import Icon from 'components/icon'; 
 
 function ClimatilogyLegend(props) {
   const { payload } = props;
@@ -38,12 +39,12 @@ function ClimatilogyLegend(props) {
 }
 
 
-export const TermalComfortChart = ({ data = [], theme = HEATWAVES }) => {
+export const TermalComfortChart = ({ data = [], theme = HEATWAVES, iconClickAfter = () => {} }) => {
   const areasList = termalAreas[theme];
   return (
     <div className={cx(styles['c-chart'], styles.withPadding)}>
-      <div className={styles.info}>
-        i 
+      <div className={styles.info} onClick={iconClickAfter}>
+        <Icon name="icon-info" />
       </div>
       <h4>Termal Comfort</h4>
       <div className={styles['c-chart-inside']}>
@@ -105,14 +106,14 @@ export const TermalComfortChart = ({ data = [], theme = HEATWAVES }) => {
 }
 
 
-export const RiskEventsChart = ({ data = [], theme = HEATWAVES }) => {
+export const RiskEventsChart = ({ data = [], theme = HEATWAVES, iconClickAfter = () => {} }) => {
 
   const areasList = riskAreas[theme];
 
   return (
     <div className={cx(styles['c-chart'], styles.withPadding)}>
-      <div className={styles.info}>
-        i 
+      <div className={styles.info} onClick={iconClickAfter}>
+        <Icon name="icon-info" />
       </div>
       <h4>Risk Events</h4>
       <div className={styles['c-chart-inside']}>
@@ -170,12 +171,12 @@ export const RiskEventsChart = ({ data = [], theme = HEATWAVES }) => {
   );
 }
 
-export const TemparatureChart = ({ data = [] }) => {
+export const TemparatureChart = ({ data = [], iconClickAfter = () => {} }) => {
   
   return (
     <div className={styles['c-chart']}>
-      <div className={styles.info}>
-        i 
+      <div className={styles.info} onClick={iconClickAfter}>
+        <Icon name="icon-info" />
       </div>
       <ResponsiveContainer width="100%" height={270}>
       <LineChart
@@ -245,7 +246,7 @@ export const TemparatureChart = ({ data = [] }) => {
 
 
 
-export const ClimatologyChart = ({ data = [], theme = TERMALCOMFORT }) => {
+export const ClimatologyChart = ({ data = [], theme = TERMALCOMFORT, iconClickAfter = () => {} }) => {
 
   const barsList = climatologyBars[theme];
   const hours = 24;
@@ -278,9 +279,9 @@ export const ClimatologyChart = ({ data = [], theme = TERMALCOMFORT }) => {
   }
   return (
     <div className={cx(styles['c-chart'], styles.withPadding, styles.climatology)}>
-      <div className={styles.info}>
-        i 
-      </div>  
+      <div className={styles.info} onClick={iconClickAfter}>
+        <Icon name="icon-info" />
+      </div>
       <h4>Hourly Climatology</h4>
       <div className={styles['c-chart-inside']}>
         <ResponsiveContainer width="100%" height={530}>
@@ -343,7 +344,7 @@ export const ClimatologyChart = ({ data = [], theme = TERMALCOMFORT }) => {
 }
 
 
-export const ThermalComfortMainChart = ({ data = [], filters = {} }) => {
+export const ThermalComfortMainChart = ({ data = [], filters = {}, iconClickAfter = () => {} }) => {
   
   const filteredData = data.filter((el) => {
     const isFalse = [];
@@ -369,8 +370,8 @@ export const ThermalComfortMainChart = ({ data = [], filters = {} }) => {
 
   return (
     <div className={cx(styles['c-chart'], styles.withPadding, styles.climatology)}>
-      <div className={styles.info}>
-        i 
+      <div className={styles.info} onClick={iconClickAfter}>
+        <Icon name="icon-info" />
       </div>
       <h4>Thermal Comfort</h4>
       {filteredData.length > 0 ? (
