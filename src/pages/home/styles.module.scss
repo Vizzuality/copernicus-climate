@@ -101,7 +101,6 @@
   margin-left: -11px;
   margin-right: -11px;
   > div {
-    width: 33.333%;
     padding-left: 11px;
     padding-right: 11px;
   }
@@ -113,6 +112,5 @@
 }
 
 .calendarBox {
-  max-width: 300px;
-  min-width: 300px;
+  max-width: 150px;
 }

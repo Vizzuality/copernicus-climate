@@ -49,7 +49,7 @@ export const OPTIONS_TIME = [
 /** THEMES */
 export const HEATWAVES = 'heatwaves';
 export const COLDSNAPS = 'coldsnaps';
-export const TERMALCOMFORT = 'thermalcomfort';
+export const THERMALCOMFORT = 'thermalcomfort';
 
 export const OPTIONS_THEME = [
   {
@@ -61,7 +61,7 @@ export const OPTIONS_THEME = [
     label: 'Cold Snap',
   },
   {
-    value: TERMALCOMFORT,
+    value: THERMALCOMFORT,
     label: 'Thermal Comfort',
   },
 ];

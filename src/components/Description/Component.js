@@ -1,5 +1,5 @@
 import React from 'react';
-import { HEATWAVES, COLDSNAPS, TERMALCOMFORT } from 'const/constants';
+import { HEATWAVES, COLDSNAPS, THERMALCOMFORT } from 'const/constants';
 
 const Description = ({ theme, params, gidInfo, thermalValues = {} }) => {
 
@@ -21,9 +21,9 @@ const Description = ({ theme, params, gidInfo, thermalValues = {} }) => {
 
   return (
     <>
-    {theme === HEATWAVES || theme === COLDSNAPS && (
+    {(theme === HEATWAVES || theme === COLDSNAPS) && (
       <>
-        From {from} to {to} {` `}
+        From {from} to {to} {` `} 
         <span>{alarmsCount} alarms</span>,{` `}
         <span>{alertsCount} alerts</span>{` `}
         and <span>{warningsCount} warnings</span>,{` `}
@@ -36,7 +36,7 @@ const Description = ({ theme, params, gidInfo, thermalValues = {} }) => {
         <span>{temperatureDate}</span>.
       </>
     )}
-    {theme === TERMALCOMFORT && (
+    {theme === THERMALCOMFORT && (
       <>
         Between {` `}
         <span>{currentYear - 15}</span> and{` `}

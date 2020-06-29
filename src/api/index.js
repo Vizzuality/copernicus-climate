@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {
-  TERMALCOMFORT,
+  THERMALCOMFORT,
   COLDSNAPS,
   HEATWAVES,
   PETS_JSON,
@@ -40,7 +40,7 @@ const tables = {
   'future-seasonal': 'future_seasonal_monthly_zs_nuts_level_234',
   'future-longterm': 'future_longterm_monthly_zs_nuts_level_234',
 }
-const tablesTermalComfort = {
+const tablesThermalComfort = {
   '2': 'historical_hourly_petmax_quantiles_zs_nuts_level_2',
   '3': 'historical_hourly_petmax_quantiles_zs_nuts_level_3',
 };
@@ -127,7 +127,7 @@ const params = {
       'coldsnap_warnings_std'
     ]
   },
-  [TERMALCOMFORT]: {
+  [THERMALCOMFORT]: {
     historical: [
       'gid',
       'month',
@@ -153,7 +153,7 @@ const params = {
 }
 
 const generateSql = (gid, period, theme, time, month, admin_level) => {
-  const table = theme === TERMALCOMFORT ? tablesTermalComfort[admin_level] : tables[period];
+  const table = theme === THERMALCOMFORT ? tablesThermalComfort[admin_level] : tables[period];
   const selectParams = params[theme][period];
   const sql = `
     SELECT 
@@ -164,7 +164,7 @@ const generateSql = (gid, period, theme, time, month, admin_level) => {
     ORDER BY time
   `;
 
-  const sqlTermalComfort = `
+  const sqlThermalComfort = `
     SELECT 
     ${selectParams.join(',')}
     FROM ${table}
@@ -172,7 +172,7 @@ const generateSql = (gid, period, theme, time, month, admin_level) => {
     AND month = ${month}
     ORDER BY hour
   `;
-  return theme === TERMALCOMFORT ? sqlTermalComfort : sql;
+  return theme === THERMALCOMFORT ? sqlThermalComfort : sql;
 }
 
 export const getWidgetData = async (params = defaultParams) => {
