@@ -10,6 +10,7 @@ import LayerManager from 'components/map/layer-manager';
 import Loader from 'components/Loader';
 import Legend from 'components/map/legend';
 import styles from "./styles.module.scss";
+import cx from 'classnames';
 
 import {
   OPTIONS_TIME,
@@ -241,12 +242,13 @@ const HomePage = () => {
                     />
                   </div>
                 </div>
-                <div className={styles['tc-period']}>
+                <div className={cx(styles['tc-period'], styles.calendarBox)}>
                   <Dropdown 
                     options={OPTIONS_MONTHES}
                     value={activeMonthTC}
                     onChange={hadleChangeMonthTC}
                     mode="calendar"
+                    block
                   />
                 </div>
                 <ThermalComfortMainChart
@@ -257,13 +259,15 @@ const HomePage = () => {
                     month: activeMonthTC.value,              
                   }}
                 />
-                <br/>
-                <Dropdown 
-                  options={OPTIONS_MONTHES}
-                  value={optionMonthValue}
-                  onChange={hadleChangeMonth}
-                  mode="calendar"
-                />
+                <div className={styles.calendarBox}>
+                  <Dropdown 
+                    options={OPTIONS_MONTHES}
+                    value={optionMonthValue}
+                    onChange={hadleChangeMonth}
+                    mode="calendar"
+                    block
+                  />
+                </div>
                 <div className={styles.description}>
                   <Description
                     gidInfo={gidInfo}
