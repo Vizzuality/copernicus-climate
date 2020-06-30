@@ -13,6 +13,7 @@ thermalAreas[HEATWAVES] = [
     stackId: "1",
     stroke: "#6E016B", 
     fill: "#6E016B",
+    fillOpacity: 1,
   },
   {
     type:"linear",
@@ -21,6 +22,7 @@ thermalAreas[HEATWAVES] = [
     stackId:"1",
     stroke:"#8C6BB1", 
     fill:"#8C6BB1",
+    fillOpacity: 1,
   },
   {
     type:"linear",
@@ -29,6 +31,7 @@ thermalAreas[HEATWAVES] = [
     stackId:"1",
     stroke:"#88419D", 
     fill:"#88419D",
+    fillOpacity: 1,
   },
 ];
 thermalAreas[COLDSNAPS] = [
@@ -39,6 +42,7 @@ thermalAreas[COLDSNAPS] = [
     stackId: "1",
     stroke: "#DAEFF5", 
     fill: "#DAEFF5",
+    fillOpacity: 1,
   },
   {
     type:"linear",
@@ -47,6 +51,7 @@ thermalAreas[COLDSNAPS] = [
     stackId:"1",
     stroke:"#BFD3E6", 
     fill:"#BFD3E6",
+    fillOpacity: 1,
   },
   {
     type:"linear",
@@ -55,6 +60,7 @@ thermalAreas[COLDSNAPS] = [
     stackId:"1",
     stroke:"#9EBCDA", 
     fill:"#9EBCDA",
+    fillOpacity: 1,
   },
 ];
 thermalAreas[THERMALCOMFORT] = [];
@@ -68,6 +74,7 @@ riskAreas[HEATWAVES] = [
     stackId:"1",
     stroke:"#FF3131",
     fill:"#FF3131",
+    fillOpacity: 1,
   },
   {
     type:"linear",
@@ -76,6 +83,7 @@ riskAreas[HEATWAVES] = [
     stackId:"1",
     stroke:"#FF773A", 
     fill:"#FF773A",
+    fillOpacity: 1,
   },
   {
     type:"linear",
@@ -84,6 +92,7 @@ riskAreas[HEATWAVES] = [
     stackId:"1",
     stroke:"#FFC744", 
     fill:"#FFC744",
+    fillOpacity: 1,
   },
 ];
 riskAreas[COLDSNAPS] = [
@@ -94,6 +103,7 @@ riskAreas[COLDSNAPS] = [
     stackId:"1",
     stroke:"#FF3131",
     fill:"#FF3131",
+    fillOpacity: 1,
   },
   {
     type:"linear",
@@ -102,6 +112,7 @@ riskAreas[COLDSNAPS] = [
     stackId:"1",
     stroke:"#FF773A", 
     fill:"#FF773A",
+    fillOpacity: 1,
   },
   {
     type:"linear",
@@ -110,6 +121,7 @@ riskAreas[COLDSNAPS] = [
     stackId:"1",
     stroke:"#FFC744", 
     fill:"#FFC744",
+    fillOpacity: 1,
   },
 ];
 riskAreas[THERMALCOMFORT] = [];
