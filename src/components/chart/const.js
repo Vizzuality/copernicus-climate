@@ -107,7 +107,9 @@ riskAreas[COLDSNAPS] = [
     type:"linear",
     name:"Warning",
     dataKey:"coldsnap_warnings_mean", 
-    fill:"#8884d8"
+    stackId:"1",
+    stroke:"#FFC744", 
+    fill:"#FFC744",
   },
 ];
 riskAreas[THERMALCOMFORT] = [];
