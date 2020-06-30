@@ -24,7 +24,7 @@ import {
   ADMIN_LEVEL_ZOOM,
   SOURCE_URLS,
   SOURCE_LAYERS,
-  TERMALCOMFORT,
+  THERMALCOMFORT,
   OPTIONS_MONTHES,
   OPTIONS_ACTIVITY,
   OPTIONS_AGE,
@@ -32,7 +32,7 @@ import {
   MODAL_INFO_DATA
 } from 'const/constants';
 import {
-  TermalComfortChart,
+  ThermalComfortChart,
   ThermalComfortMainChart,
   RiskEventsChart,
   TemparatureChart,
@@ -151,7 +151,7 @@ const HomePage = () => {
   }
   const kelvin =  -273.15;
   const copyData = _.cloneDeep(widgetData);
-  const transformedWidgetData = theme === TERMALCOMFORT ? copyData : copyData.map(wd => {
+  const transformedWidgetData = theme === THERMALCOMFORT ? copyData : copyData.map(wd => {
     params.alarmsCount += theme === HEATWAVES ? wd.heatwave_alarms_mean : wd.coldsnap_alarms_mean;
     params.alertsCount += theme === HEATWAVES ? wd.heatwave_alerts_mean : wd.coldsnap_alerts_mean;
     params.warningsCount += theme === HEATWAVES ? wd.heatwave_warnings_mean : wd.coldsnap_warnings_mean;
@@ -185,7 +185,7 @@ const HomePage = () => {
     min: 0,
     max: 0,
   }
-  if (theme !== TERMALCOMFORT) {
+  if (theme !== THERMALCOMFORT) {
     params.alarmsCount = Math.ceil(params.alarmsCount) || 0;
     params.alertsCount = Math.ceil(params.alertsCount) || 0;
     params.warningsCount = Math.ceil(params.warningsCount) || 0;
@@ -248,14 +248,14 @@ const HomePage = () => {
                   theme={theme}
                   iconClickAfter={() => infoModalOpen('riskEvents')}
                 />
-                <TermalComfortChart
+                <ThermalComfortChart
                   data={transformedWidgetData}
                   theme={theme}
                   iconClickAfter={() => infoModalOpen('thermalComfort')}
                 />
               </>
             )}
-            {theme === TERMALCOMFORT && (
+            {theme === THERMALCOMFORT && (
               <>
                 <div className={styles['tc-filters']}>
                   <div>

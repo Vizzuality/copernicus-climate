@@ -16,13 +16,29 @@ import {
 import styles from './styles.module.scss';
 import {
   riskAreas,
-  termalAreas,
+  thermalAreas,
   climatologyBars,
   climatologyTypes
 } from './const';
-import { HEATWAVES, TERMALCOMFORT } from 'const/constants';
+import { HEATWAVES, THERMALCOMFORT } from 'const/constants';
 import cx from 'classnames';
-import Icon from 'components/icon'; 
+import Icon from 'components/icon';
+
+function tooltipContent (tooltipProps) {
+  const { label, payload, unit } = tooltipProps;
+  return (<div className={styles['customTooltip']}>
+    {label}
+    {payload.map(item => {
+      const { color, name, value } = item;
+      const number = value % 1 !== 0 ? value.toFixed(2) : value;
+      return (
+      <div key={name}>
+        <svg height="8" width="8"><circle cx="4" cy="4" r="4" fill={color} /></svg>
+        {`${name}: ${number}${unit || ''}`}
+      </div>
+    )})}
+  </div>);
+}
 
 function ClimatilogyLegend(props) {
   const { payload } = props;
@@ -39,14 +55,14 @@ function ClimatilogyLegend(props) {
 }
 
 
-export const TermalComfortChart = ({ data = [], theme = HEATWAVES, iconClickAfter = () => {} }) => {
-  const areasList = termalAreas[theme];
+export const ThermalComfortChart = ({ data = [], theme = HEATWAVES, iconClickAfter = () => {} }) => {
+  const areasList = thermalAreas[theme];
   return (
     <div className={cx(styles['c-chart'], styles.withPadding)}>
       <div className={styles.info} onClick={iconClickAfter}>
         <Icon name="icon-info" />
       </div>
-      <h4>Termal Comfort</h4>
+      <h4>Thermal Comfort</h4>
       <div className={styles['c-chart-inside']}>
         <div className={styles.dotLeft}>
           <span></span>
@@ -83,6 +99,7 @@ export const TermalComfortChart = ({ data = [], theme = HEATWAVES, iconClickAfte
                 fontSize: "14px",
                 lineHeight: "20px",
               }}
+              content={tooltipContent}
             />
             {areasList.map((area) => (<Area key={area.dataKey} {...area} />))}
             <Legend
@@ -149,6 +166,7 @@ export const RiskEventsChart = ({ data = [], theme = HEATWAVES, iconClickAfter =
                 fontSize: "14px",
                 lineHeight: "20px",
               }}
+              content={tooltipContent}
             />
             {areasList.map((area) => (<Area key={area.dataKey} {...area} />))}
             <Legend
@@ -209,6 +227,7 @@ export const TemparatureChart = ({ data = [], iconClickAfter = () => {} }) => {
             fontSize: "14px",
             lineHeight: "20px",
           }}
+          content={(props) => tooltipContent({...props, unit: 'ºC'})}
         />
         <Line
           type="basis"
@@ -246,7 +265,7 @@ export const TemparatureChart = ({ data = [], iconClickAfter = () => {} }) => {
 
 
 
-export const ClimatologyChart = ({ data = [], theme = TERMALCOMFORT, iconClickAfter = () => {} }) => {
+export const ClimatologyChart = ({ data = [], theme = THERMALCOMFORT, iconClickAfter = () => {} }) => {
 
   const barsList = climatologyBars[theme];
   const hours = 24;
@@ -319,6 +338,7 @@ export const ClimatologyChart = ({ data = [], theme = TERMALCOMFORT, iconClickAf
                 fontSize: "14px",
                 lineHeight: "20px",
               }}
+              content={(props) => tooltipContent({...props, unit: '%'})}
             />
             {barsList.map((bar) => (<Bar stackId="a" key={bar.dataKey} {...bar} />))}
             <Legend
@@ -407,6 +427,7 @@ export const ThermalComfortMainChart = ({ data = [], filters = {}, iconClickAfte
                 fontSize: "14px",
                 lineHeight: "20px",
               }}
+              content={tooltipContent}
             />
             <Line
               type="basis"

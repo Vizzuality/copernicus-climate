@@ -1,11 +1,11 @@
 import {
   HEATWAVES,
   COLDSNAPS,
-  TERMALCOMFORT,
+  THERMALCOMFORT,
 } from 'const/constants';
 
-const termalAreas = {};
-termalAreas[HEATWAVES] = [
+const thermalAreas = {};
+thermalAreas[HEATWAVES] = [
   {
     type: "linear",
     name: "Extreme heat stress",
@@ -31,7 +31,7 @@ termalAreas[HEATWAVES] = [
     fill:"#88419D",
   },
 ];
-termalAreas[COLDSNAPS] = [
+thermalAreas[COLDSNAPS] = [
   {
     type: "linear",
     name: "Extreme cold stress ",
@@ -57,7 +57,7 @@ termalAreas[COLDSNAPS] = [
     fill:"#9EBCDA",
   },
 ];
-termalAreas[TERMALCOMFORT] = [];
+thermalAreas[THERMALCOMFORT] = [];
 
 const riskAreas = {};
 riskAreas[HEATWAVES] = [
@@ -110,7 +110,7 @@ riskAreas[COLDSNAPS] = [
     fill:"#8884d8"
   },
 ];
-riskAreas[TERMALCOMFORT] = [];
+riskAreas[THERMALCOMFORT] = [];
 
 /**
  * Colors climatology
@@ -166,7 +166,7 @@ const climatologyTypes = {
   },
 };
 const climatologyBars = {};
-climatologyBars[TERMALCOMFORT] = Object.keys(climatologyTypes).map(type => ({
+climatologyBars[THERMALCOMFORT] = Object.keys(climatologyTypes).map(type => ({
   dataKey: type,
   fill: climatologyTypes[type].fill,
   name: climatologyTypes[type].name,
@@ -179,7 +179,7 @@ const checkType = (x) => {
 }
 
 export {
-  termalAreas,
+  thermalAreas,
   riskAreas,
   climatologyBars,
   climatologyTypes,

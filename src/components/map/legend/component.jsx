@@ -57,7 +57,7 @@ const Legend = ({ layers = [] }) => {
         </button>
         {isOpen && (
           <div className={styles.layers}>
-            {layers && layers.length > 0 && layers.map(l => <LayerLegend {...l} />)}
+            {layers && layers.length > 0 && layers.map(l => <LayerLegend key={l.id} {...l} />)}
           </div>
         )}
       </div>
