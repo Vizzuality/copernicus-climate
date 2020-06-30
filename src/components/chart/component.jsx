@@ -504,7 +504,7 @@ export const ThermalComfortMainChart = ({ data = [], filters = {}, iconClickAfte
         </ResponsiveContainer>
       ) : (
         <div className={styles.noData}>
-          No data available for this time period
+          No data available for this selection. Please select Madrid, Bizkaia or Gipuzkoa to see PET values
         </div>
       )}
     </div>
