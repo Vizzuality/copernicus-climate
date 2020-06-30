@@ -30,7 +30,7 @@ function tooltipContent (tooltipProps) {
     {label}
     {payload.map(item => {
       const { color, name, value } = item;
-      const number = value % 1 !== 0 ? value.toFixed(2) : value;
+      const number = value % 1 !== 0 ? Number(value).toFixed(2) : value;
       return (
       <div key={name}>
         <svg height="8" width="8"><circle cx="4" cy="4" r="4" fill={color} /></svg>
