@@ -24,6 +24,47 @@ import { HEATWAVES, THERMALCOMFORT } from 'const/constants';
 import cx from 'classnames';
 import Icon from 'components/icon';
 
+
+function hourTransform (tick) {
+  return tick === 0 ? 12 : tick;
+}
+
+function CustomizedTick (props) {
+
+  const { payload, x, y, width, height } = props;
+
+  return (
+    <>
+      <text 
+        stroke="none"
+        width={width}
+        height={height}
+        x={x}
+        y={y}
+        fill="1"
+        class="recharts-text recharts-cartesian-axis-tick-value"
+        text-anchor="middle"
+      >
+        <tspan
+          x={x}
+          y={y}
+        >
+          {hourTransform(payload.value)}
+        </tspan>
+        {(payload.value === 0 || payload.value === 23 || payload.value === 24) && (
+          <tspan
+            x={x}
+            y={y+20}
+          >
+            {payload.value === 0 && ('AM')}
+            {(payload.value === 23 || payload.value === 24) && ('PM')}
+          </tspan>
+        )}
+      </text>
+    </>
+  );
+}
+
 function tooltipContent (tooltipProps) {
   const { label, payload, unit, labelStyle } = tooltipProps;
   return (<div className={styles['customTooltip']}>
@@ -323,6 +364,7 @@ export const ClimatologyChart = ({ data = [], theme = THERMALCOMFORT, iconClickA
             <XAxis 
               dataKey="hour" 
               stroke="1"
+              tick={<CustomizedTick />}
             />
             <YAxis 
               label={{value: '%', position: 'insideTop', dx:-15, dy: -40}}
@@ -356,7 +398,7 @@ export const ClimatologyChart = ({ data = [], theme = THERMALCOMFORT, iconClickA
               wrapperStyle={{
                 fontSize: "14px",
                 lineHeight: "19px",
-                bottom: "-10px",
+                bottom: "-30px",
                 left: 0,
               }}
               iconSize={9}
