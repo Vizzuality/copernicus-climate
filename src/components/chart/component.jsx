@@ -25,10 +25,10 @@ import cx from 'classnames';
 import Icon from 'components/icon';
 
 function tooltipContent (tooltipProps) {
-  const { label, payload, unit } = tooltipProps;
+  const { label, payload, unit, labelStyle } = tooltipProps;
   return (<div className={styles['customTooltip']}>
-    {label}
-    {payload.map(item => {
+    <span style={labelStyle}>{label}</span>
+    {payload.filter(item => item.name !== 'hour').map(item => {
       const { color, name, value } = item;
       const number = value % 1 !== 0 ? Number(value).toFixed(2) : value;
       return (
@@ -338,6 +338,7 @@ export const ClimatologyChart = ({ data = [], theme = THERMALCOMFORT, iconClickA
                 fontSize: "14px",
                 lineHeight: "20px",
               }}
+              labelStyle={{ display: 'none' }}
               content={(props) => tooltipContent({...props, unit: '%'})}
             />
             {barsList.map((bar) => (<Bar stackId="a" key={bar.dataKey} {...bar} />))}
