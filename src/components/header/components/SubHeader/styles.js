@@ -1,23 +1,16 @@
 import SearchIcon from 'assets/img/svgs/search-filter.svg';
 
 export const searchSelectStyles = {
-  container: (provided, state) => {
-    let autoWidth = 0;
-    if (state.selectProps.autoWidth) {
-      const value = state.getValue()[0].label;
-      autoWidth = `${value.length * 13}px`;
-    }
-    return {
-      ...provided,
-      width: '100%',
-      cursor: 'pointer',
-      maxWidth: state.selectProps.isIcon ? '250px' : autoWidth ? autoWidth : '175px',
-    }
-  },
+  container: (provided, state) => ({
+    ...provided,
+    width: '100%',
+    cursor: 'pointer',
+  }),
   valueContainer:  (provided, state) => ({
     ...provided,
     height: '100%',
-    paddingLeft: state.selectProps.isIcon ? '43px' : '0',
+    width: '100%',
+    paddingLeft: '43px',
     border: state.isSelected ? 'none' : 'none',
     ':before': {
       opacity: state.selectProps.isIcon ? '1' : '0',
@@ -40,6 +33,7 @@ export const searchSelectStyles = {
   menuList: (provided) => ({
     ...provided,
     padding: 0,
+    width: '100%',
   }),
   option: (provided, state) => ({
     ...provided,
@@ -53,6 +47,7 @@ export const searchSelectStyles = {
     ':hover': {
       backgroundColor: '#E6E6E6',
     },
+    width: '100%'
   }),
   input: (provided) => ({
     ...provided,

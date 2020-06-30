@@ -33,24 +33,27 @@ const SubHeader = () => {
   return (
     <div className={styles.cSubheader}>
       <div className={styles.container}>
-        <h1 className={styles.title}>Thermal Assessment Tool</h1>
-        <div className={styles.filterSection}>
-          <ReactSelect
-            styles={searchSelectStyles}
-            defaultValue={optionsGids.find(c => c.value === gid) || optionsGids[0]}
-            options={optionsGids}
-            onChange={handleChangeGid}
-            isIcon
-          />
+        <div className={styles.titleContainer}>
+          <h1 className={styles.title}>Thermal Assessment Tool</h1>
         </div>
-        <div className={styles.filterSection}>
-          <ReactSelect
-            styles={searchSelectStyles}
-            defaultValue={OPTIONS_TIME.find(t => t.value === time) || OPTIONS_TIME[0]}
-            options={OPTIONS_TIME}
-            onChange={handleChangeTime}
-            autoWidth
-          />
+        <div className={styles.filters}>
+          <div className={styles.filterSection}>
+            <ReactSelect
+              styles={searchSelectStyles}
+              defaultValue={optionsGids.find(c => c.value === gid) || optionsGids[0]}
+              options={optionsGids}
+              onChange={handleChangeGid}
+              isIcon
+            />
+          </div>
+          <div className={styles.filterSection}>
+            <ReactSelect
+              styles={searchSelectStyles}
+              defaultValue={OPTIONS_TIME.find(t => t.value === time) || OPTIONS_TIME[0]}
+              options={OPTIONS_TIME}
+              onChange={handleChangeTime}
+            />
+          </div>
         </div>
       </div>
     </div>
