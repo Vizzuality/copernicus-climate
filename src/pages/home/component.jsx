@@ -140,6 +140,8 @@ const HomePage = () => {
   }, [theme, period]);
 
   const params = {
+    from,
+    to,
     alarmsCount: 0,
     alertsCount: 0,
     warningsCount: 0,
