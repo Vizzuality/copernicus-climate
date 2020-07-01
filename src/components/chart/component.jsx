@@ -42,7 +42,7 @@ function CustomizedTick (props) {
         x={x}
         y={y}
         fill="1"
-        class="recharts-text recharts-cartesian-axis-tick-value"
+        className="recharts-text recharts-cartesian-axis-tick-value"
         text-anchor="middle"
       >
         <tspan
@@ -415,29 +415,7 @@ export const ClimatologyChart = ({ data = [], theme = THERMALCOMFORT, iconClickA
 }
 
 
-export const ThermalComfortMainChart = ({ data = [], filters = {}, iconClickAfter = () => {} }) => {
-  
-  const filteredData = data.filter((el) => {
-    const isFalse = [];
-    if (filters.activity && el.variable !== filters.activity) {
-      isFalse.push('activity');
-    }
-    if (filters.gid && el.gid_code !== filters.gid) {
-      isFalse.push('gid');
-    }
-    if (filters.month && el.month !== filters.month) {
-      isFalse.push('gid');
-    }
-    return isFalse.length === 0;
-  }).sort((a, b) => {
-    if (a.hour < b.hour) {
-      return -1;
-    }
-    if (a.hour > b.hour) {
-      return 1;
-    }
-    return 0;
-  });  
+export const ThermalComfortMainChart = ({ data = [], iconClickAfter = () => {} }) => {
 
   return (
     <div className={cx(styles['c-chart'], styles.withPadding, styles.climatology)}>
@@ -445,10 +423,10 @@ export const ThermalComfortMainChart = ({ data = [], filters = {}, iconClickAfte
         <Icon name="icon-info" />
       </div>
       <h4>Thermal Comfort</h4>
-      {filteredData.length > 0 ? (
+      {data.length > 0 ? (
         <ResponsiveContainer width="100%" height={330}>
           <LineChart
-            data={filteredData.length > 0 ? filteredData : []}
+            data={data.length > 0 ? data : []}
             margin={{
               top: 40, right: 0, left: 0, bottom: 0,
             }}

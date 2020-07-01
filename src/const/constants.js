@@ -279,8 +279,8 @@ export const OPTIONS_AGE = [
 
 export const OPTIONS_CLOTHING = [
   {
-    value: 'clothing',
-    label: 'Clothing',
+    value: 'light',
+    label: 'Light',
   }
 ];
 

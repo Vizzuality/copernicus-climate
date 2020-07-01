@@ -212,7 +212,50 @@ const HomePage = () => {
       return lc;
     });
     return l;
-  })
+  });
+
+  const petValues = {
+    max: 0,
+    activity: activity.label,
+    age: OPTIONS_AGE[0].label,
+    clothing: OPTIONS_CLOTHING[0].label,
+    month: activeMonthTC.label,
+    hour: 0,
+  };
+
+  const petFilters = {
+    gid: gidInfo.gid,
+    activity: activity.value,
+    month: activeMonthTC.value,              
+  };
+
+  const filteredPets = pets.filter((el) => {
+    const isFalse = [];
+    if (petFilters.activity && el.variable !== petFilters.activity) {
+      isFalse.push('activity');
+    }
+    if (petFilters.gid && el.gid_code !== petFilters.gid) {
+      isFalse.push('gid');
+    }
+    if (petFilters.month && el.month !== petFilters.month) {
+      isFalse.push('gid');
+    }
+    return isFalse.length === 0;
+  }).map((el) => {
+    if (el.pet > petValues.max) {
+      petValues.max = el.pet.toFixed(2);
+      petValues.hour = el.hour;
+    }
+    return el;
+  }).sort((a, b) => {
+    if (a.hour < b.hour) {
+      return -1;
+    }
+    if (a.hour > b.hour) {
+      return 1;
+    }
+    return 0;
+  });
 
   return (
     <div className={styles.container}>
@@ -300,13 +343,17 @@ const HomePage = () => {
                     block
                   />
                 </div>
+                {filteredPets && filteredPets.length > 0 && (
+                  <div className={styles.description}>
+                    <Description
+                      gidInfo={gidInfo}
+                      isPet
+                      petValues={petValues}
+                    />
+                  </div>
+                )}
                 <ThermalComfortMainChart
-                  data={pets}
-                  filters={{
-                    gid: gidInfo.gid,
-                    activity: activity.value,
-                    month: activeMonthTC.value,              
-                  }}
+                  data={filteredPets}
                   iconClickAfter={() => infoModalOpen('thermalComfortMain')}
                 />
                 <div className={styles.calendarBox}>

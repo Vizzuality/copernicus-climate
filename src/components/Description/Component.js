@@ -1,8 +1,14 @@
 import React from 'react';
 import { HEATWAVES, COLDSNAPS, THERMALCOMFORT } from 'const/constants';
 
-const Description = ({ theme, params, gidInfo, thermalValues = {} }) => {
-
+const Description = ({
+  theme,
+  params = {},
+  gidInfo = {},
+  thermalValues = {},
+  isPet = false,
+  petValues = {},
+}) => {
   const { 
     from,
     to,
@@ -45,7 +51,18 @@ const Description = ({ theme, params, gidInfo, thermalValues = {} }) => {
         <span>{thermalValues.min || ''}</span> to{` `}
         <span>{thermalValues.max || ''}</span>
         for an adult with <span>medium clothing doing moderate activity</span> in {` `}
-        <span>{gidInfo.geoname}</span> . {` `}
+        <span>{gidInfo.geoname}</span>. {` `}
+      </>
+    )}
+    {isPet && (
+      <>
+       On <span>15th of {petValues.month} 2018</span> the highest PET value of {` `}
+       <span>{petValues.max}</span> for an {` `}
+       <span>{petValues.age ? petValues.age.toLowerCase() : null}</span> wearing {` `}
+       <span>{petValues.clothing ? petValues.clothing.toLowerCase() : null}</span> clothing doing {` `}
+       <span>{petValues.activity ? petValues.activity.toLowerCase() : null}</span> was observed at {` `}
+       <span>{petValues.hour} GMT</span> in {` `}
+       <span>{gidInfo.geoname}</span>. {` `}
       </>
     )}
     </>
