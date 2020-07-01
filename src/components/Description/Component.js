@@ -31,7 +31,7 @@ const Description = ({ theme, params, gidInfo, thermalValues = {} }) => {
         <span>{strongCount} strong</span>{` `}
         and <span>{moderateCount} moderate heat stress events</span> were observed in{` `}
         <span>{gidInfo.geoname}</span>. {` `}
-        The {theme === HEATWAVES ? 'highest' : 'lowest'} highest temperature of {` `}
+        The {theme === HEATWAVES ? 'highest' : 'lowest'} temperature of {` `}
         <span>{temperature}</span> ºC was observed in {` `}
         <span>{temperatureDate}</span>.
       </>
