@@ -356,7 +356,7 @@ const HomePage = () => {
                   data={filteredPets}
                   iconClickAfter={() => infoModalOpen('thermalComfortMain')}
                 />
-                <div className={styles.calendarBox}>
+                <div className={cx(styles['tc-climatology'], styles.calendarBox)}>
                   <Dropdown 
                     options={OPTIONS_MONTHES}
                     value={optionMonthValue}
