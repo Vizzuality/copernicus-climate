@@ -373,6 +373,7 @@ export const ClimatologyChart = ({ data = [], theme = THERMALCOMFORT, iconClickA
               stroke="1"
               type="number"
               domain={[0, 100]}
+              tickFormatter={(tick) => tick.toFixed()}
               padding={{top: 0, bottom: 20}}
             />
             <Tooltip 
