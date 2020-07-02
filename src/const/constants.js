@@ -299,7 +299,7 @@ export const MODAL_INFO_DATA = {
   },
   thermalComfortMain: {
     title: 'Thermal comfort ',
-    text: 'Hourly Physiologically Equivalent Temperature along the 15th of the selected month for the year 2018. ',
+    text: 'Hourly Physiologically Equivalent Temperature (PET) along the 15th of the selected month for the year 2018. ',
   },
   hourlyClimatology: {
     title: 'Hourly climatology ',
