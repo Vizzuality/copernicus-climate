@@ -287,7 +287,7 @@ export const OPTIONS_CLOTHING = [
 export const MODAL_INFO_DATA = {
   temperature: {
     title: 'Temperature',
-    text: 'Maximum and minimum temperature average across the selected administration',
+    text: 'Maximum and minimum temperature average across the selected administration.',
   },
   riskEvents: {
     title: 'Risk Events',
@@ -295,7 +295,7 @@ export const MODAL_INFO_DATA = {
   },
   thermalComfort: {
     title: 'Thermal comfort ',
-    text: 'Count of the levels of extreme stress events experienced in the selected administration',
+    text: 'Count of the levels of extreme stress events experienced in the selected administration.',
   },
   thermalComfortMain: {
     title: 'Thermal comfort ',
