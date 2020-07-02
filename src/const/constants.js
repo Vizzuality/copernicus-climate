@@ -68,7 +68,7 @@ export const OPTIONS_THEME = [
 
 
 /** MAPBOX */
-export const MAPBOX_STYLE_DEFAULT = 'mapbox://styles/mapbox/light-v10';
+export const MAPBOX_STYLE_DEFAULT = 'mapbox://styles/copernicus-forests/ckagm1ll90os61il7lqwd06cg';
 
 export const DEFAULT_VIEWPORT = {
   width: 400,
