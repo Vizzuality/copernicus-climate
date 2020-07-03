@@ -3,9 +3,8 @@ import Icon from 'components/icon';
 import cx from 'classnames';
 import styles from './styles.module.scss';
 
-const isRadio = false;
-
-const LayerLegend = ({ attributes = {}, id = '' }) => {
+const LayerLegend = ({ attributes = {}, id = '', isRadio, setActiveLayer, active }) => {
+  
   const { legendConfig = {}, name = '' } = attributes;
   const { items = [] } = legendConfig;
   const sectionSize = 100 / (items.length - 2);
@@ -24,11 +23,19 @@ const LayerLegend = ({ attributes = {}, id = '' }) => {
     }
     return `${i.color} ${percent}%`;
   }).join(',');
+
   return (
     <div className={styles.layer}>
       {isRadio && (
         <div className={styles.radio}>
-          <input id={`${id}-legend`} type="radio" name="legend" value={id} />
+          <input
+            checked={active}
+            id={`${id}-legend`}
+            type="radio"
+            name="legend"
+            onChange={(e) => setActiveLayer(e.target.value)}
+            value={id}
+          />
           <label htmlFor={`${id}-legend`} />
         </div>
       )} 
@@ -44,7 +51,7 @@ const LayerLegend = ({ attributes = {}, id = '' }) => {
   );
 }
 
-const Legend = ({ layers = [] }) => {
+const Legend = ({ layers = [], setActiveLayer = () => {} }) => {
 
   const [isOpen, setOpen] = useState(true);
 
@@ -60,7 +67,7 @@ const Legend = ({ layers = [] }) => {
         </button>
         {isOpen && (
           <div className={styles.layers}>
-            {layers && layers.length > 0 && layers.map(l => <LayerLegend key={l.id} {...l} />)}
+            {layers && layers.length > 0 && layers.map(l => <LayerLegend setActiveLayer={setActiveLayer} key={l.id} {...l} />)}
           </div>
         )}
       </div>

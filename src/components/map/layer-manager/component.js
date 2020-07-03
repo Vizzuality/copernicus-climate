@@ -17,7 +17,6 @@ class LayerManager extends PureComponent {
       map,
       layers
     } = this.props;
-
     return (
       <VizzLayerManager
         map={map}

@@ -49,6 +49,7 @@ const DEFAULT_INFO_MODAL = {
 
 const HomePage = () => {  
   const history = useHistory();
+  const [activeLayer, setActiveLayer] = useState(null);
   const [viewport, setViewport] = useState(DEFAULT_VIEWPORT);
   const [isLoading, setLoading] = useState(false);
   const [activeMonth, setActiveMonth] = useState(OPTIONS_MONTHES[0]);
@@ -200,7 +201,7 @@ const HomePage = () => {
     thermalValues.max = sortedData[sortedData.length - 1] && sortedData[sortedData.length - 1].pet_mean ? checkType(sortedData[sortedData.length - 1].pet_mean).name : 0;
   }
 
-  layersInfo.map(l => {
+  layersInfo.map((l, ln) => {
     l.attributes.layerConfig.params.admin_level = admin_level;
     l.attributes.layerConfig.source = {
       type: 'vector',
@@ -211,6 +212,10 @@ const HomePage = () => {
       lc['source-layer'] = SOURCE_LAYERS[period][admin_level];
       return lc;
     });
+    if (theme === THERMALCOMFORT) {
+      l.isRadio = true;
+    }
+    l.active = activeLayer ? l.id === activeLayer : ln === 0;
     return l;
   });
 
@@ -385,10 +390,16 @@ const HomePage = () => {
       <div className={styles.map}>
           <Map scrollZoom={false} viewport={viewport} setViewport={setViewport} >
             {map => (
-              <LayerManager map={map} layers={layersInfo} />
+              <LayerManager map={map} layers={layersInfo.filter(_layer => _layer.active)} />
             )}
           </Map>
-          <Legend layers={layersInfo} align="right" layout="vertical" verticalAlign="top" />
+          <Legend
+            setActiveLayer={setActiveLayer}
+            layers={layersInfo}
+            align="right"
+            layout="vertical"
+            verticalAlign="top"
+          />
         <div className={styles.navigationBar}>
           <div className={styles.targetBox}>
             {/* <Target viewport={viewport} setViewport={setViewport} /> */}
