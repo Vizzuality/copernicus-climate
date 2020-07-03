@@ -59,10 +59,10 @@ const Description = ({
        On <span>15th of {petValues.month} 2018</span> the highest PET value of {` `}
        <span>{petValues.max}</span> for an {` `}
        <span>{petValues.age ? petValues.age.toLowerCase() : null}</span> wearing {` `}
-       <span>{petValues.clothing ? petValues.clothing.toLowerCase() : null}</span> clothing doing {` `}
-       <span>{petValues.activity ? petValues.activity.toLowerCase() : null}</span> was observed at {` `}
-       <span>{petValues.hour} GMT</span> in {` `}
-       <span>{gidInfo.geoname}</span>. {` `}
+       <span>{petValues.clothing ? petValues.clothing.toLowerCase() : null}</span> clothing {` `}
+       <span>{petValues.activity ? petValues.activity.toLowerCase() : null}</span> in {` `}
+       <span>{gidInfo.geoname}</span> was observed at {` `}
+       <span>{petValues.hour} GMT</span> {` `}
       </>
     )}
     </>

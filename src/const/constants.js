@@ -254,19 +254,18 @@ export const OPTIONS_MONTHES = [
 ];
 
 export const PETS_JSON = 'https://storage.googleapis.com/copernicus-climate/zonal_stats/pet_2018_bilbao_vitoria_madrid.json';
-
 export const OPTIONS_ACTIVITY = [
   {
     value: 'met40',
-    label: 'Relax',
+    label: 'Relaxing',
   },
   {
     value: 'met80',
-    label: 'Walk',
+    label: 'Walking',
   },
   {
     value: 'met240',
-    label: 'Sport',
+    label: 'Doing sports',
   }
 ];
 
