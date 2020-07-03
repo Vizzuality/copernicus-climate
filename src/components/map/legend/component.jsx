@@ -3,6 +3,7 @@ import Icon from 'components/icon';
 import cx from 'classnames';
 import styles from './styles.module.scss';
 
+const isRadio = false;
 
 const LayerLegend = ({ attributes = {}, id = '' }) => {
   const { legendConfig = {}, name = '' } = attributes;
@@ -25,10 +26,12 @@ const LayerLegend = ({ attributes = {}, id = '' }) => {
   }).join(',');
   return (
     <div className={styles.layer}>
-      <div className={styles.radio}>
-        <input id={`${id}-legend`} type="radio" name="legend" value={id} />
-        <label htmlFor={`${id}-legend`} />
-      </div>
+      {isRadio && (
+        <div className={styles.radio}>
+          <input id={`${id}-legend`} type="radio" name="legend" value={id} />
+          <label htmlFor={`${id}-legend`} />
+        </div>
+      )} 
       <div className={styles.stats}>
         <div className={styles.title}>{name}</div>
         <div className={styles.line} style={{ background: `linear-gradient(90deg, ${gradient})` }} />
