@@ -26,12 +26,31 @@ import Icon from 'components/icon';
 
 
 function hourTransform (tick) {
-  return tick === 0 ? 12 : tick;
+  let newTick = tick;
+  if (tick !== null || tick === 0) {
+    newTick = (tick === 0 || tick === 24) ? '12' : ('0' + tick).slice(-2);
+  }
+  return newTick;
+}
+
+function hourTransformAMPM (hour, params = {}) {
+
+  let newHour = hour;
+
+  if ((newHour || newHour === 0) && params.withAMPM) {
+    newHour = (hour < 12 || hour === 24) ? `${hourTransform(hour)}AM` : `${hourTransform(hour - 12)}PM`;
+    
+    if (params.lowercase) {
+      newHour = newHour.toLowerCase();
+    }
+  }
+
+  return newHour;
 }
 
 function CustomizedTick (props) {
 
-  const { payload, x, y, width, height } = props;
+  const { payload, x, y, width, height, withHours } = props;
 
   return (
     <>
@@ -49,16 +68,20 @@ function CustomizedTick (props) {
           x={x}
           y={y}
         >
-          {hourTransform(payload.value)}
+          {hourTransformAMPM(payload.value, { withAMPM: withHours, lowercase: true })}
         </tspan>
-        {(payload.value === 0 || payload.value === 23 || payload.value === 24) && (
-          <tspan
-            x={x}
-            y={y+20}
-          >
-            {payload.value === 0 && ('AM')}
-            {(payload.value === 23 || payload.value === 24) && ('PM')}
-          </tspan>
+        {!withHours && (
+          <>
+            {(payload.value === 0 || payload.value === 23 || payload.value === 24) && (
+              <tspan
+                x={x}
+                y={y+20}
+              >
+                {payload.value === 0 && ('AM')}
+                {(payload.value === 23 || payload.value === 24) && ('PM')}
+              </tspan>
+            )}
+          </>
         )}
       </text>
     </>
@@ -66,9 +89,11 @@ function CustomizedTick (props) {
 }
 
 function tooltipContent (tooltipProps) {
-  const { label, payload, unit, labelStyle } = tooltipProps;
+  const { label, payload, unit, labelStyle, showHours } = tooltipProps;
   return (<div className={styles['customTooltip']}>
-    <span style={labelStyle}>{label}</span>
+    <span style={labelStyle}>
+      {showHours ? hourTransformAMPM(label, { withAMPM: true, lowercase: false }) : label}
+    </span>
     {payload.filter(item => item.name !== 'hour').map(item => {
       const { color, name, value } = item;
       const number = value % 1 !== 0 ? Number(value).toFixed(2) : value;
@@ -364,6 +389,7 @@ export const ClimatologyChart = ({ data = [], theme = THERMALCOMFORT, iconClickA
             <XAxis 
               dataKey="hour" 
               stroke="1"
+              hourThansform
               tick={<CustomizedTick />}
             />
             <YAxis 
@@ -389,7 +415,7 @@ export const ClimatologyChart = ({ data = [], theme = THERMALCOMFORT, iconClickA
                 fontSize: "14px",
                 lineHeight: "20px",
               }}
-              labelStyle={{ display: 'none' }}
+              showHours
               content={(props) => tooltipContent({...props, unit: '%'})}
             />
             {barsList.map((bar) => (<Bar stackId="a" key={bar.dataKey} {...bar} />))}
@@ -435,7 +461,15 @@ export const ThermalComfortMainChart = ({ data = [], iconClickAfter = () => {} }
             fontFamily="Open Sans"
           >
             <CartesianGrid vertical={false} />
-            <XAxis dataKey="hour" stroke="1" />
+            <XAxis
+              dataKey="hour" 
+              stroke="1"
+              tickCount={7}
+              type="number"
+              tickMargin={30}
+              padding={{ left: 20, right: 20 }}
+              tick={<CustomizedTick withHours />}
+            />
             <YAxis 
               label={{value: 'PET', position: 'insideTop', dx:-15, dy: -30}}
               width={50}
@@ -457,6 +491,7 @@ export const ThermalComfortMainChart = ({ data = [], iconClickAfter = () => {} }
                 fontSize: "14px",
                 lineHeight: "20px",
               }}
+              showHours
               content={tooltipContent}
             />
             <Line
@@ -473,6 +508,7 @@ export const ThermalComfortMainChart = ({ data = [], iconClickAfter = () => {} }
                 fontSize: "14px",
                 lineHeight: "19px",
                 left: '15px',
+                paddingTop: '30px',
               }}
               iconSize={9}
               iconType="plainline"
