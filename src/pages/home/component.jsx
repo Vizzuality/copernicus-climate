@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import { useRouteMatch, useHistory } from 'react-router-dom';
+import { useRouteMatch, useHistory, Link } from 'react-router-dom';
 import _ from 'lodash';
 import Map from "components/map";
 import { checkType } from "components/chart/const";
@@ -307,81 +307,92 @@ const HomePage = () => {
             )}
             {theme === THERMALCOMFORT && (
               <>
-                <div className={styles['tc-filters']}>
-                  <div>
-                    <Dropdown
+              {period === 'historical' ? (
+                <>
+                  <div className={styles['tc-filters']}>
+                    <div>
+                      <Dropdown
+                        block
+                        label="Activity"
+                        options={OPTIONS_ACTIVITY}
+                        value={activity}
+                        onChange={hadleChangeActivity}
+                        mode="light"
+                      />
+                    </div>
+                    <div>
+                      <Dropdown
+                        block
+                        label="Age"
+                        options={OPTIONS_AGE}
+                        value={OPTIONS_AGE[0]}
+                        mode="light"
+                        disabled
+                      />
+                    </div>
+                    <div>
+                      <Dropdown
+                        block
+                        label="Clothing"
+                        options={OPTIONS_CLOTHING}
+                        value={OPTIONS_CLOTHING[0]}
+                        mode="light"
+                        disabled
+                      />
+                    </div>
+                  </div>
+                  <div className={cx(styles['tc-period'], styles.calendarBox)}>
+                    <Dropdown 
+                      options={OPTIONS_MONTHES}
+                      value={activeMonthTC}
+                      onChange={hadleChangeMonthTC}
+                      mode="calendar"
                       block
-                      label="Activity"
-                      options={OPTIONS_ACTIVITY}
-                      value={activity}
-                      onChange={hadleChangeActivity}
-                      mode="light"
                     />
                   </div>
-                  <div>
-                    <Dropdown
-                      block
-                      label="Age"
-                      options={OPTIONS_AGE}
-                      value={OPTIONS_AGE[0]}
-                      mode="light"
-                      disabled
-                    />
-                  </div>
-                  <div>
-                    <Dropdown
-                      block
-                      label="Clothing"
-                      options={OPTIONS_CLOTHING}
-                      value={OPTIONS_CLOTHING[0]}
-                      mode="light"
-                      disabled
-                    />
-                  </div>
-                </div>
-                <div className={cx(styles['tc-period'], styles.calendarBox)}>
-                  <Dropdown 
-                    options={OPTIONS_MONTHES}
-                    value={activeMonthTC}
-                    onChange={hadleChangeMonthTC}
-                    mode="calendar"
-                    block
+                  {filteredPets && filteredPets.length > 0 && (
+                    <div className={styles.description}>
+                      <Description
+                        gidInfo={gidInfo}
+                        isPet
+                        petValues={petValues}
+                      />
+                    </div>
+                  )}
+                  <ThermalComfortMainChart
+                    data={filteredPets}
+                    iconClickAfter={() => infoModalOpen('thermalComfortMain')}
                   />
-                </div>
-                {filteredPets && filteredPets.length > 0 && (
+                  <div className={cx(styles['tc-climatology'], styles.calendarBox)}>
+                    <Dropdown 
+                      options={OPTIONS_MONTHES}
+                      value={optionMonthValue}
+                      onChange={hadleChangeMonth}
+                      mode="calendar"
+                      block
+                    />
+                  </div>
                   <div className={styles.description}>
                     <Description
                       gidInfo={gidInfo}
-                      isPet
-                      petValues={petValues}
+                      theme={theme}
+                      params={params}
+                      thermalValues={thermalValues}
                     />
                   </div>
-                )}
-                <ThermalComfortMainChart
-                  data={filteredPets}
-                  iconClickAfter={() => infoModalOpen('thermalComfortMain')}
-                />
-                <div className={cx(styles['tc-climatology'], styles.calendarBox)}>
-                  <Dropdown 
-                    options={OPTIONS_MONTHES}
-                    value={optionMonthValue}
-                    onChange={hadleChangeMonth}
-                    mode="calendar"
-                    block
+                  <ClimatologyChart
+                    data={transformedWidgetData}
+                    iconClickAfter={() => infoModalOpen('hourlyClimatology')}
                   />
+                </>
+              ) : (
+                <div className={styles.noData}>
+                  <h4>
+                    Thermal Comfort is only available for the <Link to={`/${gid}/historical/${theme}`}>historical</Link> period
+                  </h4>
                 </div>
-                <div className={styles.description}>
-                  <Description
-                    gidInfo={gidInfo}
-                    theme={theme}
-                    params={params}
-                    thermalValues={thermalValues}
-                  />
-                </div>
-                <ClimatologyChart
-                  data={transformedWidgetData}
-                  iconClickAfter={() => infoModalOpen('hourlyClimatology')}
-                />
+              )}
+                
               </>
             )}
           </div>
