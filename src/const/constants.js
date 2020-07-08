@@ -14,29 +14,34 @@ export const GIDS = gidList.locations.filter(g => g.admin_level < 4 && g.gid !==
 });
 
 /** PERIOD (TIME) */
+
 const today = new Date();
 const currentMonth = today.getMonth()+1;
 const date = today.getFullYear()+'-'+currentMonth+'-'+today.getDate();
-const dateSeasonal = {
-  from: currentMonth <= 7 ? today.getFullYear()+'-02-01' : today.getFullYear()+'-07-01',
-  to: currentMonth <= 7 ? today.getFullYear()+'-02-07' : today.getFullYear()+'-12-01',
-};
+// temporary disabled and hardcoded
+/**
+ const dateSeasonal = {
+   from: currentMonth <= 7 ? today.getFullYear()+'-02-01' : today.getFullYear()+'-07-01',
+   to: currentMonth <= 7 ? today.getFullYear()+'-02-07' : today.getFullYear()+'-12-01',
+ };
+ */
+
 const dateLongterm = {
   from: date,
-  to: today.getFullYear()+20+'-'+currentMonth+'-'+today.getDate(),
+  to: '2090-01-01',
 };
 export const OPTIONS_TIME = [
   { 
     value: 'historical', 
     label: 'Historical', 
     from: '1980-01-01', 
-    to: date, 
+    to: '2019-10-01', 
   },
   { 
     value: 'future-seasonal', 
     label: 'Seasonal Forecast', 
-    from: dateSeasonal.from, 
-    to: dateSeasonal.to, 
+    from: '2020-02-01', 
+    to: '2020-07-01', 
   },
   { 
     value: 'future-longterm', 

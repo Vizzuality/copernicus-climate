@@ -29,8 +29,6 @@ const SubHeader = () => {
   const handleChangeTime = (option) => {
     history.push(`/${gid}/${option.value}/${type}`);
   }
-
-  console.log(period);
   
   return (
     <div className={styles.cSubheader}>
