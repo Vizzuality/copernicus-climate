@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouteMatch, useHistory } from 'react-router-dom';
 import { GIDS, OPTIONS_TIME } from 'const/constants';
 import styles from './styles.module.scss';
@@ -8,10 +8,10 @@ import { searchSelectStyles } from './styles';
 const SubHeader = () => {
 
   const history = useHistory();
-  const match = useRouteMatch('/:gid/:time/:type?');
+  const match = useRouteMatch('/:gid/:period/:type?');
   const { 
     gid = GIDS[0].gid, 
-    time = OPTIONS_TIME[0].value, 
+    period = OPTIONS_TIME[0].value, 
     type = 'heatwaves',
   } = (match && match.params) || {};
 
@@ -23,12 +23,14 @@ const SubHeader = () => {
   });
 
   const handleChangeGid = (option) => {
-    history.push(`/${option.value}/${time}/${type}`);
+    history.push(`/${option.value}/${period}/${type}`);
   }
 
   const handleChangeTime = (option) => {
     history.push(`/${gid}/${option.value}/${type}`);
   }
+
+  console.log(period);
   
   return (
     <div className={styles.cSubheader}>
@@ -49,7 +51,8 @@ const SubHeader = () => {
           <div className={styles.filterSection}>
             <ReactSelect
               styles={searchSelectStyles}
-              defaultValue={OPTIONS_TIME.find(t => t.value === time) || OPTIONS_TIME[0]}
+              defaultValue={OPTIONS_TIME.find(t => t.value === period) || OPTIONS_TIME[0]}
+              value={OPTIONS_TIME.find(t => t.value === period) || OPTIONS_TIME[0]}
               options={OPTIONS_TIME}
               onChange={handleChangeTime}
             />
