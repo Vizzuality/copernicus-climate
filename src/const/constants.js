@@ -18,13 +18,6 @@ export const GIDS = gidList.locations.filter(g => g.admin_level < 4 && g.gid !==
 const today = new Date();
 const currentMonth = today.getMonth()+1;
 const date = today.getFullYear()+'-'+currentMonth+'-'+today.getDate();
-// temporary disabled and hardcoded
-/**
- const dateSeasonal = {
-   from: currentMonth <= 7 ? today.getFullYear()+'-02-01' : today.getFullYear()+'-07-01',
-   to: currentMonth <= 7 ? today.getFullYear()+'-02-07' : today.getFullYear()+'-12-01',
- };
- */
 
 const dateLongterm = {
   from: date,

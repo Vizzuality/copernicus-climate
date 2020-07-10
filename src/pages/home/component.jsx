@@ -60,6 +60,9 @@ const HomePage = () => {
   const [widgetData, setWidgetData] = useState([]);
   const [pets, setPets] = useState([]);
   const [infoModal, setInfoModal] = useState(DEFAULT_INFO_MODAL);
+  const [coordinates, setCoordinates] = useState({ right: 0, left: 0 })
+  const [filteredPeriod, setFilteredPeriod] = useState({ from: '', to: '' });
+  
   const {
     gid = GIDS[0].gid,
     period = OPTIONS_TIME[0].value,
@@ -94,8 +97,25 @@ const HomePage = () => {
       month: activeMonth.value,
       admin_level: gidInfo.admin_level,
     });
+
+    
     setLoading(false);
     setWidgetData(data.data);
+  }
+
+  const onStopCallback = (width = {}) => {
+
+    const start = new Date(from).getTime();
+    const end = new Date(to).getTime();
+    const distance = end - start;
+
+    const newStart = start + width.left * distance / 100;
+    const newEnd = end - width.right * distance / 100;
+
+    setFilteredPeriod({ 
+      from: newStart,
+      to: newEnd,
+    })
   }
 
   const fetchLayersInfo = async () => {
@@ -291,17 +311,24 @@ const HomePage = () => {
                 <TemparatureChart
                   data={transformedWidgetData}
                   theme={theme}
+                  timeFilter={filteredPeriod}
                   iconClickAfter={() => infoModalOpen('temperature')}
                 />
                 <RiskEventsChart
                   data={transformedWidgetData}
                   theme={theme}
                   iconClickAfter={() => infoModalOpen('riskEvents')}
+                  coordinates={coordinates}
+                  setCoordinates={setCoordinates}
+                  onStopCallback={onStopCallback}
                 />
                 <ThermalComfortChart
                   data={transformedWidgetData}
                   theme={theme}
                   iconClickAfter={() => infoModalOpen('thermalComfort')}
+                  coordinates={coordinates}
+                  setCoordinates={setCoordinates}
+                  onStopCallback={onStopCallback}
                 />
               </>
             )}

@@ -32,10 +32,12 @@
 
 .dotLeft {
   left: -6px;
+  cursor: col-resize;
 }
 
 .dotRight {
   right: -6px;
+  cursor: col-resize;
 }
 
 .dotRight, .dotLeft {
@@ -121,4 +123,25 @@
   svg {
     margin-right: 7px;
   }
+}
+
+.sliderBackground {
+  position: absolute;
+  height: 100%;
+  background-color: #ffffff;
+  opacity: 0.6;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.bgLeft {
+  top: 0;
+  left: 0;
+  width: 0;
+}
+
+.bgRight {
+  top: 0;
+  right: 0;
+  width: 0;
 }

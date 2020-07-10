@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   AreaChart,
   LineChart,
@@ -13,7 +13,6 @@ import {
   BarChart,
   Bar,
 } from 'recharts';
-import styles from './styles.module.scss';
 import {
   riskAreas,
   thermalAreas,
@@ -23,6 +22,8 @@ import {
 import { HEATWAVES, THERMALCOMFORT } from 'const/constants';
 import cx from 'classnames';
 import Icon from 'components/icon';
+import Slider from './slider';
+import styles from './styles.module.scss';
 
 
 function hourTransform (tick) {
@@ -129,23 +130,30 @@ function ClimatilogyLegend(props) {
 }
 
 
-export const ThermalComfortChart = ({ data = [], theme = HEATWAVES, iconClickAfter = () => {} }) => {
+export const ThermalComfortChart = ({
+  data = [],
+  theme = HEATWAVES,
+  iconClickAfter = () => {},
+  coordinates = {},
+  setCoordinates = () => {},
+  onStopCallback = () => {}
+}) => {
   const areasList = thermalAreas[theme];
+  const chartBox = useRef(null);
+
   return (
     <div className={cx(styles['c-chart'], styles.withPadding)}>
       <div className={styles.info} onClick={iconClickAfter}>
         <Icon name="icon-info" />
       </div>
       <h4>Thermal Comfort</h4>
-      <div className={styles['c-chart-inside']}>
-        <div className={styles.dotLeft}>
-          <span></span>
-          <span></span>
-        </div>
-        <div className={styles.dotRight} >
-          <span></span>
-          <span></span>
-        </div>
+      <div ref={chartBox} className={styles['c-chart-inside']}>
+        <Slider
+          coordinates={coordinates}
+          setCoordinates={setCoordinates}
+          chartBox={chartBox}
+          onStopCallback={onStopCallback}
+        />
         <ResponsiveContainer width="100%" height={52}>
           <AreaChart
             data={data.length > 0 ? data : []}
@@ -154,6 +162,7 @@ export const ThermalComfortChart = ({ data = [], theme = HEATWAVES, iconClickAft
             }}
             fontSize={14}
             fontFamily="Open Sans"
+            height={52}
           >
             <XAxis 
               hide 
@@ -182,12 +191,12 @@ export const ThermalComfortChart = ({ data = [], theme = HEATWAVES, iconClickAft
               wrapperStyle={{
                 fontSize: "14px",
                 lineHeight: "19px",
-                bottom: "-10px",
+                bottom: "-20px",
               }}
               iconSize={9}
               iconType="circle"
               align="left"
-              chartHeight={33}
+              chartHeight={32}
             />
           </AreaChart>
         </ResponsiveContainer>
@@ -196,10 +205,16 @@ export const ThermalComfortChart = ({ data = [], theme = HEATWAVES, iconClickAft
   );
 }
 
-
-export const RiskEventsChart = ({ data = [], theme = HEATWAVES, iconClickAfter = () => {} }) => {
+export const RiskEventsChart = ({ 
+  data = [],
+  theme = HEATWAVES, iconClickAfter = () => {},
+  coordinates = {},
+  setCoordinates = () => {},
+  onStopCallback = () => {}
+}) => {
 
   const areasList = riskAreas[theme];
+  const chartBox = useRef(null);
 
   return (
     <div className={cx(styles['c-chart'], styles.withPadding)}>
@@ -207,15 +222,13 @@ export const RiskEventsChart = ({ data = [], theme = HEATWAVES, iconClickAfter =
         <Icon name="icon-info" />
       </div>
       <h4>Risk Events</h4>
-      <div className={styles['c-chart-inside']}>
-        <div className={styles.dotLeft}>
-          <span></span>
-          <span></span>
-        </div>
-        <div className={styles.dotRight} >
-          <span></span>
-          <span></span>
-        </div>
+      <div ref={chartBox} className={styles['c-chart-inside']}>
+        <Slider
+          coordinates={coordinates}
+          setCoordinates={setCoordinates}
+          chartBox={chartBox}
+          onStopCallback={onStopCallback}
+        />
         <ResponsiveContainer width="100%" height={52}>
           <AreaChart
             data={data.length > 0 ? data : []}
@@ -224,6 +237,7 @@ export const RiskEventsChart = ({ data = [], theme = HEATWAVES, iconClickAfter =
             }}
             fontSize={14}
             fontFamily="Open Sans"
+            height={52}
           >
             <XAxis hide dataKey="time" />
             <YAxis hide />
@@ -249,12 +263,11 @@ export const RiskEventsChart = ({ data = [], theme = HEATWAVES, iconClickAfter =
               wrapperStyle={{
                 fontSize: "14px",
                 lineHeight: "19px",
-                bottom: "-10px",
+                bottom: "-20px",
               }}
               iconSize={9}
               iconType="circle"
               align="left"
-              chartHeight={33}
             />
           </AreaChart>
         </ResponsiveContainer>
@@ -263,8 +276,18 @@ export const RiskEventsChart = ({ data = [], theme = HEATWAVES, iconClickAfter =
   );
 }
 
-export const TemparatureChart = ({ data = [], iconClickAfter = () => {} }) => {
-  
+export const TemparatureChart = ({
+  data = [],
+  iconClickAfter = () => {},
+  timeFilter = {},
+}) => {
+  let filteredData = data;
+  if (timeFilter.from && timeFilter.to ) {
+    filteredData = data.filter(d => {
+      const time = new Date(d.time).getTime();
+      return time >= timeFilter.from && time <= timeFilter.to;
+    })
+  }
   return (
     <div className={styles['c-chart']}>
       <div className={styles.info} onClick={iconClickAfter}>
@@ -272,7 +295,7 @@ export const TemparatureChart = ({ data = [], iconClickAfter = () => {} }) => {
       </div>
       <ResponsiveContainer width="100%" height={270}>
       <LineChart
-        data={data.length > 0 ? data : []}
+        data={filteredData.length > 0 ? filteredData : []}
         margin={{
           top: 40, right: 0, left: 0, bottom: 0,
         }}
