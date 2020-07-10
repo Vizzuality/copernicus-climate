@@ -61,7 +61,7 @@ const HomePage = () => {
   const [pets, setPets] = useState([]);
   const [infoModal, setInfoModal] = useState(DEFAULT_INFO_MODAL);
   const [coordinates, setCoordinates] = useState({ right: 0, left: 0 })
-  const [filteredPeriod, setFilteredPeriod] = useState({ from: '', to: '' });
+  const [filteredPeriod, setFilteredPeriod] = useState({});
   
   const {
     gid = GIDS[0].gid,
@@ -175,30 +175,35 @@ const HomePage = () => {
   const kelvin =  -273.15;
   const copyData = _.cloneDeep(widgetData);
   const transformedWidgetData = theme === THERMALCOMFORT ? copyData : copyData.map(wd => {
-    params.alarmsCount += theme === HEATWAVES ? wd.heatwave_alarms_mean : wd.coldsnap_alarms_mean;
-    params.alertsCount += theme === HEATWAVES ? wd.heatwave_alerts_mean : wd.coldsnap_alerts_mean;
-    params.warningsCount += theme === HEATWAVES ? wd.heatwave_warnings_mean : wd.coldsnap_warnings_mean;
-    params.extreamCount += theme === HEATWAVES ? wd.heatstress_extreme_mean : wd.coldstress_extreme_mean;
-    params.moderateCount += theme === HEATWAVES ? wd.heatstress_moderate_mean : wd.coldstress_moderate_mean;
-    params.strongCount += theme === HEATWAVES ? wd.heatstress_strong_mean : wd.coldstress_strong_mean;
+    
+    const time = new Date(wd.time).getTime();
+    
     // temperature - K to C
     wd.tasmax_mean = parseFloat((wd.tasmax_mean + kelvin).toFixed(2));
     wd.tasmin_mean = parseFloat((wd.tasmin_mean + kelvin).toFixed(2));
     const date = new Date(wd.time);
     wd.time = date ? `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}` : wd.time;
+    if (filteredPeriod.from && filteredPeriod.to && time >= filteredPeriod.from && time <= filteredPeriod.to) {
+      params.alarmsCount += theme === HEATWAVES ? wd.heatwave_alarms_mean : wd.coldsnap_alarms_mean;
+      params.alertsCount += theme === HEATWAVES ? wd.heatwave_alerts_mean : wd.coldsnap_alerts_mean;
+      params.warningsCount += theme === HEATWAVES ? wd.heatwave_warnings_mean : wd.coldsnap_warnings_mean;
+      params.extreamCount += theme === HEATWAVES ? wd.heatstress_extreme_mean : wd.coldstress_extreme_mean;
+      params.moderateCount += theme === HEATWAVES ? wd.heatstress_moderate_mean : wd.coldstress_moderate_mean;
+      params.strongCount += theme === HEATWAVES ? wd.heatstress_strong_mean : wd.coldstress_strong_mean;
 
-    if (!params.temperature) {
-      params.temperature = theme === HEATWAVES ? wd.tasmax_mean : wd.tasmin_mean;
-    }
-    if (theme === HEATWAVES) {
-      if (params.temperature < wd.tasmax_mean) {
-        params.temperature = wd.tasmax_mean;
-        params.temperatureDate = wd.time;
+      if (!params.temperature) {
+        params.temperature = theme === HEATWAVES ? wd.tasmax_mean : wd.tasmin_mean;
       }
-    } else {
-      if (params.temperature > wd.tasmin_mean) {
-        params.temperature = wd.tasmin_mean;
-        params.temperatureDate = wd.time;
+      if (theme === HEATWAVES) {
+        if (params.temperature < wd.tasmax_mean) {
+          params.temperature = wd.tasmax_mean;
+          params.temperatureDate = wd.time;
+        }
+      } else {
+        if (params.temperature > wd.tasmin_mean) {
+          params.temperature = wd.tasmin_mean;
+          params.temperatureDate = wd.time;
+        }
       }
     }
     return wd;
