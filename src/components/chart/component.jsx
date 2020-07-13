@@ -95,7 +95,7 @@ function tooltipContent (tooltipProps) {
     <span style={labelStyle}>
       {showHours ? hourTransformAMPM(label, { withAMPM: true, lowercase: false }) : label}
     </span>
-    {payload.filter(item => item.name !== 'hour').map(item => {
+    {payload && payload.length > 0 && payload.filter(item => item.name !== 'hour').map(item => {
       const { color, name, value } = item;
       const number = value % 1 !== 0 ? Number(value).toFixed(2) : value;
       return (
@@ -288,74 +288,77 @@ export const TemparatureChart = ({
       return time >= timeFilter.from && time <= timeFilter.to;
     })
   }
+
   return (
     <div className={styles['c-chart']}>
       <div className={styles.info} onClick={iconClickAfter}>
         <Icon name="icon-info" />
       </div>
-      <ResponsiveContainer width="100%" height={270}>
-      <LineChart
-        data={filteredData.length > 0 ? filteredData : []}
-        margin={{
-          top: 40, right: 0, left: 0, bottom: 0,
-        }}
-        fontSize={14}
-        fontFamily="Open Sans"
-      >
-        <CartesianGrid vertical={false} />
-        <XAxis dataKey="time" stroke="1" />
-        <YAxis 
-          label={{value: "ºC", position: 'insideTop', dx:-15, dy: -30}}
-          width={50}
-          dx={-20}
-          stroke="1"
-          padding={{top: 0, bottom: 20}}
-        />
-        <Tooltip 
-          itemStyle={{
-            fontSize: "14px",
-            lineHeight: "20px",
-          }} 
-          wrapperStyle={{
-            backgroundColor: "#FFFFFF",
-            boxShadow: "0 2px 10px 0 rgba(0,35,117,0.2)",
+      {filteredData.length > 0 && (
+        <ResponsiveContainer width="100%" height={270}>
+        <LineChart
+          data={filteredData.length > 0 ? filteredData : []}
+          margin={{
+            top: 40, right: 0, left: 0, bottom: 0,
           }}
-          contentStyle={{
-            fontSize: "14px",
-            lineHeight: "20px",
-          }}
-          content={(props) => tooltipContent({...props, unit: 'ºC'})}
-        />
-        <Line
-          type="basis"
-          name="Max.temperature"
-          dataKey="tasmax_mean"
-          stroke="#CB181D"
-          dot={false}
-        />
-        <Line
-          type="basis"
-          name="Min.temperature"
-          dataKey="tasmin_mean"
-          stroke="#2171B5"
-          dot={false}
-        />
-        <Legend
-          layout="horizontal"
-          verticalAlign="top"
-          wrapperStyle={{
-            fontSize: "14px",
-            lineHeight: "19px",
-            top: "0",
-            left: '50px',
-          }}
-          iconSize={9}
-          iconType="plainline"
-          align="left"
-          chartHeight={33}
-        />
-      </LineChart>
-      </ResponsiveContainer>
+          fontSize={14}
+          fontFamily="Open Sans"
+        >
+          <CartesianGrid vertical={false} />
+          <XAxis dataKey="time" stroke="1" />
+          <YAxis 
+            label={{value: "ºC", position: 'insideTop', dx:-15, dy: -30}}
+            width={50}
+            dx={-20}
+            stroke="1"
+            padding={{top: 0, bottom: 20}}
+          />
+          <Tooltip 
+            itemStyle={{
+              fontSize: "14px",
+              lineHeight: "20px",
+            }} 
+            wrapperStyle={{
+              backgroundColor: "#FFFFFF",
+              boxShadow: "0 2px 10px 0 rgba(0,35,117,0.2)",
+            }}
+            contentStyle={{
+              fontSize: "14px",
+              lineHeight: "20px",
+            }}
+            content={(props) => tooltipContent({...props, unit: 'ºC'})}
+          />
+          <Line
+            type="basis"
+            name="Max.temperature"
+            dataKey="tasmax_mean"
+            stroke="#CB181D"
+            dot={false}
+          />
+          <Line
+            type="basis"
+            name="Min.temperature"
+            dataKey="tasmin_mean"
+            stroke="#2171B5"
+            dot={false}
+          />
+          <Legend
+            layout="horizontal"
+            verticalAlign="top"
+            wrapperStyle={{
+              fontSize: "14px",
+              lineHeight: "19px",
+              top: "0",
+              left: '50px',
+            }}
+            iconSize={9}
+            iconType="plainline"
+            align="left"
+            chartHeight={33}
+          />
+        </LineChart>
+        </ResponsiveContainer>
+      )}
     </div>
   );
 }

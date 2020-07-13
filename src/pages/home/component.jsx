@@ -83,6 +83,11 @@ const HomePage = () => {
     setViewport(newViewport);
   }, [gid]);
 
+  useEffect(() => {
+    setFilteredPeriod({});
+    setCoordinates({ right: 0, left: 0 });
+  }, [period]);
+
   const { from, to } = OPTIONS_TIME.find(t => t.value === period);
   const fetchWidgetsData = async () => {
     setLoading(true);
@@ -104,18 +109,19 @@ const HomePage = () => {
   }
 
   const onStopCallback = (width = {}) => {
-
-    const start = new Date(from).getTime();
-    const end = new Date(to).getTime();
-    const distance = end - start;
-
-    const newStart = start + width.left * distance / 100;
-    const newEnd = end - width.right * distance / 100;
-
-    setFilteredPeriod({ 
-      from: newStart,
-      to: newEnd,
-    })
+    if (!width.left && !width.right) {
+      setFilteredPeriod({});
+    } else {
+      const start = new Date(from).getTime();
+      const end = new Date(to).getTime();
+      const distance = end - start;  
+      const newStart = start + width.left * distance / 100;
+      const newEnd = end - width.right * distance / 100;
+      setFilteredPeriod({ 
+        from: newStart,
+        to: newEnd,
+      });
+    }
   }
 
   const fetchLayersInfo = async () => {
@@ -172,6 +178,7 @@ const HomePage = () => {
     temperature: null,
     temperatureDate :0,
   }
+
   const kelvin =  -273.15;
   const copyData = _.cloneDeep(widgetData);
   const transformedWidgetData = theme === THERMALCOMFORT ? copyData : copyData.map(wd => {
@@ -182,7 +189,7 @@ const HomePage = () => {
     wd.tasmax_mean = parseFloat((wd.tasmax_mean + kelvin).toFixed(2));
     wd.tasmin_mean = parseFloat((wd.tasmin_mean + kelvin).toFixed(2));
     const date = new Date(wd.time);
-    wd.time = date ? `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}` : wd.time;
+    wd.time = date ? `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` : wd.time;
     if (filteredPeriod.from && filteredPeriod.to && time >= filteredPeriod.from && time <= filteredPeriod.to) {
       params.alarmsCount += theme === HEATWAVES ? wd.heatwave_alarms_mean : wd.coldsnap_alarms_mean;
       params.alertsCount += theme === HEATWAVES ? wd.heatwave_alerts_mean : wd.coldsnap_alerts_mean;
