@@ -3,7 +3,7 @@ import layersList from './layers.json';
 
 /** GIDS */
 // Filter gids by admin level (enable 2, 3) and sort by alphabet
-export const GIDS = gidList.locations.filter(g => g.admin_level < 4 && g.gid !== 'ES').sort((a, b) => {
+export const GIDS = gidList.locations.filter(g => g.admin_level <= 4 && g.gid !== 'ES').sort((a, b) => {
   if (a.geoname > b.geoname) {
     return 1;
   }
