@@ -172,8 +172,8 @@ const HomePage = () => {
   };
 
   const params = {
-    from: dateTransform(new Date(filteredPeriod.from)) || from,
-    to: dateTransform(new Date(filteredPeriod.to)) || to,
+    from: filteredPeriod.from ?  dateTransform(new Date(filteredPeriod.from)) : from,
+    to: filteredPeriod.to ? dateTransform(new Date(filteredPeriod.to)) : to,
     alarmsCount: 0,
     alertsCount: 0,
     warningsCount: 0,
