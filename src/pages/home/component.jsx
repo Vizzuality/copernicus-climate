@@ -166,9 +166,14 @@ const HomePage = () => {
     fetchLayersInfo();
   }, [theme, period]);
 
+
+  function dateTransform(date) {
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  };
+
   const params = {
-    from,
-    to,
+    from: dateTransform(new Date(filteredPeriod.from)) || from,
+    to: dateTransform(new Date(filteredPeriod.to)) || to,
     alarmsCount: 0,
     alertsCount: 0,
     warningsCount: 0,
@@ -189,7 +194,7 @@ const HomePage = () => {
     wd.tasmax_mean = parseFloat((wd.tasmax_mean + kelvin).toFixed(2));
     wd.tasmin_mean = parseFloat((wd.tasmin_mean + kelvin).toFixed(2));
     const date = new Date(wd.time);
-    wd.time = date ? `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}` : wd.time;
+    wd.time = date ? dateTransform(date) : wd.time;
     if (filteredPeriod.from && filteredPeriod.to && time >= filteredPeriod.from && time <= filteredPeriod.to) {
       params.alarmsCount += theme === HEATWAVES ? wd.heatwave_alarms_mean : wd.coldsnap_alarms_mean;
       params.alertsCount += theme === HEATWAVES ? wd.heatwave_alerts_mean : wd.coldsnap_alerts_mean;
