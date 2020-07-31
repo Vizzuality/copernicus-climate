@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, Fragment } from 'react';
 import {
   AreaChart,
   LineChart,
@@ -19,7 +19,7 @@ import {
   climatologyBars,
   climatologyTypes
 } from './const';
-import { HEATWAVES, THERMALCOMFORT } from 'const/constants';
+import { HEATWAVES, THERMALCOMFORT, OPTIONS_MONTHES } from 'const/constants';
 import cx from 'classnames';
 import Icon from 'components/icon';
 import Slider from './slider';
@@ -89,24 +89,33 @@ function CustomizedTick (props) {
   );
 }
 
+function labelTransform(label) {
+  const date = new Date(label);
+  let month = '';
+  if (date.getMonth() || date.getMonth() === 0  ) {
+    month = OPTIONS_MONTHES.find(m => m.value === date.getMonth() + 1).label;
+  }
+  return  `${month} ${date.getFullYear()}`;
+}
+
 function tooltipContent (tooltipProps) {
   const { label, payload, unit, labelStyle, showHours } = tooltipProps;
   return (<div className={styles['customTooltip']}>
     <span style={labelStyle}>
-      {showHours ? hourTransformAMPM(label, { withAMPM: true, lowercase: false }) : label}
+      {showHours ? hourTransformAMPM(label, { withAMPM: true, lowercase: false }) : labelTransform(label)}
     </span>
     {payload && payload.length > 0 && payload.filter(item => item.name !== 'hour').map(item => {
       const { color, name, value } = item;
       const number = value % 1 !== 0 ? Number(value).toFixed(2) : value;
       return (
-        <>
+        <Fragment key={name}>
           {name !== 'Comfortable' && (
             <div key={name}>
               <svg height="8" width="8"><circle cx="4" cy="4" r="4" fill={color} /></svg>
-              {`${name}: ${number}${unit || ''}`}
+              {`${number}${unit || ''}`}
             </div>
           )}
-        </>
+        </Fragment>
     )})}
   </div>);
 }
