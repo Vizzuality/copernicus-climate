@@ -1,5 +1,5 @@
 import React from 'react';
-import { HEATWAVES, COLDSNAPS, THERMALCOMFORT } from 'const/constants';
+import { HEATWAVES, COLDSNAPS, THERMALCOMFORT, PERIOD_FUTURE_LONGTERM } from 'const/constants';
 
 const Description = ({
   theme,
@@ -8,6 +8,7 @@ const Description = ({
   thermalValues = {},
   isPet = false,
   petValues = {},
+  period,
 }) => {
   const { 
     from,
@@ -40,6 +41,11 @@ const Description = ({
         The {theme === HEATWAVES ? 'highest' : 'lowest'} temperature of {` `}
         <span>{temperature}</span> ºC was observed in {` `}
         <span>{temperatureDate}</span>.
+        {period === PERIOD_FUTURE_LONGTERM && (
+          <>
+            {` `}This data is based on the <span>RCP 8.5</span> scenario.
+          </>
+        )}
       </>
     )}
     {theme === THERMALCOMFORT && (

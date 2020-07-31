@@ -23,22 +23,25 @@ const dateLongterm = {
   from: date,
   to: '2090-01-01',
 };
+export const PERIOD_HISTORICAL = 'historical';
+export const PERIOD_FUTURE_SEASONAL = 'future-seasonal';
+export const PERIOD_FUTURE_LONGTERM = 'future-longterm';
 export const OPTIONS_TIME = [
   { 
-    value: 'historical', 
-    label: 'Historical', 
-    from: '1980-01-01', 
-    to: '2019-10-01', 
+    value: PERIOD_HISTORICAL,
+    label: 'Historical',
+    from: '1980-01-01',
+    to: '2019-10-01',
   },
-  { 
-    value: 'future-seasonal', 
-    label: 'Seasonal Forecast', 
-    from: '2020-02-01', 
-    to: '2020-07-01', 
+  {
+    value: PERIOD_FUTURE_SEASONAL, 
+    label: 'Seasonal Forecast',
+    from: '2020-02-01',
+    to: '2020-07-01',
   },
-  { 
-    value: 'future-longterm', 
-    label: 'Long-Term Forecast', 
+  {
+    value: PERIOD_FUTURE_LONGTERM, 
+    label: 'Long-Term Forecast',
     from: dateLongterm.from, 
     to: dateLongterm.to, 
   },

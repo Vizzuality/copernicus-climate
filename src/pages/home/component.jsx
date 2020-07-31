@@ -319,7 +319,13 @@ const HomePage = () => {
           />
           {(theme === COLDSNAPS || theme === HEATWAVES) && (
             <div className={styles.description}>
-              {!isLoading && (<Description gidInfo={gidInfo} theme={theme} params={params} />)}
+              {!isLoading && (
+                <Description 
+                  gidInfo={gidInfo}
+                  theme={theme}
+                  params={params}
+                  period={period}
+                />)}
             </div>
           )}
           <div className={styles.charts}>
