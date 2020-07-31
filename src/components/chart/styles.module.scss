@@ -59,6 +59,9 @@
     width: 1px;
     background-color: white;
   }
+  &:before {
+
+  }
 }
 
 .info {
@@ -133,25 +136,36 @@
   background-color: #ffffff;
   opacity: 0.6;
   z-index: 2;
-  pointer-events: none;
+  pointer-events: none;  
 }
 
 .bgLeft {
   top: 0;
   left: 0;
   width: 0;
+  border-right: 1px solid #222222;
 }
 
 .bgRight {
   top: 0;
   right: 0;
   width: 0;
+  border-left: 1px solid #222222;
+}
+.bgCenter {
+  position: absolute;
+  height: 100%;
+  background-color: transparent;
+  opacity: 1;
+  z-index: 2;
+  pointer-events: none;
+  border-top: 1px solid #222222;
 }
 
 .c-chart-slider-container {
   position: relative;
 
   &.withPadding {
-    margin-left: 50px;
+    margin-left: 50px; 
   }
 }

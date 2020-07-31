@@ -10,7 +10,7 @@ const Slider = ({
   setCoordinates = () => {},
   onStopCallback = () => {}
 }) => {
-  const [bgWidth, setBgWidth] = useState({ right: 0, left: 0 });
+  const [bgWidth, setBgWidth] = useState({ right: 0, left: 0, center: 100 });
   const boxWidth = chartBox.current ? chartBox.current.offsetWidth : 100;
 
   const handleDrag = (e, data) => {
@@ -36,7 +36,8 @@ const Slider = ({
       const percent = x * 100 / boxWidth;
       width[direction] = percent;
     })
-    setBgWidth(width)
+    width['center'] = 100 - width.right - width.left;
+    setBgWidth(width);
   }
 
   useEffect(() => {
@@ -46,6 +47,7 @@ const Slider = ({
   return (
     <>
       <div style={{ width: `${bgWidth.right}%`}} className={cx(styles.sliderBackground, styles.bgRight)} />
+      <div style={{ width: `${bgWidth.center}%`, left: `${bgWidth.left}%` }} className={cx(styles.bgCenter)} />
       <div style={{ width: `${bgWidth.left}%`}} className={cx(styles.sliderBackground, styles.bgLeft)} />
       <Draggable
         axis="x"
