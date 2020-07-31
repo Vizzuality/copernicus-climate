@@ -4,6 +4,7 @@
   position: relative;
   width: 100%;
   min-height: 100px;
+  padding-bottom: 80px;
   
   &.withPadding {
     padding-left: 50px;
@@ -19,7 +20,8 @@
   }
   
   h4 {
-    margin-top: 30px;
+    padding-left: 50px;
+    margin-top: 0;
     font-size: 14px;
     letter-spacing: 0;
     line-height: 19px;
@@ -144,4 +146,12 @@
   top: 0;
   right: 0;
   width: 0;
+}
+
+.c-chart-slider-container {
+  position: relative;
+
+  &.withPadding {
+    margin-left: 50px;
+  }
 }

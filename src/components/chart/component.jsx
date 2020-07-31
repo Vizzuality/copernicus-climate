@@ -17,7 +17,8 @@ import {
   riskAreas,
   thermalAreas,
   climatologyBars,
-  climatologyTypes
+  climatologyTypes,
+  AREA_MIDDLE_DATA,
 } from './const';
 import { HEATWAVES, THERMALCOMFORT, OPTIONS_MONTHES } from 'const/constants';
 import cx from 'classnames';
@@ -145,39 +146,54 @@ export const ThermalComfortChart = ({
   iconClickAfter = () => {},
   coordinates = {},
   setCoordinates = () => {},
-  onStopCallback = () => {}
+  onStopCallback = () => {},
+  timeFilter={},
 }) => {
+  let filteredData = data;
+  if (timeFilter.from && timeFilter.to ) {
+    filteredData = data.filter(d => {
+      const time = new Date(d.time).getTime();
+      return time >= timeFilter.from && time <= timeFilter.to;
+    })
+  }
   const areasList = thermalAreas[theme];
   const chartBox = useRef(null);
-
+  const dataKeys = areasList.map(area => area.dataKey);
+  const middleData = data.map(d => {
+    d.middleData = 0;
+    dataKeys.forEach(k => {
+      d.middleData += d[k];
+    });
+    return d;
+  })
   return (
-    <div className={cx(styles['c-chart'], styles.withPadding)}>
+    <div className={cx(styles['c-chart'])}>
       <div className={styles.info} onClick={iconClickAfter}>
         <Icon name="icon-info" />
       </div>
-      <h4>Thermal Comfort</h4>
-      <div ref={chartBox} className={styles['c-chart-inside']}>
-        <Slider
-          coordinates={coordinates}
-          setCoordinates={setCoordinates}
-          chartBox={chartBox}
-          onStopCallback={onStopCallback}
-        />
-        <ResponsiveContainer width="100%" height={52}>
+      <h4>Thermal stress events per month (averaged per geometry)</h4>
+      <div className={styles['c-chart-inside']}>
+        <ResponsiveContainer width="100%" height={220}>
           <AreaChart
-            data={data.length > 0 ? data : []}
+            data={filteredData.length > 0 ? filteredData : []}
             margin={{
-              top: 0, right: 0, left: 0, bottom: 0,
+              top: 40, right: 0, left: 0, bottom: 0,
             }}
             fontSize={14}
             fontFamily="Open Sans"
-            height={52}
+            height={220}
           >
-            <XAxis 
-              hide 
-              dataKey="time" 
+            <XAxis dataKey="time" stroke="1" />
+            <YAxis 
+              width={50}
+              dx={-20}
+              stroke="1"
+              padding={{top: 0, bottom: 20}}
+              type="number" 
+              domain={['dataMin', 'dataMax']}
+              allowDecimals={false}
+              tickFormatter={(tick) => tick.toFixed(0)}
             />
-            <YAxis hide />
             <Tooltip 
               itemStyle={{
                 fontSize: "14px",
@@ -200,7 +216,8 @@ export const ThermalComfortChart = ({
               wrapperStyle={{
                 fontSize: "14px",
                 lineHeight: "19px",
-                bottom: "-20px",
+                bottom: "-70px",
+                left: "45px",
               }}
               iconSize={9}
               iconType="circle"
@@ -209,6 +226,44 @@ export const ThermalComfortChart = ({
             />
           </AreaChart>
         </ResponsiveContainer>
+        <div ref={chartBox}  className={cx(styles['c-chart-slider-container'], styles.withPadding)}>
+          <Slider
+            coordinates={coordinates}
+            setCoordinates={setCoordinates}
+            chartBox={chartBox}
+            onStopCallback={onStopCallback}
+          />
+          <ResponsiveContainer width="100%" height={32}>
+            <AreaChart
+              data={middleData.length > 0 ? middleData : []}
+              margin={{
+                top: 0, right: 0, left: 0, bottom: 0,
+              }}
+              fontSize={14}
+              fontFamily="Open Sans"
+              height={32}
+            >
+              <XAxis hide dataKey="time" />
+              <YAxis hide />              
+              <Tooltip 
+                itemStyle={{
+                  fontSize: "14px",
+                  lineHeight: "20px",
+                }} 
+                wrapperStyle={{
+                  backgroundColor: "#FFFFFF",
+                  boxShadow: "0 2px 10px 0 rgba(0,35,117,0.2)",
+                }}
+                contentStyle={{
+                  fontSize: "14px",
+                  lineHeight: "20px",
+                }}
+                content={tooltipContent}
+              />
+              <Area key={middleData} {...AREA_MIDDLE_DATA} />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </div>
   );
@@ -219,37 +274,57 @@ export const RiskEventsChart = ({
   theme = HEATWAVES, iconClickAfter = () => {},
   coordinates = {},
   setCoordinates = () => {},
-  onStopCallback = () => {}
+  onStopCallback = () => {},
+  timeFilter={},
 }) => {
 
+  let filteredData = data;
+  if (timeFilter.from && timeFilter.to ) {
+    filteredData = data.filter(d => {
+      const time = new Date(d.time).getTime();
+      return time >= timeFilter.from && time <= timeFilter.to;
+    })
+  }
   const areasList = riskAreas[theme];
   const chartBox = useRef(null);
 
+  const dataKeys = areasList.map(area => area.dataKey);
+  const middleData = data.map(d => {
+    d.middleData = 0;
+    dataKeys.forEach(k => {
+      d.middleData += d[k];
+    });
+    return d;
+  })
+
   return (
-    <div className={cx(styles['c-chart'], styles.withPadding)}>
+    <div className={cx(styles['c-chart'])}>
       <div className={styles.info} onClick={iconClickAfter}>
         <Icon name="icon-info" />
       </div>
-      <h4>Risk Events</h4>
-      <div ref={chartBox} className={styles['c-chart-inside']}>
-        <Slider
-          coordinates={coordinates}
-          setCoordinates={setCoordinates}
-          chartBox={chartBox}
-          onStopCallback={onStopCallback}
-        />
-        <ResponsiveContainer width="100%" height={52}>
+      <h4>Risk events per month (averaged per geometry)</h4>
+      <div className={styles['c-chart-inside']}>
+        <ResponsiveContainer width="100%" height={220}>
           <AreaChart
-            data={data.length > 0 ? data : []}
+            data={filteredData.length > 0 ? filteredData : []}
             margin={{
-              top: 0, right: 0, left: 0, bottom: 0,
+              top: 40, right: 0, left: 0, bottom: 0,
             }}
             fontSize={14}
             fontFamily="Open Sans"
-            height={52}
+            height={220}
           >
-            <XAxis hide dataKey="time" />
-            <YAxis hide />
+            <XAxis dataKey="time" stroke="1" />
+            <YAxis 
+              width={50}
+              dx={-20}
+              stroke="1"
+              padding={{top: 0, bottom: 20}}
+              type="number" 
+              domain={['dataMin', 'dataMax']}
+              allowDecimals={false}
+              tickFormatter={(tick) => tick.toFixed(0)}
+            />
             <Tooltip 
               itemStyle={{
                 fontSize: "14px",
@@ -272,7 +347,8 @@ export const RiskEventsChart = ({
               wrapperStyle={{
                 fontSize: "14px",
                 lineHeight: "19px",
-                bottom: "-20px",
+                bottom: "-70px",
+                left: "45px",
               }}
               iconSize={9}
               iconType="circle"
@@ -280,6 +356,44 @@ export const RiskEventsChart = ({
             />
           </AreaChart>
         </ResponsiveContainer>
+        <div ref={chartBox} className={cx(styles['c-chart-slider-container'], styles.withPadding)}>
+          <Slider
+            coordinates={coordinates}
+            setCoordinates={setCoordinates}
+            chartBox={chartBox}
+            onStopCallback={onStopCallback}
+          />
+          <ResponsiveContainer width="100%" height={32}>
+            <AreaChart
+              data={middleData.length > 0 ? middleData : []}
+              margin={{
+                top: 0, right: 0, left: 0, bottom: 0,
+              }}
+              fontSize={14}
+              fontFamily="Open Sans"
+              height={32}
+            >
+              <XAxis hide dataKey="time" />
+              <YAxis hide />              
+              <Tooltip 
+                itemStyle={{
+                  fontSize: "14px",
+                  lineHeight: "20px",
+                }} 
+                wrapperStyle={{
+                  backgroundColor: "#FFFFFF",
+                  boxShadow: "0 2px 10px 0 rgba(0,35,117,0.2)",
+                }}
+                contentStyle={{
+                  fontSize: "14px",
+                  lineHeight: "20px",
+                }}
+                content={tooltipContent}
+              />
+              <Area key={middleData} {...AREA_MIDDLE_DATA} />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </div>
   );
@@ -289,6 +403,9 @@ export const TemparatureChart = ({
   data = [],
   iconClickAfter = () => {},
   timeFilter = {},
+  coordinates = {},
+  setCoordinates = () => {},
+  onStopCallback = () => {},
 }) => {
   let filteredData = data;
   if (timeFilter.from && timeFilter.to ) {
@@ -298,75 +415,126 @@ export const TemparatureChart = ({
     })
   }
 
+  const chartBox = useRef(null);
+  const dataKeys = ['tasmin_mean', 'tasmax_mean'];
+  const middleData = data.map(d => {
+    d.middleData = 0;
+    dataKeys.forEach(k => {
+      d.middleData += d[k];
+    });
+    return d;
+  })
+
   return (
     <div className={styles['c-chart']}>
       <div className={styles.info} onClick={iconClickAfter}>
         <Icon name="icon-info" />
       </div>
+      <h4>Temperatures (max and min)</h4>
       {filteredData.length > 0 && (
-        <ResponsiveContainer width="100%" height={270}>
-        <LineChart
-          data={filteredData.length > 0 ? filteredData : []}
-          margin={{
-            top: 40, right: 0, left: 0, bottom: 0,
-          }}
-          fontSize={14}
-          fontFamily="Open Sans"
-        >
-          <CartesianGrid vertical={false} />
-          <XAxis dataKey="time" stroke="1" />
-          <YAxis 
-            label={{value: "ºC", position: 'insideTop', dx:-15, dy: -30}}
-            width={50}
-            dx={-20}
-            stroke="1"
-            padding={{top: 0, bottom: 20}}
-          />
-          <Tooltip 
-            itemStyle={{
-              fontSize: "14px",
-              lineHeight: "20px",
-            }} 
-            wrapperStyle={{
-              backgroundColor: "#FFFFFF",
-              boxShadow: "0 2px 10px 0 rgba(0,35,117,0.2)",
-            }}
-            contentStyle={{
-              fontSize: "14px",
-              lineHeight: "20px",
-            }}
-            content={(props) => tooltipContent({...props, unit: 'ºC'})}
-          />
-          <Line
-            type="basis"
-            name="Max.temperature"
-            dataKey="tasmax_mean"
-            stroke="#CB181D"
-            dot={false}
-          />
-          <Line
-            type="basis"
-            name="Min.temperature"
-            dataKey="tasmin_mean"
-            stroke="#2171B5"
-            dot={false}
-          />
-          <Legend
-            layout="horizontal"
-            verticalAlign="top"
-            wrapperStyle={{
-              fontSize: "14px",
-              lineHeight: "19px",
-              top: "0",
-              left: '50px',
-            }}
-            iconSize={9}
-            iconType="plainline"
-            align="left"
-            chartHeight={33}
-          />
-        </LineChart>
-        </ResponsiveContainer>
+        <>
+          <ResponsiveContainer width="100%" height={270}>
+            <LineChart
+              data={filteredData.length > 0 ? filteredData : []}
+              margin={{
+                top: 40, right: 0, left: 0, bottom: 0,
+              }}
+              fontSize={14}
+              fontFamily="Open Sans"
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis dataKey="time" stroke="1" />
+              <YAxis 
+                label={{value: "ºC", position: 'insideTop', dx:-15, dy: -30}}
+                width={50}
+                dx={-20}
+                stroke="1"
+                padding={{top: 0, bottom: 20}}
+              />
+              <Tooltip 
+                itemStyle={{
+                  fontSize: "14px",
+                  lineHeight: "20px",
+                }} 
+                wrapperStyle={{
+                  backgroundColor: "#FFFFFF",
+                  boxShadow: "0 2px 10px 0 rgba(0,35,117,0.2)",
+                }}
+                contentStyle={{
+                  fontSize: "14px",
+                  lineHeight: "20px",
+                }}
+                content={(props) => tooltipContent({...props, unit: 'ºC'})}
+              />
+              <Line
+                type="basis"
+                name="Max.temperature"
+                dataKey="tasmax_mean"
+                stroke="#CB181D"
+                dot={false}
+              />
+              <Line
+                type="basis"
+                name="Min.temperature"
+                dataKey="tasmin_mean"
+                stroke="#2171B5"
+                dot={false}
+              />
+              <Legend
+                layout="horizontal"
+                verticalAlign="top"
+                wrapperStyle={{
+                  fontSize: "14px",
+                  lineHeight: "19px",
+                  bottom: "-70px",
+                  left: '50px',
+                }}
+                iconSize={9}
+                iconType="plainline"
+                align="left"
+                chartHeight={33}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+          <div ref={chartBox} className={cx(styles['c-chart-slider-container'], styles.withPadding)}>
+            <Slider
+              coordinates={coordinates}
+              setCoordinates={setCoordinates}
+              chartBox={chartBox}
+              onStopCallback={onStopCallback}
+            />
+            <ResponsiveContainer width="100%" height={32}>
+              <AreaChart
+                data={middleData.length > 0 ? middleData : []}
+                margin={{
+                  top: 0, right: 0, left: 0, bottom: 0,
+                }}
+                fontSize={14}
+                fontFamily="Open Sans"
+                height={32}
+              >
+                <XAxis hide dataKey="time" />
+                <YAxis hide />              
+                <Tooltip 
+                  itemStyle={{
+                    fontSize: "14px",
+                    lineHeight: "20px",
+                  }} 
+                  wrapperStyle={{
+                    backgroundColor: "#FFFFFF",
+                    boxShadow: "0 2px 10px 0 rgba(0,35,117,0.2)",
+                  }}
+                  contentStyle={{
+                    fontSize: "14px",
+                    lineHeight: "20px",
+                  }}
+                  content={tooltipContent}
+                />
+                <Area key={middleData} {...AREA_MIDDLE_DATA} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </>
       )}
     </div>
   );

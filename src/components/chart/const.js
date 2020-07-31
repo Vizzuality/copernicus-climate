@@ -126,6 +126,15 @@ riskAreas[COLDSNAPS] = [
 ];
 riskAreas[THERMALCOMFORT] = [];
 
+const AREA_MIDDLE_DATA = {
+  type:"linear",
+  name:"",
+  dataKey:"middleData", 
+  stackId:"1",
+  stroke:"#222222", 
+  fill:"#E3E3E4",
+  fillOpacity: 1,
+}
 /**
  * Colors climatology
  * [4, 8, 13, 18, 23, 29, 35, 41],  
@@ -198,4 +207,5 @@ export {
   climatologyBars,
   climatologyTypes,
   checkType,
+  AREA_MIDDLE_DATA
 }

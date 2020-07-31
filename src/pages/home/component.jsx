@@ -331,16 +331,20 @@ const HomePage = () => {
           <div className={styles.charts}>
             {(theme === COLDSNAPS || theme === HEATWAVES) && (
               <>
+                <RiskEventsChart
+                  data={transformedWidgetData}
+                  theme={theme}
+                  iconClickAfter={() => infoModalOpen('riskEvents')}
+                  coordinates={coordinates}
+                  setCoordinates={setCoordinates}
+                  onStopCallback={onStopCallback}
+                  timeFilter={filteredPeriod}
+                />
                 <TemparatureChart
                   data={transformedWidgetData}
                   theme={theme}
                   timeFilter={filteredPeriod}
                   iconClickAfter={() => infoModalOpen('temperature')}
-                />
-                <RiskEventsChart
-                  data={transformedWidgetData}
-                  theme={theme}
-                  iconClickAfter={() => infoModalOpen('riskEvents')}
                   coordinates={coordinates}
                   setCoordinates={setCoordinates}
                   onStopCallback={onStopCallback}
@@ -352,6 +356,7 @@ const HomePage = () => {
                   coordinates={coordinates}
                   setCoordinates={setCoordinates}
                   onStopCallback={onStopCallback}
+                  timeFilter={filteredPeriod}
                 />
               </>
             )}
