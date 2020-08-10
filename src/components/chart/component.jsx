@@ -125,12 +125,18 @@ function getLabel(key, value) {
 }
 
 function tooltipContent (tooltipProps) {
-  const { label, payload, unit, labelStyle, showHours, period } = tooltipProps;
+  const { label, payload, unit, labelStyle, showHours, period, theme } = tooltipProps;
   return (<div className={styles['customTooltip']}>
     <span style={labelStyle}>
-      {getLabel(period, label)}
-      
-      {/* {showHours ? hourTransformAMPM(label, { withAMPM: true, lowercase: false }) : labelTransform(label)} */}
+      {theme === THERMALCOMFORT ? (
+        <>
+          {showHours ? hourTransformAMPM(label, { withAMPM: true, lowercase: false }) : labelTransform(label)}
+        </>
+      ) : (
+        <>
+          {getLabel(period, label)}
+        </>
+      )}
     </span>
     {payload && payload.length > 0 && payload.filter(item => item.name !== 'hour').map(item => {
       const { color, name, value } = item;
