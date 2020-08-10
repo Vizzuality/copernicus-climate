@@ -109,11 +109,11 @@ const HomePage = () => {
   }
 
   const onStopCallback = (width = {}) => {
+    const start = new Date(from).getTime();
+    const end = new Date(to).getTime();
     if (!width.left && !width.right) {
-      setFilteredPeriod({});
+      setFilteredPeriod({ from: start, to: end });
     } else {
-      const start = new Date(from).getTime();
-      const end = new Date(to).getTime();
       const distance = end - start;  
       const newStart = start + width.left * distance / 100;
       const newEnd = end - width.right * distance / 100;
@@ -165,6 +165,12 @@ const HomePage = () => {
   useEffect(() => {
     fetchLayersInfo();
   }, [theme, period]);
+
+  useEffect(() => {
+    const start = new Date(from).getTime();
+    const end = new Date(to).getTime();
+    setFilteredPeriod({ from: start, to: end });
+  }, []);
 
 
   function dateTransform(date) {
