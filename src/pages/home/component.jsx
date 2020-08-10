@@ -340,6 +340,7 @@ const HomePage = () => {
                 <RiskEventsChart
                   data={transformedWidgetData}
                   theme={theme}
+                  period={period}
                   iconClickAfter={() => infoModalOpen('riskEvents')}
                   coordinates={coordinates}
                   setCoordinates={setCoordinates}
@@ -349,6 +350,7 @@ const HomePage = () => {
                 <TemparatureChart
                   data={transformedWidgetData}
                   theme={theme}
+                  period={period}
                   timeFilter={filteredPeriod}
                   iconClickAfter={() => infoModalOpen('temperature')}
                   coordinates={coordinates}
@@ -358,6 +360,7 @@ const HomePage = () => {
                 <ThermalComfortChart
                   data={transformedWidgetData}
                   theme={theme}
+                  period={period}
                   iconClickAfter={() => infoModalOpen('thermalComfort')}
                   coordinates={coordinates}
                   setCoordinates={setCoordinates}

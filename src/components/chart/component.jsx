@@ -20,7 +20,15 @@ import {
   climatologyTypes,
   AREA_MIDDLE_DATA,
 } from './const';
-import { HEATWAVES, THERMALCOMFORT, OPTIONS_MONTHES } from 'const/constants';
+import {
+  HEATWAVES,
+  THERMALCOMFORT,
+  OPTIONS_MONTHES,
+  PERIOD_HISTORICAL,
+  PERIOD_FUTURE_SEASONAL,
+  PERIOD_FUTURE_LONGTERM,
+} from 'const/constants';
+
 import cx from 'classnames';
 import Icon from 'components/icon';
 import Slider from './slider';
@@ -99,11 +107,30 @@ function labelTransform(label) {
   return  `${month} ${date.getFullYear()}`;
 }
 
+function getLabel(key, value) {
+  let newValue = value;
+  if (key === PERIOD_HISTORICAL) {
+    newValue = new Date(value).getFullYear();
+  }
+  if (key === PERIOD_FUTURE_SEASONAL || key === 'temperature-'+PERIOD_HISTORICAL || key === 'temperature-'+PERIOD_FUTURE_SEASONAL) {
+    const date = new Date(value);
+    let month = '';
+    if (date.getMonth() || date.getMonth() === 0  ) {
+      month = OPTIONS_MONTHES.find(m => m.value === date.getMonth() + 1).label;
+    }
+    newValue = `${month} ${date.getFullYear()}`;
+  }
+
+  return newValue;
+}
+
 function tooltipContent (tooltipProps) {
-  const { label, payload, unit, labelStyle, showHours } = tooltipProps;
+  const { label, payload, unit, labelStyle, showHours, period } = tooltipProps;
   return (<div className={styles['customTooltip']}>
     <span style={labelStyle}>
-      {showHours ? hourTransformAMPM(label, { withAMPM: true, lowercase: false }) : labelTransform(label)}
+      {getLabel(period, label)}
+      
+      {/* {showHours ? hourTransformAMPM(label, { withAMPM: true, lowercase: false }) : labelTransform(label)} */}
     </span>
     {payload && payload.length > 0 && payload.filter(item => item.name !== 'hour').map(item => {
       const { color, name, value } = item;
@@ -143,6 +170,7 @@ function ClimatilogyLegend(props) {
 export const ThermalComfortChart = ({
   data = [],
   theme = HEATWAVES,
+  period = PERIOD_HISTORICAL,
   iconClickAfter = () => {},
   coordinates = {},
   setCoordinates = () => {},
@@ -183,7 +211,11 @@ export const ThermalComfortChart = ({
             fontFamily="Open Sans"
             height={220}
           >
-            <XAxis dataKey="time" stroke="1" />
+            <XAxis
+              dataKey="time"
+              stroke="1"
+              tickFormatter={(tick) => getLabel(period, tick)}
+            />
             <YAxis 
               width={50}
               dx={-20}
@@ -207,6 +239,7 @@ export const ThermalComfortChart = ({
                 fontSize: "14px",
                 lineHeight: "20px",
               }}
+              period={period}
               content={tooltipContent}
             />
             {areasList.map((area) => (<Area key={area.dataKey} {...area} />))}
@@ -245,21 +278,6 @@ export const ThermalComfortChart = ({
             >
               <XAxis hide dataKey="time" />
               <YAxis hide />              
-              <Tooltip 
-                itemStyle={{
-                  fontSize: "14px",
-                  lineHeight: "20px",
-                }} 
-                wrapperStyle={{
-                  backgroundColor: "#FFFFFF",
-                  boxShadow: "0 2px 10px 0 rgba(0,35,117,0.2)",
-                }}
-                contentStyle={{
-                  fontSize: "14px",
-                  lineHeight: "20px",
-                }}
-                content={tooltipContent}
-              />
               <Area key={middleData} {...AREA_MIDDLE_DATA} />
             </AreaChart>
           </ResponsiveContainer>
@@ -271,7 +289,9 @@ export const ThermalComfortChart = ({
 
 export const RiskEventsChart = ({ 
   data = [],
-  theme = HEATWAVES, iconClickAfter = () => {},
+  theme = HEATWAVES, 
+  period = PERIOD_HISTORICAL,
+  iconClickAfter = () => {},
   coordinates = {},
   setCoordinates = () => {},
   onStopCallback = () => {},
@@ -314,7 +334,11 @@ export const RiskEventsChart = ({
             fontFamily="Open Sans"
             height={220}
           >
-            <XAxis dataKey="time" stroke="1" />
+            <XAxis
+              dataKey="time"
+              stroke="1"
+              tickFormatter={(tick) => getLabel(period, tick)}
+            />
             <YAxis 
               width={50}
               dx={-20}
@@ -338,6 +362,7 @@ export const RiskEventsChart = ({
                 fontSize: "14px",
                 lineHeight: "20px",
               }}
+              period={period}
               content={tooltipContent}
             />
             {areasList.map((area) => (<Area key={area.dataKey} {...area} />))}
@@ -375,21 +400,6 @@ export const RiskEventsChart = ({
             >
               <XAxis hide dataKey="time" />
               <YAxis hide />              
-              <Tooltip 
-                itemStyle={{
-                  fontSize: "14px",
-                  lineHeight: "20px",
-                }} 
-                wrapperStyle={{
-                  backgroundColor: "#FFFFFF",
-                  boxShadow: "0 2px 10px 0 rgba(0,35,117,0.2)",
-                }}
-                contentStyle={{
-                  fontSize: "14px",
-                  lineHeight: "20px",
-                }}
-                content={tooltipContent}
-              />
               <Area key={middleData} {...AREA_MIDDLE_DATA} />
             </AreaChart>
           </ResponsiveContainer>
@@ -401,6 +411,7 @@ export const RiskEventsChart = ({
 
 export const TemparatureChart = ({
   data = [],
+  period = PERIOD_HISTORICAL,
   iconClickAfter = () => {},
   timeFilter = {},
   coordinates = {},
@@ -464,6 +475,7 @@ export const TemparatureChart = ({
                   fontSize: "14px",
                   lineHeight: "20px",
                 }}
+                period={'temperature-'+period}
                 content={(props) => tooltipContent({...props, unit: 'ºC'})}
               />
               <Line
@@ -515,21 +527,6 @@ export const TemparatureChart = ({
               >
                 <XAxis hide dataKey="time" />
                 <YAxis hide />              
-                <Tooltip 
-                  itemStyle={{
-                    fontSize: "14px",
-                    lineHeight: "20px",
-                  }} 
-                  wrapperStyle={{
-                    backgroundColor: "#FFFFFF",
-                    boxShadow: "0 2px 10px 0 rgba(0,35,117,0.2)",
-                  }}
-                  contentStyle={{
-                    fontSize: "14px",
-                    lineHeight: "20px",
-                  }}
-                  content={tooltipContent}
-                />
                 <Area key={middleData} {...AREA_MIDDLE_DATA} />
               </AreaChart>
             </ResponsiveContainer>
