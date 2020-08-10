@@ -109,7 +109,7 @@ function labelTransform(label) {
 
 function getLabel(key, value) {
   let newValue = value;
-  if (key === PERIOD_HISTORICAL) {
+  if (key === PERIOD_HISTORICAL || key === PERIOD_FUTURE_LONGTERM || key === 'temperature-'+PERIOD_FUTURE_LONGTERM ) {
     newValue = new Date(value).getFullYear();
   }
   if (key === PERIOD_FUTURE_SEASONAL || key === 'temperature-'+PERIOD_HISTORICAL || key === 'temperature-'+PERIOD_FUTURE_SEASONAL) {
