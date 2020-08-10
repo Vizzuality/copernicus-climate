@@ -3,7 +3,7 @@ import Icon from 'components/icon';
 import cx from 'classnames';
 import styles from './styles.module.scss';
 
-const LayerLegend = ({ attributes = {}, id = '', isRadio, setActiveLayer, active }) => {
+const LayerLegend = ({ attributes = {}, id = '', isRadio, setActiveLayer, active, count = 0 }) => {
   
   const { legendConfig = {}, name = '' } = attributes;
   const { items = [] } = legendConfig;
@@ -26,7 +26,7 @@ const LayerLegend = ({ attributes = {}, id = '', isRadio, setActiveLayer, active
 
   return (
     <div className={styles.layer}>
-      {isRadio && (
+      {isRadio && count > 1 && (
         <div className={styles.radio}>
           <input
             checked={active}
@@ -54,7 +54,7 @@ const LayerLegend = ({ attributes = {}, id = '', isRadio, setActiveLayer, active
 const Legend = ({ layers = [], setActiveLayer = () => {} }) => {
 
   const [isOpen, setOpen] = useState(true);
-
+  const count = layers.length;
   return (
     <div className={styles.legend}>
       <div className={styles.legendContent}>
@@ -67,7 +67,7 @@ const Legend = ({ layers = [], setActiveLayer = () => {} }) => {
         </button>
         {isOpen && (
           <div className={styles.layers}>
-            {layers && layers.length > 0 && layers.map(l => <LayerLegend setActiveLayer={setActiveLayer} key={l.id} {...l} />)}
+            {layers && layers.length > 0 && layers.map(l => <LayerLegend setActiveLayer={setActiveLayer} key={l.id} {...l} count={count} />)}
           </div>
         )}
       </div>

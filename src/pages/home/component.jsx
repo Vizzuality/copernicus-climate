@@ -255,9 +255,7 @@ const HomePage = () => {
       lc['source-layer'] = SOURCE_LAYERS[period][admin_level];
       return lc;
     });
-    if (theme === THERMALCOMFORT) {
-      l.isRadio = true;
-    }
+    l.isRadio = true;
     l.active = activeLayer ? l.id === activeLayer : ln === 0;
     return l;
   });
