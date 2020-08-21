@@ -229,13 +229,13 @@ export const ThermalComfortChart = ({
             />
             <YAxis 
               width={50}
-              dx={-20}
+              dx={-15}
               stroke="1"
               padding={{top: 0, bottom: 20}}
               type="number" 
               domain={['dataMin', 'dataMax']}
               allowDecimals={false}
-              tickFormatter={(tick) => tick.toFixed(0)}
+              tickFormatter={(tick) => tick !== 0 ? tick.toFixed(2) : tick.toFixed()}
             />
             <Tooltip 
               itemStyle={{
