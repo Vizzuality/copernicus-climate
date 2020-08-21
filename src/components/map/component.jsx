@@ -83,7 +83,7 @@ const MapComponent = props => {
             closeOnClick={false}
             anchor="bottom"
           >
-            <strong>{gidInfo.geoname}</strong>
+            <strong>{gidInfo.geoname}:</strong>
             <br/>
             {popupContent}  
           </Popup>

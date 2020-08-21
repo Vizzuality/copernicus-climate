@@ -83,11 +83,6 @@ const HomePage = () => {
     setViewport(newViewport);
   }, [gid]);
 
-  useEffect(() => {
-    setFilteredPeriod({});
-    setCoordinates({ right: 0, left: 0 });
-  }, [period]);
-
   const { from, to } = OPTIONS_TIME.find(t => t.value === period);
   const fetchWidgetsData = async () => {
     setLoading(true);
@@ -155,6 +150,13 @@ const HomePage = () => {
       open: false,
     })
   }
+
+  useEffect(() => {
+    const start = new Date(from).getTime();
+    const end = new Date(to).getTime();
+    setFilteredPeriod({ from: start, to: end });
+    setCoordinates({ right: 0, left: 0 });
+  }, [period]);
 
   useEffect(() => {
     fetchWidgetsData();
@@ -466,7 +468,7 @@ const HomePage = () => {
             scrollZoom={false} 
             viewport={viewport} 
             setViewport={setViewport} 
-            isPopup
+            isPopup={!isLoading}
             gidInfo={gidInfo}
             popupContent={
               <Description 
