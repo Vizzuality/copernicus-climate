@@ -460,7 +460,11 @@ export const TemparatureChart = ({
               fontFamily="Open Sans"
             >
               <CartesianGrid vertical={false} />
-              <XAxis dataKey="time" stroke="1" />
+              <XAxis 
+                dataKey="time" 
+                stroke="1" 
+                tickFormatter={(tick) => getLabel(period, tick)}
+              />
               <YAxis 
                 label={{value: "ºC", position: 'insideTop', dx:-15, dy: -30}}
                 width={50}
