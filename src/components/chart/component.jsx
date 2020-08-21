@@ -34,6 +34,9 @@ import Icon from 'components/icon';
 import Slider from './slider';
 import styles from './styles.module.scss';
 
+function diffDates(dayOne, dayTwo) {
+  return -1 * (dayOne - dayTwo) / (60 * 60 * 24 * 1000);
+};
 
 function hourTransform (tick) {
   let newTick = tick;
@@ -107,13 +110,13 @@ function labelTransform(label) {
   return  `${month} ${date.getFullYear()}`;
 }
 
-function getLabel(key, value) {
+function getLabel(key, value, props = {}) {
   let newValue = value;
-  if (key === PERIOD_HISTORICAL || key === PERIOD_FUTURE_LONGTERM || key === 'temperature-'+PERIOD_FUTURE_LONGTERM ) {
+  const date = new Date(value);
+  if (key === PERIOD_HISTORICAL || key === PERIOD_FUTURE_LONGTERM ) {
     newValue = new Date(value).getFullYear();
   }
-  if (key === PERIOD_FUTURE_SEASONAL || key === 'temperature-'+PERIOD_HISTORICAL || key === 'temperature-'+PERIOD_FUTURE_SEASONAL) {
-    const date = new Date(value);
+  if (key === PERIOD_FUTURE_SEASONAL || (props.isTooltip && key === PERIOD_HISTORICAL) || props.isMonth) {
     let month = '';
     if (date.getMonth() || date.getMonth() === 0  ) {
       month = OPTIONS_MONTHES.find(m => m.value === date.getMonth() + 1).label;
@@ -134,7 +137,7 @@ function tooltipContent (tooltipProps) {
         </>
       ) : (
         <>
-          {getLabel(period, label)}
+          {getLabel(period, label, { isTooltip: true })}
         </>
       )}
     </span>
@@ -200,6 +203,8 @@ export const ThermalComfortChart = ({
     });
     return d;
   })
+
+  const isMonth = diffDates(timeFilter.from, timeFilter.to) < 365;
   return (
     <div className={cx(styles['c-chart'])}>
       <div className={styles.info} onClick={iconClickAfter}>
@@ -220,7 +225,7 @@ export const ThermalComfortChart = ({
             <XAxis
               dataKey="time"
               stroke="1"
-              tickFormatter={(tick) => getLabel(period, tick)}
+              tickFormatter={(tick) => getLabel(period, tick, { isMonth })}
             />
             <YAxis 
               width={50}
@@ -323,6 +328,8 @@ export const RiskEventsChart = ({
     return d;
   })
 
+  const isMonth = diffDates(timeFilter.from, timeFilter.to) < 365;
+
   return (
     <div className={cx(styles['c-chart'])}>
       <div className={styles.info} onClick={iconClickAfter}>
@@ -343,7 +350,7 @@ export const RiskEventsChart = ({
             <XAxis
               dataKey="time"
               stroke="1"
-              tickFormatter={(tick) => getLabel(period, tick)}
+              tickFormatter={(tick) => getLabel(period, tick, { isMonth })}
             />
             <YAxis 
               width={50}
@@ -442,6 +449,8 @@ export const TemparatureChart = ({
     return d;
   })
 
+  const isMonth = diffDates(timeFilter.from, timeFilter.to) < 365;
+
   return (
     <div className={styles['c-chart']}>
       <div className={styles.info} onClick={iconClickAfter}>
@@ -463,7 +472,7 @@ export const TemparatureChart = ({
               <XAxis 
                 dataKey="time" 
                 stroke="1" 
-                tickFormatter={(tick) => getLabel(period, tick)}
+                tickFormatter={(tick) => getLabel(period, tick, { isMonth })}
               />
               <YAxis 
                 label={{value: "ºC", position: 'insideTop', dx:-15, dy: -30}}
@@ -485,7 +494,7 @@ export const TemparatureChart = ({
                   fontSize: "14px",
                   lineHeight: "20px",
                 }}
-                period={'temperature-'+period}
+                period={period}
                 content={(props) => tooltipContent({...props, unit: 'ºC'})}
               />
               <Line
