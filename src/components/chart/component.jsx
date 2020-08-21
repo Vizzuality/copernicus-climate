@@ -690,7 +690,7 @@ export const ThermalComfortMainChart = ({ data = [], iconClickAfter = () => {} }
               tick={<CustomizedTick withHours />}
             />
             <YAxis 
-              label={{value: 'PET', position: 'insideTop', dx:-15, dy: -30}}
+              label={{value: 'PET', position: 'insideTop', dx:-14, dy: -30}}
               width={50}
               dx={-20}
               stroke="1"
