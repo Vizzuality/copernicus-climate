@@ -2,7 +2,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import ReactMapGL from 'react-map-gl';
+import ReactMapGL, { Popup } from 'react-map-gl';
 import { easeCubic } from 'd3-ease';
 import { MAPBOX_STYLE_DEFAULT } from 'const/constants';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -34,6 +34,9 @@ const MapComponent = props => {
     flyToInterpolator,
     loaded,
     map,
+    isPopup,
+    popupContent,
+    gidInfo,
     ...mapboxProps
   } = props;
 
@@ -72,6 +75,19 @@ const MapComponent = props => {
         transitionEasing={easeCubic}
       >
         {loaded && !!map && typeof children === 'function' && children(map)}
+        {isPopup && (
+          <Popup
+            latitude={gidInfo.latitude}
+            longitude={gidInfo.longitude}
+            closeButton={false}
+            closeOnClick={false}
+            anchor="bottom"
+          >
+            <strong>{gidInfo.geoname}</strong>
+            <br/>
+            {popupContent}  
+          </Popup>
+        )}
       </ReactMapGL>
     </div>
   );

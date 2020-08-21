@@ -329,7 +329,8 @@ const HomePage = () => {
                   theme={theme}
                   params={params}
                   period={period}
-                />)}
+                />
+              )}
             </div>
           )}
           <div className={styles.charts}>
@@ -461,7 +462,21 @@ const HomePage = () => {
         </div>
       </div>
       <div className={styles.map}>
-          <Map scrollZoom={false} viewport={viewport} setViewport={setViewport} >
+          <Map 
+            scrollZoom={false} 
+            viewport={viewport} 
+            setViewport={setViewport} 
+            isPopup
+            gidInfo={gidInfo}
+            popupContent={
+              <Description 
+                gidInfo={gidInfo}
+                theme={theme}
+                params={params}
+                period={period}
+              />
+            }
+          >
             {map => (
               <LayerManager map={map} layers={layersInfo.filter(_layer => _layer.active)} />
             )}
