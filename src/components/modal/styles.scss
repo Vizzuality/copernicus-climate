@@ -2,10 +2,11 @@
 
 .c-modal {
   padding: 70px 80px;
-  max-width: 620px;
+  max-width: 630px;
   background-color: $color-white;
   font-family: $font-family-3;
   color: $color-gray-1;
+  padding: 70px 83px;
 
   @media (max-width: 600px) {
     padding: 30px 40px;
@@ -31,18 +32,20 @@
     text-align: center;
 
     .modal-button {
-      text-transform: uppercase;
+      text-transform: initial;
       font-family: $font-family-3;
-      font-size: $font-size-big;
-      font-weight: 700;
+      font-size: 18px;
+      line-height: 24px;
+      font-weight: 500;
       color: $color-white;
-      line-height: 25px;
-      padding: 22px 55px;
-      background-color: $color-orange;
+      padding: 0 0;
+      background-color: #941333;
+      height: 40px;
+      width: 196px;
 
       &:hover {
         background-color: $color-dark-red;
-        opacity: 1;
+        opacity: 0.8;
       }
     }
   }
