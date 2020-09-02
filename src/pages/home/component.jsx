@@ -468,7 +468,7 @@ const HomePage = () => {
             scrollZoom={false} 
             viewport={viewport} 
             setViewport={setViewport} 
-            isPopup={!isLoading}
+            isPopup={!isLoading && period === 'historical'}
             gidInfo={gidInfo}
             popupContent={
               <Description 
