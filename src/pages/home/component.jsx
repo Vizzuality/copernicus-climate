@@ -468,8 +468,8 @@ const HomePage = () => {
           <Map 
             scrollZoom={false} 
             viewport={viewport} 
-            setViewport={setViewport} 
-            isPopup={!isLoading && period === 'historical'}
+            setViewport={setViewport}
+            isPopup={!isLoading && !(theme === THERMALCOMFORT && period !== 'historical')}
             gidInfo={gidInfo}
             popupContent={
               <Description 
