@@ -189,7 +189,7 @@ const HomePage = () => {
     moderateCount: 0,
     strongCount: 0,
     temperature: null,
-    temperatureDate :0,
+    temperatureDate: 0,
   }
 
   const kelvin =  -273.15;
@@ -213,6 +213,7 @@ const HomePage = () => {
 
       if (!params.temperature) {
         params.temperature = theme === HEATWAVES ? wd.tasmax_mean : wd.tasmin_mean;
+        params.temperatureDate = wd.time;
       }
       if (theme === HEATWAVES) {
         if (params.temperature < wd.tasmax_mean) {
