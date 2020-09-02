@@ -70,10 +70,10 @@ const HomePage = () => {
   } = (match && match.params) || {};
   const optionValue = OPTIONS_THEME.find(el => el.value === theme);
   const optionMonthValue = activeMonth;
-  const hadleChange = option => history.push(`/${gid}/${period}/${option.value}`);
-  const hadleChangeMonth = option => setActiveMonth(option);
-  const hadleChangeActivity = option => setActivity(option);
-  const hadleChangeMonthTC = option => setActiveMonthTC(option);
+  const handleChange = option => history.push(`/${gid}/${period}/${option.value}`);
+  const handleChangeMonth = option => setActiveMonth(option);
+  const handleChangeActivity = option => setActivity(option);
+  const handleChangeMonthTC = option => setActiveMonthTC(option);
   const { layers = [] } = LAYERS[period][theme] || {};
   const gidInfo = GIDS.find(g => g.gid === gid);
   const { latitude, longitude, admin_level } = gidInfo;
@@ -190,6 +190,7 @@ const HomePage = () => {
     strongCount: 0,
     temperature: null,
     temperatureDate: 0,
+    month: activeMonth.label
   }
 
   const kelvin =  -273.15;
@@ -322,7 +323,7 @@ const HomePage = () => {
           <Dropdown 
             options={OPTIONS_THEME}
             value={optionValue}
-            onChange={hadleChange}
+            onChange={handleChange}
           />
           {(theme === COLDSNAPS || theme === HEATWAVES) && (
             <div className={styles.description}>
@@ -382,7 +383,7 @@ const HomePage = () => {
                         label="Activity"
                         options={OPTIONS_ACTIVITY}
                         value={activity}
-                        onChange={hadleChangeActivity}
+                        onChange={handleChangeActivity}
                         mode="light"
                       />
                     </div>
@@ -411,7 +412,7 @@ const HomePage = () => {
                     <Dropdown 
                       options={OPTIONS_MONTHES}
                       value={activeMonthTC}
-                      onChange={hadleChangeMonthTC}
+                      onChange={handleChangeMonthTC}
                       mode="calendar"
                       block
                     />
@@ -433,7 +434,7 @@ const HomePage = () => {
                     <Dropdown 
                       options={OPTIONS_MONTHES}
                       value={optionMonthValue}
-                      onChange={hadleChangeMonth}
+                      onChange={handleChangeMonth}
                       mode="calendar"
                       block
                     />

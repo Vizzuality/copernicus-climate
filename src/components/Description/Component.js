@@ -55,7 +55,7 @@ const Description = ({
         <span>{currentYear}</span> {month}{` `}
         was characterised by{` `}
         <span>{thermalValues.min || ''}</span> to{` `}
-        <span>{thermalValues.max || ''}</span>
+        <span>{thermalValues.max || ''}</span>{` `}
         for an adult with <span>medium clothing doing moderate activity</span> in {` `}
         <span>{gidInfo.geoname}</span>. {` `}
       </>
