@@ -210,8 +210,10 @@ export const ThermalComfortChart = ({
       <div className={styles.info} onClick={iconClickAfter}>
         <Icon name="icon-info" />
       </div>
-      <h4>Thermal stress events per month (averaged per geometry)</h4>
-      <div className={styles['c-chart-inside']}>
+      {period === 'historical' ?
+      <h4>Thermal stress events per month (averaged per geometry)</h4> :
+      <h4>Thermal stress currently not available for the time period selected.<br />Please select <span>Historical</span></h4>}
+      {period === 'historical' && (<div className={styles['c-chart-inside']}>
         <ResponsiveContainer width="100%" height={220}>
           <AreaChart
             data={filteredData.length > 0 ? filteredData : []}
@@ -293,7 +295,7 @@ export const ThermalComfortChart = ({
             </AreaChart>
           </ResponsiveContainer>
         </div>
-      </div>
+      </div>)}
     </div>
   );
 }
