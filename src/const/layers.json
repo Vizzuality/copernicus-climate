@@ -6,11 +6,21 @@
                   "name": "Historical max tasmax admin level 2, 3, and 4",
                   "id": "424a20e9-efc1-4813-b031-791a4707dbcb",
                   "endpoint": "https://api.skydipper.com/v1/layer/424a20e9-efc1-4813-b031-791a4707dbcb"
+              },
+              {
+                  "name": "Historical min tasmin admin level 2, 3, and 4",
+                  "id": "e0692e43-a495-49d3-876b-8bd3b83ab5be",
+                  "endpoint": "https://api.skydipper.com/v1/layer/e0692e43-a495-49d3-876b-8bd3b83ab5be"
               }
           ]
       },
       "coldsnaps": {
           "layers": [
+             {
+                  "name": "Historical max tasmax admin level 2, 3, and 4",
+                  "id": "424a20e9-efc1-4813-b031-791a4707dbcb",
+                  "endpoint": "https://api.skydipper.com/v1/layer/424a20e9-efc1-4813-b031-791a4707dbcb"
+              },
               {
                   "name": "Historical min tasmin admin level 2, 3, and 4",
                   "id": "e0692e43-a495-49d3-876b-8bd3b83ab5be",
@@ -40,11 +50,21 @@
                   "name": "Future seasonal max tasmax admin level 2, 3, and 4",
                   "id": "81c79122-189d-4842-a6c0-d97f0c56f556",
                   "endpoint": "https://api.skydipper.com/v1/layer/81c79122-189d-4842-a6c0-d97f0c56f556"
+              },
+              {
+                  "name": "Future seasonal min tasmin admin level 2, 3, and 4",
+                  "id": "752a7741-27d8-4fac-9c88-888e26e546e7",
+                  "endpoint": "https://api.skydipper.com/v1/layer/752a7741-27d8-4fac-9c88-888e26e546e7"
               }
           ]
       },
       "coldsnaps": {
           "layers": [
+              {
+                  "name": "Future seasonal max tasmax admin level 2, 3, and 4",
+                  "id": "81c79122-189d-4842-a6c0-d97f0c56f556",
+                  "endpoint": "https://api.skydipper.com/v1/layer/81c79122-189d-4842-a6c0-d97f0c56f556"
+              },
               {
                   "name": "Future seasonal min tasmin admin level 2, 3, and 4",
                   "id": "752a7741-27d8-4fac-9c88-888e26e546e7",
@@ -60,11 +80,21 @@
                   "name": "Future longterm max tasmax admin level 2, 3, and 4",
                   "id": "48ec523f-8e98-47f6-9b15-70c5dff671ef",
                   "endpoint": "https://api.skydipper.com/v1/layer/48ec523f-8e98-47f6-9b15-70c5dff671ef"
+              },
+              {
+                  "name": "Future longterm min tasmin admin level 2, 3, and 4",
+                  "id": "8127719e-ab03-4214-9831-53267c11208c",
+                  "endpoint": "https://api.skydipper.com/v1/layer/8127719e-ab03-4214-9831-53267c11208c"
               }
           ]
       },
       "coldsnaps": {
           "layers": [
+                {
+                  "name": "Future longterm max tasmax admin level 2, 3, and 4",
+                  "id": "48ec523f-8e98-47f6-9b15-70c5dff671ef",
+                  "endpoint": "https://api.skydipper.com/v1/layer/48ec523f-8e98-47f6-9b15-70c5dff671ef"
+              },
               {
                   "name": "Future longterm min tasmin admin level 2, 3, and 4",
                   "id": "8127719e-ab03-4214-9831-53267c11208c",
