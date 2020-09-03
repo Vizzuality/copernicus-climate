@@ -455,7 +455,7 @@ const HomePage = () => {
               ) : (
                 <div className={styles.noData}>
                   <h4>
-                    Thermal Comfort is only available for the <Link to={`/${gid}/historical/${theme}`}>historical</Link> period
+                    Thermal Comfort is only available for the <Link to={`/${gid}/historical/${theme}`}>historical</Link> period.
                   </h4>
                 </div>
               )}
