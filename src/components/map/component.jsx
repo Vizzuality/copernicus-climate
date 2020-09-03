@@ -37,6 +37,7 @@ const MapComponent = props => {
     isPopup,
     popupContent,
     gidInfo,
+    showPopup,
     ...mapboxProps
   } = props;
 
@@ -73,15 +74,17 @@ const MapComponent = props => {
         getCursor={getCursor}
         transitionInterpolator={flyToInterpolator}
         transitionEasing={easeCubic}
+        onClick={() => showPopup(true)}
       >
         {loaded && !!map && typeof children === 'function' && children(map)}
         {isPopup && (
           <Popup
             latitude={gidInfo.latitude}
             longitude={gidInfo.longitude}
-            closeButton={false}
-            closeOnClick={false}
+            closeButton={true}
+            closeOnClick={true}
             anchor="bottom"
+            onClose={() => showPopup(false)}
           >
             <strong>{gidInfo.geoname}:</strong>
             <br/>

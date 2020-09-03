@@ -62,6 +62,7 @@ const HomePage = () => {
   const [infoModal, setInfoModal] = useState(DEFAULT_INFO_MODAL);
   const [coordinates, setCoordinates] = useState({ right: 0, left: 0 })
   const [filteredPeriod, setFilteredPeriod] = useState({});
+  const [isPopup, setPopup] = useState({});
   
   const {
     gid = GIDS[0].gid,
@@ -151,6 +152,10 @@ const HomePage = () => {
     })
   }
 
+  const showPopup = (status = false) => {
+    setPopup(status);
+  }
+
   useEffect(() => {
     const start = new Date(from).getTime();
     const end = new Date(to).getTime();
@@ -172,6 +177,7 @@ const HomePage = () => {
     const start = new Date(from).getTime();
     const end = new Date(to).getTime();
     setFilteredPeriod({ from: start, to: end });
+    showPopup(true);
   }, []);
 
 
@@ -470,8 +476,9 @@ const HomePage = () => {
             scrollZoom={false} 
             viewport={viewport} 
             setViewport={setViewport}
-            isPopup={!isLoading && !(theme === THERMALCOMFORT && period !== 'historical')}
+            isPopup={!isLoading && !(theme === THERMALCOMFORT && period !== 'historical') && isPopup}
             gidInfo={gidInfo}
+            showPopup={showPopup}
             popupContent={
               <Description 
                 gidInfo={gidInfo}
