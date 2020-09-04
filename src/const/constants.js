@@ -1,3 +1,4 @@
+import React from 'react';
 import gidList from './gids.json';
 import layersList from './layers.json';
 
@@ -41,7 +42,7 @@ export const OPTIONS_TIME = [
   },
   {
     value: PERIOD_FUTURE_LONGTERM, 
-    label: 'Long-Term Forecast',
+    label: 'Long-Term Projections',
     from: dateLongterm.from, 
     to: dateLongterm.to, 
   },
@@ -291,7 +292,18 @@ export const MODAL_INFO_DATA = {
   },
   riskEvents: {
     title: 'Risk Events',
-    text: 'Count of extreme events in the selected administration. The risk level relates to the duration of the extreme event.',
+    text: (<><p>Count of extreme events in the selected administration. The risk level relates to the duration of the extreme event.</p><br />
+
+<p>Yellow level: There is no meteorological risk for the general population, although some specific activities might be affected (common but
+potentially dangerous meteorological phenomena). They can be repeated several times during the year. It is therefore a warning level,
+not an alert.</p><br />
+
+<p>Orange level: There is a significant weather risk.Situations with orange level occur very few times during the year, normally one. The
+damage, especially in some sectors, is starting to be significant and physical integrity is at risk. Generates a situation of alert.</p><br />
+
+<p>Red level: The meteorological risk is extreme (unusual meteorological phenomena of exceptional intensity).This type of situation tends to
+occur once every several years and involves a clear risk to the population. The material damage can be very high, or endanger the physical
+integrity of a sector of the population. It generates an alarm situation.</p></>),
   },
   thermalComfort: {
     title: 'Thermal comfort ',
