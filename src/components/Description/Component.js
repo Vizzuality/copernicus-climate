@@ -16,12 +16,16 @@ const Description = ({
     alarmsCount,
     alertsCount,
     warningsCount,
-    extreamCount,
+    extremeCount,
     strongCount,
     moderateCount,
     temperature,
     temperatureDate,
-    month
+    month,
+    alarmsDev,
+    alertsDev,
+    warningsDev,
+    temperatureDev
   } = params;
 
   const currentYear = Number((new Date()).getFullYear());
@@ -31,15 +35,15 @@ const Description = ({
     {(theme === HEATWAVES || theme === COLDSNAPS) && (
       <>
         From {from} to {to} {` `} 
-        <span>{alarmsCount} alarms</span>,{` `}
-        <span>{alertsCount} alerts</span>{` `}
-        and <span>{warningsCount} warnings</span>,{` `}
-        and <span>{extreamCount} extreme</span>,{` `}
+        <span>{alarmsCount}{alarmsDev ? ` ± ${alarmsDev.toFixed(0)}` : ''} alarms</span>,{` `}
+        <span>{alertsCount}{alertsDev ? ` ± ${alertsDev.toFixed(0)}` : ''} alerts</span>{` `}
+        and <span>{warningsCount}{warningsDev ? ` ± ${warningsDev.toFixed(0)}` : ''} warnings</span>,{` `}
+        and <span>{extremeCount} extreme</span>,{` `}
         <span>{strongCount} strong</span>{` `}
         and <span>{moderateCount} moderate heat stress events</span> were observed in{` `}
         <span>{gidInfo.geoname}</span>. {` `}
         The {theme === HEATWAVES ? 'highest' : 'lowest'} temperature of {` `}
-        <span>{temperature}</span> ºC was observed in {` `}
+        <span>{temperature}{temperatureDev ? ` ± ${temperatureDev.toFixed(2)}` : ''}</span> ºC was observed in {` `}
         <span>{temperatureDate}</span>.
         {period === PERIOD_FUTURE_LONGTERM && (
           <>

@@ -131,6 +131,13 @@ function getLabel(key, value, props = {}) {
 function tooltipContent (tooltipProps) {
   const { label, payload, unit, labelStyle, showHours, period, theme } = tooltipProps;
   const ignoreKeys = ['hour', 'minStdDev', 'maxStdDev'];
+  const values = payload.reduce((acc, n) => ({ ...acc, [n.name]: n.value }), {});
+  let minStdDev;
+  let maxStdDev;
+  if (values.minStdDev && values.maxStdDev) {
+    minStdDev = values.minStdDev[1] - values['Min.temperature'];
+    maxStdDev = values.maxStdDev[1] - values['Max.temperature'];
+  }
 
   return (<div className={styles['customTooltip']}>
     <span style={labelStyle}>
@@ -147,12 +154,19 @@ function tooltipContent (tooltipProps) {
     {payload && payload.length > 0 && payload.filter(item => !ignoreKeys.includes(item.name)).map(item => {
       const { color, name, value } = item;
       const number = value % 1 !== 0 ? Number(value).toFixed(2) : value;
+      let std = '';
+      if (item.name === 'Min.temperature') {
+        std = minStdDev ? ` ± ${minStdDev.toFixed(2)}` : '';
+      } else if (item.name === 'Max.temperature') {
+        std = maxStdDev ? ` ± ${maxStdDev.toFixed(2)}` : '';
+      }
+
       return (
         <Fragment key={name}>
           {name !== 'Comfortable' && (
             <div key={name}>
               <svg height="8" width="8"><circle cx="4" cy="4" r="4" fill={color} /></svg>
-              {`${number}${unit || ''}`}
+              {`${number}${unit || ''}${std}`}
             </div>
           )}
         </Fragment>
