@@ -201,11 +201,14 @@ const checkType = (x) => {
   return climatologyTypes[current];
 }
 
+const IS_MONTH_DAYS = 3650;
+
 export {
   thermalAreas,
   riskAreas,
   climatologyBars,
   climatologyTypes,
   checkType,
-  AREA_MIDDLE_DATA
+  AREA_MIDDLE_DATA,
+  IS_MONTH_DAYS,
 }

@@ -19,6 +19,7 @@ import {
   climatologyBars,
   climatologyTypes,
   AREA_MIDDLE_DATA,
+  IS_MONTH_DAYS,
 } from './const';
 import {
   HEATWAVES,
@@ -114,14 +115,16 @@ function getLabel(key, value, props = {}) {
   let newValue = value;
   const date = new Date(value);
   if (key === PERIOD_HISTORICAL || key === PERIOD_FUTURE_LONGTERM ) {
-    newValue = new Date(value).getFullYear();
+    newValue = Number(new Date(value).getFullYear());
   }
   if (key === PERIOD_FUTURE_SEASONAL || (props.isTooltip && key === PERIOD_HISTORICAL) || props.isMonth) {
+    console.log('month')
     let month = '';
     if (date.getMonth() || date.getMonth() === 0  ) {
       month = OPTIONS_MONTHES.find(m => m.value === date.getMonth() + 1).label;
     }
     newValue = `${month} ${date.getFullYear()}`;
+    // newValue = Number(date.getFullYear());
   }
 
   return newValue;
@@ -204,7 +207,7 @@ export const ThermalComfortChart = ({
     return d;
   })
 
-  const isMonth = diffDates(timeFilter.from, timeFilter.to) < 365;
+  const isMonth = diffDates(timeFilter.from, timeFilter.to) < IS_MONTH_DAYS;
   return (
     <div className={cx(styles['c-chart'])}>
       <div className={styles.info} onClick={iconClickAfter}>
@@ -330,8 +333,12 @@ export const RiskEventsChart = ({
     return d;
   })
 
-  const isMonth = diffDates(timeFilter.from, timeFilter.to) < 365;
+  const isMonth = diffDates(timeFilter.from, timeFilter.to) < IS_MONTH_DAYS;
 
+
+  console.log(diffDates(timeFilter.from, timeFilter.to))
+  console.log(timeFilter.from)
+  console.log(timeFilter.to)
   return (
     <div className={cx(styles['c-chart'])}>
       <div className={styles.info} onClick={iconClickAfter}>
@@ -451,7 +458,7 @@ export const TemparatureChart = ({
     return d;
   })
 
-  const isMonth = diffDates(timeFilter.from, timeFilter.to) < 365;
+  const isMonth = diffDates(timeFilter.from, timeFilter.to) < IS_MONTH_DAYS;
 
   return (
     <div className={styles['c-chart']}>
