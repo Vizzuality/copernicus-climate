@@ -189,12 +189,16 @@ const HomePage = () => {
     from: filteredPeriod.from ?  dateTransform(new Date(filteredPeriod.from)) : from,
     to: filteredPeriod.to ? dateTransform(new Date(filteredPeriod.to)) : to,
     alarmsCount: 0,
+    alarmsDev: 0,
     alertsCount: 0,
+    alertsDev: 0,
     warningsCount: 0,
-    extreamCount: 0,
+    warningsDev: 0,
+    extremeCount: 0,
     moderateCount: 0,
     strongCount: 0,
     temperature: null,
+    temperatureDev: 0,
     temperatureDate: 0,
     month: activeMonth.label
   }
@@ -212,24 +216,33 @@ const HomePage = () => {
     wd.time = date ? dateTransform(date) : wd.time;
     if (filteredPeriod.from && filteredPeriod.to && time >= filteredPeriod.from && time <= filteredPeriod.to) {
       params.alarmsCount += theme === HEATWAVES ? wd.heatwave_alarms_mean : wd.coldsnap_alarms_mean;
+      params.alarmsDev += theme === HEATWAVES ? wd.heatwave_alarms_std : wd.coldsnap_alarms_std;
+
       params.alertsCount += theme === HEATWAVES ? wd.heatwave_alerts_mean : wd.coldsnap_alerts_mean;
+      params.alertsDev += theme === HEATWAVES ? wd.heatwave_alerts_std : wd.coldsnap_alerts_std;
+
       params.warningsCount += theme === HEATWAVES ? wd.heatwave_warnings_mean : wd.coldsnap_warnings_mean;
-      params.extreamCount += theme === HEATWAVES ? wd.heatstress_extreme_mean : wd.coldstress_extreme_mean;
+      params.warningsDev += theme === HEATWAVES ? wd.heatwave_warnings_std : wd.coldsnap_warnings_std;
+
+      params.extremeCount += theme === HEATWAVES ? wd.heatstress_extreme_mean : wd.coldstress_extreme_mean;
       params.moderateCount += theme === HEATWAVES ? wd.heatstress_moderate_mean : wd.coldstress_moderate_mean;
       params.strongCount += theme === HEATWAVES ? wd.heatstress_strong_mean : wd.coldstress_strong_mean;
 
       if (!params.temperature) {
         params.temperature = theme === HEATWAVES ? wd.tasmax_mean : wd.tasmin_mean;
+        params.temperatureDev = theme === HEATWAVES ? wd.tasmax_std : wd.tasmin_std;
         params.temperatureDate = wd.time;
       }
       if (theme === HEATWAVES) {
         if (params.temperature < wd.tasmax_mean) {
           params.temperature = wd.tasmax_mean;
+          params.temperatureDev = wd.tasmax_std;
           params.temperatureDate = wd.time;
         }
       } else {
         if (params.temperature > wd.tasmin_mean) {
           params.temperature = wd.tasmin_mean;
+          params.temperatureDev = wd.tasmin_std;
           params.temperatureDate = wd.time;
         }
       }
@@ -243,9 +256,15 @@ const HomePage = () => {
   }
   if (theme !== THERMALCOMFORT) {
     params.alarmsCount = Math.ceil(params.alarmsCount) || 0;
+    params.alarmsDev /= transformedWidgetData.length; // std mean
+
     params.alertsCount = Math.ceil(params.alertsCount) || 0;
+    params.alertsDev /= transformedWidgetData.length;
+
     params.warningsCount = Math.ceil(params.warningsCount) || 0;
-    params.extreamCount = Math.ceil(params.extreamCount) || 0;
+    params.warningsDev /= transformedWidgetData.length;
+
+    params.extremeCount = Math.ceil(params.extremeCount) || 0;
     params.moderateCount = Math.ceil(params.moderateCount) || 0;
     params.strongCount = Math.ceil(params.strongCount) || 0;
   } else {

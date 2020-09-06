@@ -12,6 +12,7 @@ import {
   ResponsiveContainer,
   BarChart,
   Bar,
+  ComposedChart
 } from 'recharts';
 import {
   riskAreas,
@@ -130,6 +131,15 @@ function getLabel(key, value, props = {}) {
 
 function tooltipContent (tooltipProps) {
   const { label, payload, unit, labelStyle, showHours, period, theme } = tooltipProps;
+  const ignoreKeys = ['hour', 'minStdDev', 'maxStdDev'];
+  const values = payload.reduce((acc, n) => ({ ...acc, [n.name]: n.value }), {});
+  let minStdDev;
+  let maxStdDev;
+  if (values.minStdDev && values.maxStdDev) {
+    minStdDev = values.minStdDev[1] - values['Min.temperature'];
+    maxStdDev = values.maxStdDev[1] - values['Max.temperature'];
+  }
+
   return (<div className={styles['customTooltip']}>
     <span style={labelStyle}>
       {theme === THERMALCOMFORT ? (
@@ -142,20 +152,77 @@ function tooltipContent (tooltipProps) {
         </>
       )}
     </span>
-    {payload && payload.length > 0 && payload.filter(item => item.name !== 'hour').map(item => {
+    {payload && payload.length > 0 && payload.filter(item => !ignoreKeys.includes(item.name)).map(item => {
       const { color, name, value } = item;
       const number = value % 1 !== 0 ? Number(value).toFixed(2) : value;
+      let std = '';
+      if (item.name === 'Min.temperature') {
+        std = minStdDev ? ` ± ${minStdDev.toFixed(2)}` : '';
+      } else if (item.name === 'Max.temperature') {
+        std = maxStdDev ? ` ± ${maxStdDev.toFixed(2)}` : '';
+      }
+
       return (
         <Fragment key={name}>
           {name !== 'Comfortable' && (
             <div key={name}>
               <svg height="8" width="8"><circle cx="4" cy="4" r="4" fill={color} /></svg>
-              {`${number}${unit || ''}`}
+              {`${number}${unit || ''}${std}`}
             </div>
           )}
         </Fragment>
     )})}
   </div>);
+}
+
+function legendContent (props) {
+  const { payload } = props;
+  const viewBox = { x: 0, y: 0, width: 32, height: 32 }
+  const svgView = viewBox || { width: 14, height: 14, x: 0, y: 0 };
+  const ignore = ['minStdDev', 'maxStdDev']
+
+  return (
+    <ul
+      className="recharts-default-legend"
+      style={{ padding: "0px", margin: "0px", textAlign: "left" }}
+    >
+      {payload
+        .filter((d) => !ignore.includes(d.dataKey))
+        .map((entry, index) => (
+          <li
+            className={`recharts-legend-item legend-item-${index}`}
+            key={`item-${index}`}
+            style={{ display: "inline-block", marginRight: "10px" }}
+          >
+            <svg
+              className="recharts-surface"
+              width={14}
+              height={14}
+              style={{
+                display: "inline-block",
+                verticalAlign: "middle",
+                marginRight: 4,
+              }}
+              viewBox={`${svgView.x} ${svgView.y} ${svgView.width} ${svgView.height}`}
+              version="1.1"
+            >
+              <line
+                strokeWidth={4}
+                fill="none"
+                stroke={entry.inactive ? "#DDD" : entry.color}
+                strokeDasharray={entry.payload.strokeDasharray}
+                x1={0}
+                y1={16}
+                x2={32}
+                y2={16}
+                className="recharts-legend-icon"
+              />
+            </svg>
+            {entry.value}
+          </li>
+        ))}
+    </ul>
+  );
 }
 
 function ClimatilogyLegend(props) {
@@ -434,13 +501,27 @@ export const TemparatureChart = ({
   setCoordinates = () => {},
   onStopCallback = () => {},
 }) => {
-  let filteredData = data;
-  if (timeFilter.from && timeFilter.to ) {
-    filteredData = data.filter(d => {
+  const filteredData = (
+    timeFilter.from && timeFilter.to ?
+    data.filter(d => {
       const time = new Date(d.time).getTime();
       return time >= timeFilter.from && time <= timeFilter.to;
-    })
-  }
+    }) :
+    data
+  ).map(d => ({
+    ...d,
+    maxStdDev: [d.tasmax_mean - d.tasmax_std, d.tasmax_mean + d.tasmax_std],
+    minStdDev: [d.tasmin_mean - d.tasmin_std, d.tasmin_mean + d.tasmin_std],
+  }));
+
+  const areaAttr = {
+    isAnimationActive: false,
+    fill: '#ACACAC',
+    opacity: 0.3,
+    strokeWidth: 0,
+    background: false,
+    activeDot: false,
+  };
 
   const chartBox = useRef(null);
   const dataKeys = ['tasmin_mean', 'tasmax_mean'];
@@ -455,7 +536,7 @@ export const TemparatureChart = ({
   const isMonth = diffDates(timeFilter.from, timeFilter.to) < IS_MONTH_DAYS;
 
   return (
-    <div className={styles['c-chart']}>
+    <div className={styles["c-chart"]}>
       <div className={styles.info} onClick={iconClickAfter}>
         <Icon name="icon-info" />
       </div>
@@ -463,32 +544,35 @@ export const TemparatureChart = ({
       {filteredData.length > 0 && (
         <>
           <ResponsiveContainer width="100%" height={270}>
-            <LineChart
+            <ComposedChart
               data={filteredData.length > 0 ? filteredData : []}
               margin={{
-                top: 40, right: 0, left: 0, bottom: 0,
+                top: 40,
+                right: 0,
+                left: 0,
+                bottom: 0,
               }}
               fontSize={14}
               fontFamily="Open Sans"
             >
               <CartesianGrid vertical={false} />
-              <XAxis 
-                dataKey="time" 
-                stroke="1" 
+              <XAxis
+                dataKey="time"
+                stroke="1"
                 tickFormatter={(tick) => getLabel(period, tick, { isMonth })}
               />
-              <YAxis 
-                label={{value: "ºC", position: 'insideTop', dx:-15, dy: -30}}
+              <YAxis
+                label={{ value: "ºC", position: "insideTop", dx: -15, dy: -30 }}
                 width={50}
                 dx={-20}
                 stroke="1"
-                padding={{top: 0, bottom: 20}}
+                padding={{ top: 0, bottom: 20 }}
               />
-              <Tooltip 
+              <Tooltip
                 itemStyle={{
                   fontSize: "14px",
                   lineHeight: "20px",
-                }} 
+                }}
                 wrapperStyle={{
                   backgroundColor: "#FFFFFF",
                   boxShadow: "0 2px 10px 0 rgba(0,35,117,0.2)",
@@ -498,7 +582,7 @@ export const TemparatureChart = ({
                   lineHeight: "20px",
                 }}
                 period={period}
-                content={(props) => tooltipContent({...props, unit: 'ºC'})}
+                content={(props) => tooltipContent({ ...props, unit: "ºC" })}
               />
               <Line
                 type="basis"
@@ -507,6 +591,7 @@ export const TemparatureChart = ({
                 stroke="#CB181D"
                 dot={false}
               />
+              <Area dataKey="maxStdDev" dot={false} {...areaAttr} />
               <Line
                 type="basis"
                 name="Min.temperature"
@@ -514,6 +599,7 @@ export const TemparatureChart = ({
                 stroke="#2171B5"
                 dot={false}
               />
+              <Area dataKey="minStdDev" dot={false} {...areaAttr} />
               <Legend
                 layout="horizontal"
                 verticalAlign="top"
@@ -521,16 +607,23 @@ export const TemparatureChart = ({
                   fontSize: "14px",
                   lineHeight: "19px",
                   bottom: "-70px",
-                  left: '50px',
+                  left: "50px",
                 }}
                 iconSize={9}
                 iconType="plainline"
                 align="left"
                 chartHeight={33}
+                content={legendContent}
               />
-            </LineChart>
+            </ComposedChart>
           </ResponsiveContainer>
-          <div ref={chartBox} className={cx(styles['c-chart-slider-container'], styles.withPadding)}>
+          <div
+            ref={chartBox}
+            className={cx(
+              styles["c-chart-slider-container"],
+              styles.withPadding
+            )}
+          >
             <Slider
               coordinates={coordinates}
               setCoordinates={setCoordinates}
@@ -541,14 +634,17 @@ export const TemparatureChart = ({
               <AreaChart
                 data={middleData.length > 0 ? middleData : []}
                 margin={{
-                  top: 0, right: 0, left: 0, bottom: 0,
+                  top: 0,
+                  right: 0,
+                  left: 0,
+                  bottom: 0,
                 }}
                 fontSize={14}
                 fontFamily="Open Sans"
                 height={32}
               >
                 <XAxis hide dataKey="time" />
-                <YAxis hide />              
+                <YAxis hide />
                 <Area key={middleData} {...AREA_MIDDLE_DATA} />
               </AreaChart>
             </ResponsiveContainer>

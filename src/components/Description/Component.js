@@ -21,7 +21,11 @@ const Description = ({
     moderateCount,
     temperature,
     temperatureDate,
-    month
+    month,
+    alarmsDev,
+    alertsDev,
+    warningsDev,
+    temperatureDev
   } = params;
 
   const currentYear = Number((new Date()).getFullYear());
@@ -31,9 +35,9 @@ const Description = ({
     {(theme === HEATWAVES || theme === COLDSNAPS) && (
       <>
         From {from} to {to} {` `} 
-        <span>{alarmsCount} alarms</span>,{` `}
-        <span>{alertsCount} alerts</span>{` `}
-        and <span>{warningsCount} warnings</span>{` `}
+        <span>{alarmsCount}{alarmsDev ? ` ± ${alarmsDev.toFixed(0)}` : ''} alarms</span>,{` `}
+        <span>{alertsCount}{alertsDev ? ` ± ${alertsDev.toFixed(0)}` : ''} alerts</span>{` `}
+        and <span>{warningsCount}{warningsDev ? ` ± ${warningsDev.toFixed(0)}` : ''} warnings</span>,{` `}
         {period !== PERIOD_FUTURE_LONGTERM && (
           <>
             , and <span>{extreamCount} extreme</span>,{` `}
@@ -45,9 +49,10 @@ const Description = ({
         {` `}
         <span>{gidInfo.geoname}</span>. {` `}
         The {theme === HEATWAVES ? 'highest' : 'lowest'} temperature of {` `}
-        <span>{temperature}</span> ºC {` `}
+        <span>{temperature}{temperatureDev ? ` ± ${temperatureDev.toFixed(2)}` : ''}</span> ºC {` `}
         {period === PERIOD_FUTURE_LONGTERM ? 'will be in ' : 'was observed in '}
         {` `}
+
         <span>{temperatureDate}</span>.
         {period === PERIOD_FUTURE_LONGTERM && (
           <>
