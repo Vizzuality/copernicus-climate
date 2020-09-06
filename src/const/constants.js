@@ -311,7 +311,7 @@ integrity of a sector of the population. It generates an alarm situation.</p></>
   },
   thermalComfortMain: {
     title: 'Thermal comfort ',
-    text: 'Hourly Physiologically Equivalent Temperature (PET) along the 15th of the selected month for the year 2018. ',
+    text: 'Hourly Physiologically Equivalent Temperature (PET) along the 15th of the selected month for the year 2018. PET is a combined indicator that considers not only temperature but also wind, relative humidity and mean radiant temperature values.',
   },
   hourlyClimatology: {
     title: 'Hourly climatology ',
