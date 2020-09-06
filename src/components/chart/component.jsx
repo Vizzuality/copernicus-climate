@@ -118,13 +118,11 @@ function getLabel(key, value, props = {}) {
     newValue = Number(new Date(value).getFullYear());
   }
   if (key === PERIOD_FUTURE_SEASONAL || (props.isTooltip && key === PERIOD_HISTORICAL) || props.isMonth) {
-    console.log('month')
     let month = '';
     if (date.getMonth() || date.getMonth() === 0  ) {
       month = OPTIONS_MONTHES.find(m => m.value === date.getMonth() + 1).label;
     }
     newValue = `${month} ${date.getFullYear()}`;
-    // newValue = Number(date.getFullYear());
   }
 
   return newValue;
@@ -335,10 +333,6 @@ export const RiskEventsChart = ({
 
   const isMonth = diffDates(timeFilter.from, timeFilter.to) < IS_MONTH_DAYS;
 
-
-  console.log(diffDates(timeFilter.from, timeFilter.to))
-  console.log(timeFilter.from)
-  console.log(timeFilter.to)
   return (
     <div className={cx(styles['c-chart'])}>
       <div className={styles.info} onClick={iconClickAfter}>

@@ -33,13 +33,21 @@ const Description = ({
         From {from} to {to} {` `} 
         <span>{alarmsCount} alarms</span>,{` `}
         <span>{alertsCount} alerts</span>{` `}
-        and <span>{warningsCount} warnings</span>,{` `}
-        and <span>{extreamCount} extreme</span>,{` `}
-        <span>{strongCount} strong</span>{` `}
-        and <span>{moderateCount} moderate heat stress events</span> were observed in{` `}
+        and <span>{warningsCount} warnings</span>{` `}
+        {period !== PERIOD_FUTURE_LONGTERM && (
+          <>
+            , and <span>{extreamCount} extreme</span>,{` `}
+            <span>{strongCount} strong</span>{` `}
+            and <span>{moderateCount} moderate heat stress events</span>{` `}
+          </>
+        )}
+        {period === PERIOD_FUTURE_LONGTERM ? 'are predicted in ' : ' were observed in '}
+        {` `}
         <span>{gidInfo.geoname}</span>. {` `}
         The {theme === HEATWAVES ? 'highest' : 'lowest'} temperature of {` `}
-        <span>{temperature}</span> ºC was observed in {` `}
+        <span>{temperature}</span> ºC {` `}
+        {period === PERIOD_FUTURE_LONGTERM ? 'will be in ' : 'was observed in '}
+        {` `}
         <span>{temperatureDate}</span>.
         {period === PERIOD_FUTURE_LONGTERM && (
           <>
