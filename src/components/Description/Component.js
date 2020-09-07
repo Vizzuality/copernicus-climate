@@ -1,5 +1,5 @@
 import React from 'react';
-import { HEATWAVES, COLDSNAPS, THERMALCOMFORT, PERIOD_FUTURE_LONGTERM } from 'const/constants';
+import { HEATWAVES, COLDSNAPS, THERMALCOMFORT, PERIOD_FUTURE_LONGTERM, PERIOD_HISTORICAL } from 'const/constants';
 
 const Description = ({
   theme,
@@ -37,15 +37,15 @@ const Description = ({
         From {from} to {to} {` `} 
         <span>{alarmsCount}{alarmsDev ? ` ± ${alarmsDev.toFixed(0)}` : ''} alarms</span>,{` `}
         <span>{alertsCount}{alertsDev ? ` ± ${alertsDev.toFixed(0)}` : ''} alerts</span>{` `}
-        and <span>{warningsCount}{warningsDev ? ` ± ${warningsDev.toFixed(0)}` : ''} warnings</span>,{` `}
-        {period !== PERIOD_FUTURE_LONGTERM && (
+        and <span>{warningsCount}{warningsDev ? ` ± ${warningsDev.toFixed(0)}` : ''} warnings</span>
+        {period === PERIOD_HISTORICAL && (
           <>
             , and <span>{extreamCount} extreme</span>,{` `}
             <span>{strongCount} strong</span>{` `}
             and <span>{moderateCount} moderate heat stress events</span>{` `}
           </>
         )}
-        {period === PERIOD_FUTURE_LONGTERM ? 'are predicted in ' : ' were observed in '}
+        {period === PERIOD_FUTURE_LONGTERM ? ' are predicted in ' : ' were observed in '}
         {` `}
         <span>{gidInfo.geoname}</span>. {` `}
         The {theme === HEATWAVES ? 'highest' : 'lowest'} temperature of {` `}
