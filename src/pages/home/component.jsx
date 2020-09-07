@@ -35,7 +35,7 @@ import {
   ThermalComfortChart,
   ThermalComfortMainChart,
   RiskEventsChart,
-  TemparatureChart,
+  TemperatureChart,
   ClimatologyChart,
 } from 'components/chart';
 import { getWidgetData, getLayersInfo, getPets } from 'api';
@@ -375,7 +375,7 @@ const HomePage = () => {
                   onStopCallback={onStopCallback}
                   timeFilter={filteredPeriod}
                 />
-                <TemparatureChart
+                <TemperatureChart
                   data={transformedWidgetData}
                   theme={theme}
                   period={period}

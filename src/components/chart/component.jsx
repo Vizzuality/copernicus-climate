@@ -132,6 +132,8 @@ function getLabel(key, value, props = {}) {
 function tooltipContent (tooltipProps) {
   const { label, payload, unit, labelStyle, showHours, period, theme } = tooltipProps;
   const ignoreKeys = ['hour', 'minStdDev', 'maxStdDev'];
+  const riskKeys = ['Warning', 'Alert', 'Alarm'];
+
   const values = payload.reduce((acc, n) => ({ ...acc, [n.name]: n.value }), {});
   let minStdDev;
   let maxStdDev;
@@ -153,13 +155,16 @@ function tooltipContent (tooltipProps) {
       )}
     </span>
     {payload && payload.length > 0 && payload.filter(item => !ignoreKeys.includes(item.name)).map(item => {
-      const { color, name, value } = item;
+      const { color, name, value, dataKey, payload } = item;
       const number = value % 1 !== 0 ? Number(value).toFixed(2) : value;
       let std = '';
       if (item.name === 'Min.temperature') {
         std = minStdDev ? ` ± ${minStdDev.toFixed(2)}` : '';
       } else if (item.name === 'Max.temperature') {
         std = maxStdDev ? ` ± ${maxStdDev.toFixed(2)}` : '';
+      } else if (riskKeys.includes(item.name)) {
+        const dev = payload[dataKey.replace('mean', 'std')];
+        std = dev ? ` ± ${dev.toFixed(2)}` : '';
       }
 
       return (
@@ -225,7 +230,7 @@ function legendContent (props) {
   );
 }
 
-function ClimatilogyLegend(props) {
+function ClimatologyLegend(props) {
   const { payload } = props;
   return (
     <ul className={styles['custom-legend']}>
@@ -492,7 +497,7 @@ export const RiskEventsChart = ({
   );
 }
 
-export const TemparatureChart = ({
+export const TemperatureChart = ({
   data = [],
   period = PERIOD_HISTORICAL,
   iconClickAfter = () => {},
@@ -750,7 +755,7 @@ export const ClimatologyChart = ({ data = [], theme = THERMALCOMFORT, iconClickA
               iconType="circle"
               align="left"
               chartHeight={33}
-              content={ClimatilogyLegend}
+              content={ClimatologyLegend}
             />
           </BarChart>
         </ResponsiveContainer>
