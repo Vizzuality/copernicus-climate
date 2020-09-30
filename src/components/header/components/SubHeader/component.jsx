@@ -34,7 +34,9 @@ const SubHeader = () => {
     <div className={styles.cSubheader}>
       <div className={styles.container}>
         <div className={styles.titleContainer}>
-          <h1 className={styles.title}>Thermal Assessment Tool</h1>
+          <a href="https://climate.copernicus.eu/thermal-assessment-tool">
+            <h1 className={styles.title}>Thermal Assessment Tool</h1>
+          </a>
         </div>
         <div className={styles.filters}>
           <div className={styles.filterSection}>

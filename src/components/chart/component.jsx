@@ -77,7 +77,7 @@ function CustomizedTick (props) {
         y={y}
         fill="1"
         className="recharts-text recharts-cartesian-axis-tick-value"
-        text-anchor="middle"
+        textAnchor="middle"
       >
         <tspan
           x={x}
@@ -284,7 +284,7 @@ export const ThermalComfortChart = ({
         <Icon name="icon-info" />
       </div>
       {period === 'historical' ?
-      <h4>Thermal stress events per month (averaged per geometry)</h4> :
+      <h4>Thermal stress events per month (averaged per geometry, data available from 2004)</h4> :
       <h4>Thermal stress currently not available for the time period selected.<br />Please select <span>Historical</span></h4>}
       {period === 'historical' && (<div className={styles['c-chart-inside']}>
         <ResponsiveContainer width="100%" height={220}>

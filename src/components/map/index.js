@@ -26,13 +26,15 @@ const MapComponent = props => {
   }, [loaded, mapRef]);
 
   useEffect(() => {
-    const isEnabled = admin ? admin === 'true' : true;
-    map && map.setPaintProperty('admin', 'line-opacity', isEnabled ? 1 : 0);
+    if (admin) {
+      const isEnabled = admin ? admin === 'true' : true;
+      map && map.setPaintProperty('admin', 'line-opacity', isEnabled ? 1 : 0);
+    }
   }, [admin, map]);
 
   useEffect(() => {
     const isEnabled = label ? label === 'true' : true;
-    if (map) {
+    if (map && label) {
       map.setPaintProperty('country-label', 'text-opacity', isEnabled ? 1 : 0);
       map.setPaintProperty('place-label', 'text-opacity', isEnabled ? 1 : 0);
     }

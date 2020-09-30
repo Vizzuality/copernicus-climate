@@ -65,9 +65,9 @@ const HeaderComponent = () => {
                 The Copernicus Programme
               </a>
             </p>
-            <Link to="/" title="Home" rel="home" id="logo">
+            <a href="https://climate.copernicus.eu" title="Home" rel="home" id="logo">
               <img className={styles.logo} src={LogoImage} height="66" alt="Home" />
-            </Link>
+            </a>
           </div>
           <div className={styles.menus}>
             <div className={styles['nav__main-wrapper']}>
