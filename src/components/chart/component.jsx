@@ -1,4 +1,5 @@
 import React, { useRef, Fragment } from 'react';
+import sortBy from 'lodash/sortBy';
 import {
   AreaChart,
   LineChart,
@@ -184,7 +185,7 @@ function legendContent (props) {
   const { payload } = props;
   const viewBox = { x: 0, y: 0, width: 32, height: 32 }
   const svgView = viewBox || { width: 14, height: 14, x: 0, y: 0 };
-  const ignore = ['minStdDev', 'maxStdDev']
+  const ignore = ['minStdDev', 'maxStdDev'];
 
   return (
     <ul
@@ -211,17 +212,27 @@ function legendContent (props) {
               viewBox={`${svgView.x} ${svgView.y} ${svgView.width} ${svgView.height}`}
               version="1.1"
             >
-              <line
-                strokeWidth={4}
-                fill="none"
-                stroke={entry.inactive ? "#DDD" : entry.color}
-                strokeDasharray={entry.payload.strokeDasharray}
-                x1={0}
-                y1={16}
-                x2={32}
-                y2={16}
-                className="recharts-legend-icon"
-              />
+              {entry.type === "plainline" && (
+                <line
+                  strokeWidth={4}
+                  fill="none"
+                  stroke={entry.inactive ? "#DDD" : entry.color}
+                  strokeDasharray={entry.payload.strokeDasharray}
+                  x1={0}
+                  y1={16}
+                  x2={32}
+                  y2={16}
+                  className="recharts-legend-icon"
+                />
+              )}
+              {entry.type === "circle" && (
+                <path
+                  fill={entry.color}
+                  className="recharts-symbols"
+                  transform="translate(16, 16)"
+                  d="M16,0A16,16,0,1,1,-16,0A16,16,0,1,1,16,0"
+                ></path>
+              )}
             </svg>
             {entry.value}
           </li>
@@ -342,6 +353,7 @@ export const ThermalComfortChart = ({
               iconType="circle"
               align="left"
               chartHeight={32}
+              content={(_p) => legendContent({ payload: sortBy(_p.payload, 'color') })}
             />
           </AreaChart>
         </ResponsiveContainer>

@@ -35,7 +35,7 @@ function ModalComponent(props) {
       >
         <div className="c-modal">
           <h2 className="modal-title">{title}</h2>
-          <p className="modal-text">{text}</p>
+          <div className="modal-text">{text}</div>
           <div className="modal-button-wrapper">
             <button className="modal-button" onClick={handleClose}>
               Close

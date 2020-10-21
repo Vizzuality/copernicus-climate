@@ -397,7 +397,9 @@ const HomePage = () => {
       });
   }
 
-  return (
+  console.log(pets, filteredPets);
+
+  return (  
     <div className={styles.container}>
       {infoModal && infoModal.open && (
         <Modal
@@ -604,6 +606,7 @@ const HomePage = () => {
               theme={theme}
               params={params}
               period={period}
+              petValues={petValues}
             />
           }
         >

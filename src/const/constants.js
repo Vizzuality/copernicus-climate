@@ -287,8 +287,13 @@ export const OPTIONS_CLOTHING = [
 
 export const MODAL_INFO_DATA = {
   temperature: {
-    title: 'Temperature',
-    text: 'Maximum and minimum temperature average across the selected administration.',
+    title: 'Temperatures (max and min)',
+    text: (<>
+<p>Temporal change of the average maximum and minimum temperature, extracted from the hourly data from 1981 to 2019, for the selected administration.</p><br />
+  
+<p>The choropleth map shows the aggregated average for the selected time period of the minimum and maximum temperatures.</p><br />
+
+<p>The data aggregation procedure is available in <a href="https://github.com/Vizzuality/copernicus-climate-data">this GitHub repository</a>.</p></>),
   },
   riskEvents: {
     title: 'Risk Events',
@@ -303,18 +308,41 @@ damage, especially in some sectors, is starting to be significant and physical i
 
 <p>Red level: The meteorological risk is extreme (unusual meteorological phenomena of exceptional intensity).This type of situation tends to
 occur once every several years and involves a clear risk to the population. The material damage can be very high, or endanger the physical
-integrity of a sector of the population. It generates an alarm situation.</p></>),
+integrity of a sector of the population. It generates an alarm situation.</p><br />
+
+<p>The data aggregation procedure is available in <a href="https://github.com/Vizzuality/copernicus-climate-data">this GitHub repository</a>.</p></>),
   },
   thermalComfort: {
     title: 'Thermal comfort ',
-    text: 'Count of the levels of extreme stress events experienced in the selected administration.',
+    text: (<>
+<p>Hourly Physiologically Equivalent Temperature (PET) on the fifteenth of the selected month for the year 2018, for the selected administration.</p><br />
+
+<p>The PET is a combined indicator based on Air temperature, Relative air humidity, Wind velocity and Mean radiant temperature.</p><br />
+
+<p>The choropleth map shows the averaged minimum and maximum PET for the selected time period.</p><br />
+
+<p>The data aggregation procedure is available in <a href="https://github.com/Vizzuality/copernicus-climate-data">this GitHub repository</a>.</p></>),
   },
   thermalComfortMain: {
     title: 'Thermal comfort ',
-    text: 'Hourly Physiologically Equivalent Temperature (PET) along the 15th of the selected month for the year 2018. PET is a combined indicator that considers not only temperature but also wind, relative humidity and mean radiant temperature values.',
+    text: (<>
+<p>Hourly Physiologically Equivalent Temperature (PET) on the fifteenth of the selected month for the year 2018, for the selected administration.</p><br />
+
+<p>The PET is a combined indicator based on Air temperature, Relative air humidity, Wind velocity and Mean radiant temperature.</p><br />
+
+<p>The choropleth map shows the averaged minimum and maximum PET for the selected time period.</p><br />
+
+<p>The data aggregation procedure is available in <a href="https://github.com/Vizzuality/copernicus-climate-data">this GitHub repository</a>.</p></>),
   },
   hourlyClimatology: {
     title: 'Hourly climatology ',
-    text: 'Hourly distribution of the stress.',
+    text: (<>
+<p>Hourly proportion of thermal stress, derived from Physiological Equivalent Temperature (PET), for the selected administration.</p><br />
+
+<p>The PET is a combined indicator based on Air temperature, Relative air humidity, Wind velocity and Mean radiant temperature.</p><br />
+
+<p>Thermal stress can be classified following the thresholds: &lt;4 PET as Extreme cold stress, 4-8 PET as Strong cold stress, 8-13 PET as Moderate cold stress and 29-35 PET as Moderate heat stress, 35-41 as Strong heat stress 35-41, &gt;41 as Extreme heat stress.</p><br />
+
+<p>The data aggregation procedure is available in <a href="https://github.com/Vizzuality/copernicus-climate-data">this GitHub repository</a>.</p></>),
   },
 }
