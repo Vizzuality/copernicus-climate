@@ -38,7 +38,7 @@ import {
   TemperatureChart,
   ClimatologyChart,
 } from "components/chart";
-import { getWidgetData, getLayersInfo, getPets } from "api";
+import { getWidgetData, getLayersInfo, getPets, getPetData } from "api";
 import Description from "components/Description";
 
 const DEFAULT_INFO_MODAL = {
@@ -58,6 +58,7 @@ const HomePage = () => {
   const [layersInfo, setLayersInfo] = useState([]);
   const match = useRouteMatch("/:gid/:period/:theme?");
   const [widgetData, setWidgetData] = useState([]);
+  const [petMaxMin, setPetMaxMin] = useState({});
   const [pets, setPets] = useState([]);
   const [infoModal, setInfoModal] = useState(DEFAULT_INFO_MODAL);
   const [coordinates, setCoordinates] = useState({ right: 0, left: 0 });
@@ -84,7 +85,7 @@ const HomePage = () => {
 
   const fetchWidgetsData = async () => {
     setLoading(true);
-    let data;
+    let data, pet;
     try {
       data = await getWidgetData({
         gid,
@@ -97,6 +98,7 @@ const HomePage = () => {
         month: activeMonth.value,
         admin_level: gidInfo.admin_level,
       });
+      pet = await getPetData({ gid });
     } catch (err) {
       console.error("Couldn't load the data.", err);
       setWidgetData(null);
@@ -104,6 +106,7 @@ const HomePage = () => {
 
     setLoading(false);
     if (data && data.data) setWidgetData(data.data);
+    if (pet && pet.data) setPetMaxMin(pet.data[0]);
   };
 
   const onStopCallback = (width = {}) => {
@@ -357,6 +360,8 @@ const HomePage = () => {
       clothing: OPTIONS_CLOTHING[0].label,
       month: activeMonthTC.label,
       hour: 0,
+      petMax: petMaxMin.max_petmax,
+      petMin: petMaxMin.min_petmin
     };
 
     const petFilters = {
@@ -396,8 +401,6 @@ const HomePage = () => {
         return 0;
       });
   }
-
-  console.log(pets, filteredPets);
 
   return (  
     <div className={styles.container}>
@@ -547,6 +550,7 @@ const HomePage = () => {
                           theme={theme}
                           params={params}
                           thermalValues={thermalValues}
+                          petValues={petValues}
                         />
                       </div>
                       <ClimatologyChart
@@ -607,6 +611,7 @@ const HomePage = () => {
               params={params}
               period={period}
               petValues={petValues}
+              popup
             />
           }
         >

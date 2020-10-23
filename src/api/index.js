@@ -137,6 +137,7 @@ const params = {
       'quantile',
       'pet_mean'
     ],
+    // unused:
     'future-seasonal': [
       'gid',
       'month',
@@ -152,6 +153,12 @@ const params = {
       'pet_mean'
     ],
   },
+  pet: {
+    historical: [
+      'max_petmax',
+      'min_petmin'
+    ]
+  }
 }
 
 const generateSql = (gid, period, theme, time, month, admin_level) => {
@@ -198,7 +205,23 @@ export const getWidgetData = async (params = defaultParams) => {
   }
 
   const res = await axios.request(axiosConfig)
+  return res.data;
+}
 
+export const getPetData = async (params = defaultParams) => {
+  // https://api.skydipper.com/v1/query/3a46bbff-73bc-4abc-bad6-11be6e99e2cb/?sql=
+  const id = queryId.historical;
+  const sql = `SELECT max_petmax, min_petmin FROM historical_total_zs_nuts_level_234_2 WHERE gid='${params.gid}'`;
+  const axiosConfig = {
+    url: `/query/${id}/?sql=${sql}`,
+    method: 'GET',
+    baseURL: apiUrl,
+    headers: {
+      Authorization: AuthorizationToken,
+    }
+  }
+
+  const res = await axios.request(axiosConfig);
   return res.data;
 }
 
