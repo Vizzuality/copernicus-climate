@@ -1,6 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { LayerManager as VizzLayerManager, Layer } from 'layer-manager/dist/components';
+import {
+  LayerManager as VizzLayerManager,
+  Layer
+} from 'layer-manager/dist/components';
 import { PluginMapboxGl } from 'layer-manager';
 import DEFAULT_PROVIDERS from './providers';
 
@@ -8,15 +11,17 @@ class LayerManager extends PureComponent {
   static propTypes = {
     map: PropTypes.object.isRequired,
     layers: PropTypes.array
-  }
+  };
 
-  static defaultProps = { layers: [] }
+  static defaultProps = { layers: [] };
 
   render() {
-    const {
-      map,
-      layers
-    } = this.props;
+    const { map, layers } = this.props;
+
+    console.log(
+      layers.map(l => l.attributes.layerConfig.render.layers[0]['source-layer'])
+    );
+
     return (
       <VizzLayerManager
         map={map}

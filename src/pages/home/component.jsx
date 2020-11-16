@@ -1,17 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from "react";
-import { useRouteMatch, useHistory, Link } from "react-router-dom";
-import _ from "lodash";
-import Map from "components/map";
-import { checkType } from "components/chart/const";
-import Zoom from "components/map/controls/zoom";
-import Dropdown from "components/Dropdown";
-import LayerManager from "components/map/layer-manager";
-import Loader from "components/Loader";
-import Legend from "components/map/legend";
-import Modal from "components/modal";
-import styles from "./styles.module.scss";
-import cx from "classnames";
+import React, { useState, useEffect } from 'react';
+import { useRouteMatch, useHistory, Link } from 'react-router-dom';
+import _ from 'lodash';
+import Map from 'components/map';
+import { checkType } from 'components/chart/const';
+import Zoom from 'components/map/controls/zoom';
+import Dropdown from 'components/Dropdown';
+import LayerManager from 'components/map/layer-manager';
+import Loader from 'components/Loader';
+import Legend from 'components/map/legend';
+import Modal from 'components/modal';
+import styles from './styles.module.scss';
+import cx from 'classnames';
 
 import {
   OPTIONS_TIME,
@@ -29,22 +29,22 @@ import {
   OPTIONS_ACTIVITY,
   OPTIONS_AGE,
   OPTIONS_CLOTHING,
-  MODAL_INFO_DATA,
-} from "const/constants";
+  MODAL_INFO_DATA
+} from 'const/constants';
 import {
   ThermalComfortChart,
   ThermalComfortMainChart,
   RiskEventsChart,
   TemperatureChart,
-  ClimatologyChart,
-} from "components/chart";
-import { getWidgetData, getLayersInfo, getPets, getPetData } from "api";
-import Description from "components/Description";
+  ClimatologyChart
+} from 'components/chart';
+import { getWidgetData, getLayersInfo, getPets, getPetData } from 'api';
+import Description from 'components/Description';
 
 const DEFAULT_INFO_MODAL = {
   open: false,
-  title: "",
-  text: "",
+  title: '',
+  text: ''
 };
 
 const HomePage = () => {
@@ -56,7 +56,7 @@ const HomePage = () => {
   const [activeMonthTC, setActiveMonthTC] = useState(OPTIONS_MONTHES[0]);
   const [activity, setActivity] = useState(OPTIONS_ACTIVITY[0]);
   const [layersInfo, setLayersInfo] = useState([]);
-  const match = useRouteMatch("/:gid/:period/:theme?");
+  const match = useRouteMatch('/:gid/:period/:theme?');
   const [widgetData, setWidgetData] = useState([]);
   const [petMaxMin, setPetMaxMin] = useState({});
   const [pets, setPets] = useState([]);
@@ -68,20 +68,20 @@ const HomePage = () => {
   const {
     gid = GIDS[0].gid,
     period = OPTIONS_TIME[0].value,
-    theme = OPTIONS_THEME[0].value,
+    theme = OPTIONS_THEME[0].value
   } = (match && match.params) || {};
-  const optionValue = OPTIONS_THEME.find((el) => el.value === theme);
+  const optionValue = OPTIONS_THEME.find(el => el.value === theme);
   const optionMonthValue = activeMonth;
-  const handleChange = (option) =>
+  const handleChange = option =>
     history.push(`/${gid}/${period}/${option.value}`);
-  const handleChangeMonth = (option) => setActiveMonth(option);
-  const handleChangeActivity = (option) => setActivity(option);
-  const handleChangeMonthTC = (option) => setActiveMonthTC(option);
+  const handleChangeMonth = option => setActiveMonth(option);
+  const handleChangeActivity = option => setActivity(option);
+  const handleChangeMonthTC = option => setActiveMonthTC(option);
   const { layers = [] } = LAYERS[period][theme] || {};
-  const gidInfo = GIDS.find((g) => g.gid === gid);
+  const gidInfo = GIDS.find(g => g.gid === gid);
   const { latitude, longitude, admin_level } = gidInfo;
 
-  const { from, to } = OPTIONS_TIME.find((t) => t.value === period);
+  const { from, to } = OPTIONS_TIME.find(t => t.value === period);
 
   const fetchWidgetsData = async () => {
     setLoading(true);
@@ -93,10 +93,10 @@ const HomePage = () => {
         period,
         time: {
           start: from,
-          end: to,
+          end: to
         },
         month: activeMonth.value,
-        admin_level: gidInfo.admin_level,
+        admin_level: gidInfo.admin_level
       });
       pet = await getPetData({ gid });
     } catch (err) {
@@ -120,13 +120,13 @@ const HomePage = () => {
       const newEnd = end - (width.right * distance) / 100;
       setFilteredPeriod({
         from: newStart,
-        to: newEnd,
+        to: newEnd
       });
     }
   };
 
   const fetchLayersInfo = async () => {
-    const data = await getLayersInfo(layers.map((l) => l.id));
+    const data = await getLayersInfo(layers.map(l => l.id));
     if (data) {
       setLayersInfo(data);
     }
@@ -139,20 +139,20 @@ const HomePage = () => {
     }
   };
 
-  const infoModalOpen = (key) => {
+  const infoModalOpen = key => {
     const { title, text } = MODAL_INFO_DATA[key];
 
     setInfoModal({
       open: true,
       title,
-      text,
+      text
     });
   };
 
   const infoModalClose = () => {
     setInfoModal({
       ...infoModal,
-      open: false,
+      open: false
     });
   };
 
@@ -160,7 +160,7 @@ const HomePage = () => {
     setPopup(status);
   };
 
-  const dateTransform = (date) =>
+  const dateTransform = date =>
     `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
   useEffect(() => {
@@ -192,7 +192,7 @@ const HomePage = () => {
       ...DEFAULT_VIEWPORT,
       latitude,
       longitude,
-      zoom: ADMIN_LEVEL_ZOOM[admin_level],
+      zoom: ADMIN_LEVEL_ZOOM[admin_level]
     };
     setViewport(newViewport);
   }, [gid]);
@@ -217,14 +217,14 @@ const HomePage = () => {
       temperature: null,
       temperatureDev: 0,
       temperatureDate: 0,
-      month: activeMonth.label,
+      month: activeMonth.label
     };
 
     const copyData = _.cloneDeep(widgetData);
     transformedWidgetData =
       theme === THERMALCOMFORT
         ? copyData
-        : copyData.map((wd) => {
+        : copyData.map(wd => {
             const time = new Date(wd.time).getTime();
 
             // temperature - K to C
@@ -304,7 +304,7 @@ const HomePage = () => {
 
     thermalValues = {
       min: 0,
-      max: 0,
+      max: 0
     };
     if (theme !== THERMALCOMFORT) {
       params.alarmsCount = Math.ceil(params.alarmsCount) || 0;
@@ -340,12 +340,12 @@ const HomePage = () => {
     layersInfo.map((l, ln) => {
       l.attributes.layerConfig.params.admin_level = admin_level;
       l.attributes.layerConfig.source = {
-        type: "vector",
-        url: SOURCE_URLS[period],
+        type: 'vector',
+        url: SOURCE_URLS[period]
       };
-      l.attributes.layerConfig.type = "vector";
-      l.attributes.layerConfig.render.layers.map((lc) => {
-        lc["source-layer"] = SOURCE_LAYERS[period][admin_level];
+      l.attributes.layerConfig.type = 'vector';
+      l.attributes.layerConfig.render.layers.map(lc => {
+        lc['source-layer'] = SOURCE_LAYERS[period][admin_level];
         return lc;
       });
       l.isRadio = true;
@@ -367,24 +367,24 @@ const HomePage = () => {
     const petFilters = {
       gid: gidInfo.gid,
       activity: activity.value,
-      month: activeMonthTC.value,
+      month: activeMonthTC.value
     };
 
     filteredPets = pets
-      .filter((el) => {
+      .filter(el => {
         const isFalse = [];
         if (petFilters.activity && el.variable !== petFilters.activity) {
-          isFalse.push("activity");
+          isFalse.push('activity');
         }
         if (petFilters.gid && el.gid_code !== petFilters.gid) {
-          isFalse.push("gid");
+          isFalse.push('gid');
         }
         if (petFilters.month && el.month !== petFilters.month) {
-          isFalse.push("gid");
+          isFalse.push('gid');
         }
         return isFalse.length === 0;
       })
-      .map((el) => {
+      .map(el => {
         if (el.pet > petValues.max) {
           petValues.max = el.pet.toFixed(2);
           petValues.hour = el.hour;
@@ -402,14 +402,18 @@ const HomePage = () => {
       });
   }
 
-  return (  
+  transformedWidgetData = transformedWidgetData.filter(d =>
+    d.experiment ? d.experiment === 'rcp85' : true
+  );
+
+  return (
     <div className={styles.container}>
       {infoModal && infoModal.open && (
         <Modal
           isOpen={infoModal.open}
           handleClose={() => infoModalClose()}
-          title={infoModal.title ? infoModal.title : ""}
-          text={infoModal.text ? infoModal.text : ""}
+          title={infoModal.title ? infoModal.title : ''}
+          text={infoModal.text ? infoModal.text : ''}
         />
       )}
       <div className={styles.content}>
@@ -440,7 +444,7 @@ const HomePage = () => {
                     data={transformedWidgetData}
                     theme={theme}
                     period={period}
-                    iconClickAfter={() => infoModalOpen("riskEvents")}
+                    iconClickAfter={() => infoModalOpen('riskEvents')}
                     coordinates={coordinates}
                     setCoordinates={setCoordinates}
                     onStopCallback={onStopCallback}
@@ -451,7 +455,7 @@ const HomePage = () => {
                     theme={theme}
                     period={period}
                     timeFilter={filteredPeriod}
-                    iconClickAfter={() => infoModalOpen("temperature")}
+                    iconClickAfter={() => infoModalOpen('temperature')}
                     coordinates={coordinates}
                     setCoordinates={setCoordinates}
                     onStopCallback={onStopCallback}
@@ -460,7 +464,7 @@ const HomePage = () => {
                     data={transformedWidgetData}
                     theme={theme}
                     period={period}
-                    iconClickAfter={() => infoModalOpen("thermalComfort")}
+                    iconClickAfter={() => infoModalOpen('thermalComfort')}
                     coordinates={coordinates}
                     setCoordinates={setCoordinates}
                     onStopCallback={onStopCallback}
@@ -470,9 +474,9 @@ const HomePage = () => {
               )}
               {theme === THERMALCOMFORT && (
                 <>
-                  {period === "historical" ? (
+                  {period === 'historical' ? (
                     <>
-                      <div className={styles["tc-filters"]}>
+                      <div className={styles['tc-filters']}>
                         <div>
                           <Dropdown
                             block
@@ -505,7 +509,7 @@ const HomePage = () => {
                         </div>
                       </div>
                       <div
-                        className={cx(styles["tc-period"], styles.calendarBox)}
+                        className={cx(styles['tc-period'], styles.calendarBox)}
                       >
                         <Dropdown
                           options={OPTIONS_MONTHES}
@@ -527,12 +531,12 @@ const HomePage = () => {
                       <ThermalComfortMainChart
                         data={filteredPets}
                         iconClickAfter={() =>
-                          infoModalOpen("thermalComfortMain")
+                          infoModalOpen('thermalComfortMain')
                         }
                       />
                       <div
                         className={cx(
-                          styles["tc-climatology"],
+                          styles['tc-climatology'],
                           styles.calendarBox
                         )}
                       >
@@ -556,17 +560,17 @@ const HomePage = () => {
                       <ClimatologyChart
                         data={transformedWidgetData}
                         iconClickAfter={() =>
-                          infoModalOpen("hourlyClimatology")
+                          infoModalOpen('hourlyClimatology')
                         }
                       />
                     </>
                   ) : (
                     <div className={styles.noData}>
                       <h4>
-                        Thermal Comfort is only available for the{" "}
+                        Thermal Comfort is only available for the{' '}
                         <Link to={`/${gid}/historical/${theme}`}>
                           historical
-                        </Link>{" "}
+                        </Link>{' '}
                         period.
                       </h4>
                     </div>
@@ -578,10 +582,10 @@ const HomePage = () => {
           {!widgetData && (
             <div
               style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                height: "100%",
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100%'
               }}
             >
               <p>
@@ -599,7 +603,7 @@ const HomePage = () => {
           setViewport={setViewport}
           isPopup={
             !isLoading &&
-            !(theme === THERMALCOMFORT && period !== "historical") &&
+            !(theme === THERMALCOMFORT && period !== 'historical') &&
             isPopup
           }
           gidInfo={gidInfo}
@@ -615,10 +619,10 @@ const HomePage = () => {
             />
           }
         >
-          {(map) => (
+          {map => (
             <LayerManager
               map={map}
-              layers={layersInfo.filter((_layer) => _layer.active)}
+              layers={layersInfo.filter(_layer => _layer.active)}
             />
           )}
         </Map>
