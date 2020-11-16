@@ -18,9 +18,10 @@ class LayerManager extends PureComponent {
   render() {
     const { map, layers } = this.props;
 
-    console.log(
-      layers.map(l => l.attributes.layerConfig.render.layers[0]['source-layer'])
-    );
+    // TODO: fix the source layer not changing on the map
+    // console.log(
+    //   layers.map(l => l.attributes.layerConfig.render.layers[0]['source-layer'])
+    // );
 
     return (
       <VizzLayerManager
