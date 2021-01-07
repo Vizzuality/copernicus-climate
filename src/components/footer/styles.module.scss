@@ -1,0 +1,33 @@
+@import '~styles/settings';
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 40px;
+  width: 100%;
+  background-color: $color-gray-1;
+  padding: 0 25px;
+
+  color: $color-background;
+  font-family: 'Open Sans';
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: 17px;
+
+  a {
+    color: $color-background;
+    text-decoration: underline;
+    height: 20px;
+  }
+
+  .developedBy {
+    display: flex;
+
+    img {
+      display: block;
+      height: 20px;
+      margin-left: 12px;
+    }
+  }
+}

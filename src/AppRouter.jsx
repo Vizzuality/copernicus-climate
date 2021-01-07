@@ -1,5 +1,10 @@
 import React, { Suspense, useState } from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import Modal from 'components/modal';
 import Icons from 'components/icons';
@@ -28,11 +33,7 @@ function AppRouter() {
             <Header />
             <Switch>
               <Route path="/" exact component={HomePage} />
-              <Redirect
-                from="/:gid"
-                exact
-                to="/:gid/hi"
-              />
+              <Redirect from="/:gid" exact to="/:gid/hi" />
               <Route path="/:gid/:period?/:theme?" exact component={HomePage} />
             </Switch>
             <Footer />
