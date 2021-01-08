@@ -1,6 +1,5 @@
 @import '~styles/settings';
 
-
 .container {
   display: flex;
   align-items: stretch;
@@ -18,7 +17,8 @@
 }
 
 .contentBox {
-  height: 700px;
+  // height: 700px;
+  height: calc(100vh - 72px - 40px);
   width: 100%;
   max-width: calc(85vw / 2);
   padding-top: 30px;
@@ -48,7 +48,7 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  box-shadow: 0 2px 10px 0 rgba(0,35,117,0.2);
+  box-shadow: 0 2px 10px 0 rgba(0, 35, 117, 0.2);
 }
 
 .zoomBox {
@@ -58,10 +58,10 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  box-shadow: 0 2px 10px 0 rgba(0,35,117,0.2);
+  box-shadow: 0 2px 10px 0 rgba(0, 35, 117, 0.2);
 
   button {
-    border-bottom: 2px solid #E6E6E6;
+    border-bottom: 2px solid #e6e6e6;
 
     &:last-child {
       border-bottom: none;
@@ -81,7 +81,6 @@
   }
 }
 
-
 .form-group input {
   color: black;
 }
@@ -90,7 +89,7 @@
 }
 
 .form-group.error input {
-  color: red
+  color: red;
 }
 .form-group.error p {
   opacity: 1;
